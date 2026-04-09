@@ -1,97 +1,135 @@
 import React from "react";
-import profileImage from "../assets/MB.jpeg"; // Ensure the correct image is used
-import { FaUser } from "react-icons/fa"; // Icon for "Chi sono"
-import { motion } from "framer-motion"; // For animations
+import { motion } from "framer-motion";
+import { FaHeart, FaMountain, FaChurch } from "react-icons/fa";
+import PellegrinaggioLogo from "../assets/Sacra.jpg";
+import { scrollToElement } from "../utils/scrollUtils";
 
-const Profile = () => {
-  // Animation variants for smooth transitions
+const Intento = () => {
   const fadeIn = {
     hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6, staggerChildren: 0.2 } },
+  };
+
+  const itemFadeIn = {
+    hidden: { opacity: 0, y: 10 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.4 } },
   };
 
   return (
-    <div className="w-full bg-gradient-to-b from-gray-50 to-white">
-      {/* Header */}
+    <section className="w-full bg-gradient-to-b from-gray-50 to-white" id="Storia">
+      {/* Sezione Visione/Storia */}
       <motion.div
-        id="ChiSono"
-        className="text-center py-16 px-4 sm:px-6"
+        className="text-center py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto"
         initial="hidden"
-        animate="visible"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.2 }}
         variants={fadeIn}
       >
-        <div className="relative inline-block">
+        <motion.div variants={itemFadeIn} className="relative inline-block">
           <img
-            src={profileImage}
-            alt="Martino Bani"
-            className="w-56 h-56 sm:w-64 sm:h-64 rounded-full mx-auto shadow-xl border-4 border-white object-cover transition-transform duration-500 hover:scale-110"
+            src={PellegrinaggioLogo}
+            alt="Logo del Pellegrinaggio Sacra di San Michele"
+            className="w-48 h-48 sm:w-56 sm:h-56 mx-auto object-cover rounded-full shadow-xl transition-transform duration-700 hover:scale-105 border-4 border-white"
           />
-          <div className="absolute inset-0 rounded-full bg-[#4A6FA5]/10 animate-pulse"></div>
-        </div>
-        <h1 className="text-4xl sm:text-5xl font-extrabold text-gray-900 mt-6 tracking-tight">
-          Martino Bani
-        </h1>
-        <p className="text-xl text-gray-600 mt-3 font-medium max-w-3xl mx-auto">
-          Consulente Energetico | Esperto in Gestione Utenze | Supporto Fotovoltaico
-        </p>
-        <p className="text-base text-gray-500 mt-2 max-w-2xl mx-auto italic">
-          Opero a livello nazionale, offrendo consulenza energetica a privati, micro-imprese e aziende.
-        </p>
+        </motion.div>
+
+        <motion.h1
+          className="text-4xl sm:text-5xl font-extrabold tracking-tight mt-10 text-sacra-primary drop-shadow-sm"
+          variants={itemFadeIn}
+        >
+          Fede e Sentiero
+        </motion.h1>
+        <motion.p
+          className="text-xl mt-4 font-semibold max-w-3xl mx-auto text-sacra-secondary uppercase tracking-wider"
+          variants={itemFadeIn}
+        >
+          Avigliana – Sacra di San Michele
+        </motion.p>
+        <motion.p
+          className="text-lg text-gray-600 mt-4 max-w-2xl mx-auto font-light leading-relaxed"
+          variants={itemFadeIn}
+        >
+          Un’esperienza unica lungo la Via Micaelica, dalla Valle di Susa all’Abbazia millenaria. La riscoperta del cammino storico.
+        </motion.p>
       </motion.div>
 
-      {/* Chi sono */}
+      {/* Sezione Intento */}
       <motion.div
-        className="py-16 px-4 sm:px-6 bg-white"
+        className="py-16 px-4 sm:px-6 lg:px-8 bg-white"
         initial="hidden"
-        animate="visible"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.2 }}
         variants={fadeIn}
       >
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-3xl font-bold text-[#4A6FA5] mb-6 flex items-center">
-            <FaUser className="text-[#4A6FA5] mr-3 text-2xl" />
-            Chi sono
-          </h2>
-          <div className="bg-gray-50 p-8 rounded-xl shadow-md">
-            <p className="text-gray-700 leading-relaxed text-justify text-lg">
-              Sono Martino Bani, un consulente specializzato nell'ottimizzazione delle spese per energia elettrica e metano. Mi dedico a semplificare la gestione delle utenze, garantendo trasparenza e risparmio senza costi aggiuntivi.
-            </p>
-            <p className="text-gray-700 leading-relaxed mt-4 text-lg">
-              Il mio approccio si basa su <strong>competenza, affidabilità e innovazione</strong>. Offro servizi completi, tra cui:
-            </p>
-            <ul className="list-disc list-inside mt-4 space-y-2 text-gray-700 text-lg">
-              <li className="flex items-start">
-                <span className="text-[#4A6FA5] mr-2">•</span> Analisi e confronto delle migliori offerte sul mercato.
-              </li>
-              <li className="flex items-start">
-                <span className="text-[#4A6FA5] mr-2">•</span> Gestione volture, subentri e attivazioni contatori.
-              </li>
-              <li className="flex items-start">
-                <span className="text-[#4A6FA5] mr-2">•</span> Consulenza gratuita per il fotovoltaico e agevolazioni fiscali.
-              </li>
-            </ul>
-            <p className="text-gray-700 leading-relaxed mt-4 text-lg">
-              Con anni di esperienza nel settore energetico, mi impegno a fornire soluzioni personalizzate per ogni cliente, garantendo sempre la massima professionalità e chiarezza.
-            </p>
+          <motion.h2
+            className="text-3xl sm:text-4xl font-bold mb-8 flex items-center justify-center text-sacra-primary"
+            variants={itemFadeIn}
+          >
+            <FaChurch className="mr-4 text-3xl text-sacra-accent drop-shadow-sm" />
+            Il Nostro Intento
+          </motion.h2>
+
+          <div className="bg-gray-50 p-8 sm:p-12 rounded-2xl shadow-lg border border-gray-100">
+            <motion.p className="text-gray-700 leading-relaxed text-lg" variants={itemFadeIn}>
+              Questo pellegrinaggio nasce dal desiderio di riscoprire e valorizzare un percorso antico e profondo: i <strong className="text-sacra-primary">15 chilometri</strong> che uniscono la città di Avigliana, porta della Valle di Susa, all’imponente <strong className="text-sacra-primary">Sacra di San Michele</strong>, simbolo del Piemonte e custode della fede.
+            </motion.p>
+            <motion.p className="text-gray-700 leading-relaxed mt-4 text-lg" variants={itemFadeIn}>
+              Il nostro intento è creare un’occasione di <strong>comunione, riflessione e sforzo fisico</strong>, un cammino che non sia solo una passeggiata, ma un vero e proprio atto devozionale. Ci concentriamo su tre pilastri:
+            </motion.p>
+
+            <motion.ul className="list-none mt-8 space-y-6 text-gray-700 text-lg" variants={fadeIn}>
+              <motion.li className="flex items-start" variants={itemFadeIn}>
+                <FaHeart className="mr-4 mt-1 text-2xl text-sacra-primary shrink-0" />
+                <span>
+                  <strong className="text-gray-900">La Storia Micaelica:</strong> Approfondire il legame con l’allineamento dei sette santuari dedicati a San Michele Arcangelo.
+                </span>
+              </motion.li>
+              <motion.li className="flex items-start" variants={itemFadeIn}>
+                <FaMountain className="mr-4 mt-1 text-2xl text-sacra-primary shrink-0" />
+                <span>
+                  <strong className="text-gray-900">L’Impegno Comunitario:</strong> Coinvolgere associazioni locali per garantire sicurezza e supporto logistico.
+                </span>
+              </motion.li>
+              <motion.li className="flex items-start" variants={itemFadeIn}>
+                <FaChurch className="mr-4 mt-1 text-2xl text-sacra-primary shrink-0" />
+                <span>
+                  <strong className="text-gray-900">La Sfida del Sentiero:</strong> Affrontare i 600 metri di dislivello come metafora del cammino spirituale personale.
+                </span>
+              </motion.li>
+            </motion.ul>
+
+            <motion.div className="mt-10 text-center" variants={itemFadeIn}>
+              <p className="text-gray-800 leading-relaxed text-xl font-medium italic border-t border-gray-200 pt-6">
+                Unisciti a noi per trasformare un breve sentiero in una grande esperienza di fede e fratellanza.
+              </p>
+            </motion.div>
           </div>
         </div>
       </motion.div>
 
       {/* Call to Action */}
       <motion.div
-        className="text-center py-12 px-4 sm:px-6"
+        className="text-center pb-20 px-4"
         initial="hidden"
-        animate="visible"
+        whileInView="visible"
+        viewport={{ once: true }}
         variants={fadeIn}
       >
-        <a
-          href="#Servizi"
-          className="inline-block px-10 py-4 bg-[#4A6FA5] text-white font-semibold rounded-full shadow-xl hover:bg-[#3B5D8A] transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-[#4A6FA5]/50"
+        <motion.a
+          href="#Percorso"
+          onClick={(e) => {
+            e.preventDefault();
+            scrollToElement("Percorso");
+          }}
+          className="inline-block px-10 py-4 bg-sacra-primary text-white font-bold text-lg uppercase tracking-wide rounded-full shadow-xl hover:bg-sacra-hover transition-all duration-300 transform hover:-translate-y-1 focus:ring-4 focus:ring-sacra-primary/50"
+          variants={itemFadeIn}
         >
-          Scopri i miei servizi
-        </a>
+          Dettagli Tecnici del Percorso
+        </motion.a>
       </motion.div>
-    </div>
+    </section>
   );
 };
 
-export default Profile;
+export default Intento;

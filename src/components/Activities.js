@@ -1,10 +1,11 @@
 import React from "react";
-import { FaHome, FaPhone, FaVideo, FaLightbulb, FaFire } from "react-icons/fa"; // Icons
-import { motion } from "framer-motion"; // For animations
-import Italy from "../assets/italy.png";
+import { FaMapMarkerAlt, FaHiking, FaSuitcase, FaTrain, FaCalendarAlt } from "react-icons/fa";
+import { motion } from "framer-motion";
+import { MapContainer, TileLayer, Polyline } from "react-leaflet";
+import "leaflet/dist/leaflet.css";
+import { scrollToElement } from "../utils/scrollUtils";
 
 const Activities = () => {
-  // Animation variants for smooth transitions
   const fadeIn = {
     hidden: { opacity: 0, y: 20 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.6, staggerChildren: 0.2 } },
@@ -15,173 +16,162 @@ const Activities = () => {
     visible: { opacity: 1, y: 0, transition: { duration: 0.4 } },
   };
 
-  return (
-    <>
-      {/* Divisore tra le sezioni */}
-      <div className="h-16 bg-gradient-to-b from-transparent to-gray-100"></div>
+  const pathCoordinates = [
+    [45.1106, 7.3419], // Avigliana
+    [45.0976, 7.3428], // Sacra di San Michele
+  ];
 
-      {/* Sezione "Come lo faccio" */}
-      <section className="w-full py-20 bg-gradient-to-b from-gray-100 to-gray-50">
-        <div className="px-4 sm:px-6 lg:px-8">
-          <motion.div
-            className="max-w-4xl mx-auto mb-20"
-            initial="hidden"
-            animate="visible"
-            variants={fadeIn}
-          >
-            <h3 className="text-3xl sm:text-4xl font-extrabold text-[#3B5D8A] text-center mb-8 tracking-tight">
-              Come lo faccio
+  return (
+    <section className="w-full bg-gradient-to-b from-gray-50 to-white">
+      {/* Sezione Percorso */}
+      <div id="Percorso" className="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <motion.div
+          className="text-center mb-16"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          variants={fadeIn}
+        >
+          <h2 className="text-4xl sm:text-5xl font-extrabold tracking-tight text-sacra-primary">
+            Il Percorso del Pellegrinaggio
+          </h2>
+          <p className="text-lg text-gray-600 font-light leading-relaxed mt-4 max-w-3xl mx-auto">
+            Un cammino di <strong className="font-semibold text-gray-900">15 km</strong> da Avigliana alla Sacra di San Michele, con <strong className="font-semibold text-gray-900">600 metri di dislivello</strong>, immersi nella natura e nella spiritualità della Valle di Susa.
+          </p>
+        </motion.div>
+
+        <motion.div
+          className="flex flex-col lg:flex-row gap-12 items-center"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          variants={fadeIn}
+        >
+          <motion.div className="w-full lg:w-1/2" variants={cardFadeIn}>
+            <div className="rounded-2xl overflow-hidden shadow-xl border-4 border-white">
+              <MapContainer
+                center={[45.1041, 7.3423]}
+                zoom={13}
+                className="h-[400px] w-full"
+                aria-label="Mappa del percorso da Avigliana alla Sacra di San Michele"
+              >
+                <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+                <Polyline pathOptions={{ color: "#800020", weight: 4 }} positions={pathCoordinates} />
+              </MapContainer>
+            </div>
+          </motion.div>
+
+          <motion.div className="w-full lg:w-1/2" variants={cardFadeIn}>
+            <h3 className="text-3xl font-bold mb-6 flex items-center text-sacra-primary border-b border-gray-200 pb-4">
+              <FaMapMarkerAlt className="mr-3 text-sacra-accent" />
+              Dettagli Tecnici
             </h3>
-            <p className="text-lg text-gray-700 leading-relaxed mb-6 text-justify">
-              Offro una consulenza energetica gratuita e personalizzata, durante la quale ti farò alcune domande ed analizzerò le tue bollette per capire esattamente come posso aiutarti.
-            </p>
-            <div className="flex flex-col md:flex-row justify-center items-center gap-8">
-              {/* Mappa d'Italia */}
-              <motion.img
-                src={Italy}
-                alt="Mappa d'Italia"
-                className="w-56 h-56 object-contain rounded-xl shadow-md"
-                variants={cardFadeIn}
-              />
-              <div className="text-center md:text-left">
-                <p className="text-lg text-gray-700 leading-relaxed">
-                  Mi trovo ad Ancona (Marche), ma posso operare su tutto il territorio nazionale.
-                </p>
-                <p className="text-lg text-gray-700 leading-relaxed mt-4">
-                  In base alle tue esigenze, l'attività può essere svolta:
-                </p>
-                <ul className="flex flex-col space-y-3 mt-4">
-                  <li className="flex items-center space-x-3">
-                    <FaHome className="text-2xl text-[#4A6FA5]" />
-                    <span className="text-gray-700 font-semibold">A domicilio</span>
-                  </li>
-                  <li className="flex items-center space-x-3">
-                    <FaPhone className="text-2xl text-[#4A6FA5]" />
-                    <span className="text-gray-700 font-semibold">Telefonicamente</span>
-                  </li>
-                  <li className="flex items-center space-x-3">
-                    <FaVideo className="text-2xl text-[#4A6FA5]" />
-                    <span className="text-gray-700 font-semibold">In videocall</span>
-                  </li>
-                </ul>
-                <p className="text-lg text-gray-700 leading-relaxed mt-6 text-justify">
-                  Grazie alla mia esperienza nei settori di luce e gas, conosco perfettamente tutti gli aspetti tecnici, le dinamiche e le procedure necessarie per muoversi con sicurezza nel mercato libero.
-                </p>
-                <p className="text-lg text-gray-700 leading-relaxed mt-4 text-justify">
-                  Mi aggiorno costantemente per garantire ai miei clienti un supporto professionale e affidabile, semplificando la gestione delle loro utenze.
-                </p>
+            <ul className="space-y-5 text-gray-700 text-lg">
+              <li className="flex items-center">
+                <FaHiking className="mr-4 text-2xl text-sacra-secondary shrink-0" />
+                <span><strong className="text-gray-900">Distanza:</strong> 15 km (solo andata)</span>
+              </li>
+              <li className="flex items-center">
+                <FaHiking className="mr-4 text-2xl text-sacra-secondary shrink-0" />
+                <span><strong className="text-gray-900">Dislivello:</strong> 600 metri</span>
+              </li>
+              <li className="flex items-center">
+                <FaCalendarAlt className="mr-4 text-2xl text-sacra-secondary shrink-0" />
+                <span><strong className="text-gray-900">Durata:</strong> Circa 4-5 ore</span>
+              </li>
+              <li className="flex items-start">
+                <FaMapMarkerAlt className="mr-4 mt-1 text-2xl text-sacra-secondary shrink-0" />
+                <span><strong className="text-gray-900">Partenza:</strong> Piazza della Stazione, Avigliana</span>
+              </li>
+              <li className="flex items-start">
+                <FaMapMarkerAlt className="mr-4 mt-1 text-2xl text-sacra-secondary shrink-0" />
+                <span><strong className="text-gray-900">Arrivo:</strong> Sacra di San Michele</span>
+              </li>
+            </ul>
+          </motion.div>
+        </motion.div>
+      </div>
+
+      {/* Sezione Logistica */}
+      <div id="Logistica" className="py-20 px-4 sm:px-6 lg:px-8 bg-gray-50 border-t border-gray-200">
+        <motion.div
+          className="max-w-4xl mx-auto mb-16 text-center"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          variants={fadeIn}
+        >
+          <h2 className="text-4xl sm:text-5xl font-extrabold tracking-tight text-sacra-primary">
+            Logistica e Preparazione
+          </h2>
+        </motion.div>
+
+        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
+          <motion.div
+            className="bg-white p-8 rounded-2xl shadow-md border border-gray-100 hover:shadow-xl transition-shadow duration-300"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={cardFadeIn}
+          >
+            <div className="flex items-center mb-6">
+              <div className="p-3 bg-sacra-primary/10 rounded-lg mr-4">
+                <FaSuitcase className="text-2xl text-sacra-primary" />
+              </div>
+              <h3 className="text-2xl font-bold text-sacra-primary">Cosa Portare</h3>
+            </div>
+            <ul className="space-y-3 text-gray-700 text-lg">
+              {["Scarpe da trekking comode e robuste", "Borraccia d’acqua (minimo 1 litro)", "Snack energetici (frutta secca, barrette)", "Giacca impermeabile o poncho", "Cappello o bandana per il sole", "Zaino leggero (15-20 litri)", "Rosario o oggetti devozionali (opzionale)"].map((item, i) => (
+                <li key={i} className="flex items-start">
+                  <span className="mr-3 text-sacra-accent text-xl font-bold">•</span> {item}
+                </li>
+              ))}
+            </ul>
+          </motion.div>
+
+          <motion.div
+            className="bg-white p-8 rounded-2xl shadow-md border border-gray-100 hover:shadow-xl transition-shadow duration-300"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={cardFadeIn}
+          >
+            <div className="flex items-center mb-6">
+              <div className="p-3 bg-sacra-primary/10 rounded-lg mr-4">
+                <FaTrain className="text-2xl text-sacra-primary" />
+              </div>
+              <h3 className="text-2xl font-bold text-sacra-primary">Come Arrivare</h3>
+            </div>
+            <div className="space-y-4 text-gray-700 text-lg leading-relaxed">
+              <p><strong className="text-gray-900">Treno:</strong> Da Torino Porta Nuova ad Avigliana (30 minuti). Ritrovo: Stazione di Avigliana, ore 8:00.</p>
+              <p><strong className="text-gray-900">Auto:</strong> Parcheggio disponibile presso il centro di Avigliana. Navette gratuite per il ritorno dalla Sacra.</p>
+              <div className="bg-yellow-50 border-l-4 border-sacra-accent p-4 mt-4 text-sm text-gray-800">
+                <strong>Consiglio:</strong> Arriva con anticipo per il check-in e la distribuzione delle mappe del percorso.
               </div>
             </div>
           </motion.div>
         </div>
-      </section>
 
-      {/* Sezione Servizi */}
-      <section id="Servizi" className="w-full py-20 bg-gradient-to-b from-gray-50 to-gray-100">
-        <div className="px-4 sm:px-6 lg:px-8">
-          {/* Titolo Principale */}
-          <motion.div
-            className="text-center mb-16"
-            initial="hidden"
-            animate="visible"
-            variants={fadeIn}
+        <motion.div
+          className="text-center mt-16"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          variants={fadeIn}
+        >
+          <a
+            href="#Iscrizione"
+            onClick={(e) => {
+              e.preventDefault();
+              scrollToElement("Iscrizione");
+            }}
+            className="inline-block px-10 py-4 bg-sacra-accent text-gray-900 font-bold text-lg uppercase tracking-wide rounded-full shadow-lg hover:bg-yellow-400 transition-all duration-300 transform hover:-translate-y-1 focus:ring-4 focus:ring-sacra-accent/50"
           >
-            <h2 className="text-4xl sm:text-5xl font-extrabold text-[#3B5D8A] tracking-tight drop-shadow-md">
-              Scopri tutti i miei servizi
-            </h2>
-            <p className="text-3xl font-bold text-[#4A6FA5] mt-4">Luce e Gas</p>
-          </motion.div>
-
-          {/* Lista dei Servizi */}
-          <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[
-              {
-                title: "Nuove attivazioni",
-                description: "Assistenza completa per attivazione contatori preposati.",
-                icons: [<FaLightbulb className="text-2xl text-yellow-500" />, <FaFire className="text-2xl text-red-600" />],
-              },
-              {
-                title: "Cambio fornitore",
-                description: "Analisi approfondita e proposte convenienti verso compagnie più competitive.",
-                icons: [<FaLightbulb className="text-2xl text-yellow-500" />, <FaFire className="text-2xl text-red-600" />],
-              },
-              {
-                title: "Volture",
-                description: "Supporto e gestione pratiche per cambio intestatario utenze (voltura ordinaria / mortis causa).",
-                icons: [<FaLightbulb className="text-2xl text-yellow-500" />, <FaFire className="text-2xl text-red-600" />],
-              },
-              {
-                title: "Subentri",
-                description: "Assistenza e compilazione pratiche per attivazione forniture cessate o sospese per morosità.",
-                icons: [<FaLightbulb className="text-2xl text-yellow-500" />, <FaFire className="text-2xl text-red-600" />],
-              },
-              {
-                title: "Posa contatori definitivi e temporanei",
-                description: "Aiuto pratico nell'attività di contrattualistica e documentazione di conformità necessaria per impianto e posa di nuovi contatori.",
-                icons: [<FaLightbulb className="text-2xl text-yellow-500" />, <FaFire className="text-2xl text-red-600" />],
-              },
-              {
-                title: "Aumento/Diminuzione potenza (Luce)",
-                description: "Supporto e valutazione per adeguamento potenza su contatori elettrici.",
-                icons: [<FaLightbulb className="text-2xl text-yellow-500" />],
-              },
-              {
-                title: "Aumento/Diminuzione portata termica (Gas)",
-                description: "Regolazione della portata termica del metano secondo le tue necessità.",
-                icons: [<FaFire className="text-2xl text-red-600" />],
-              },
-              {
-                title: "Modifica tensione (Luce)",
-                description: "Adattamento della tensione elettrica in base ai tuoi bisogni specifici.",
-                icons: [<FaLightbulb className="text-2xl text-yellow-500" />],
-              },
-              {
-                title: "Cambio fornitore + Voltura contestuale",
-                description: "Gestione switch con tariffa ottimale e assegnazione contestuale nuovo intestatario.",
-                icons: [<FaLightbulb className="text-2xl text-yellow-500" />, <FaFire className="text-2xl text-red-600" />],
-              },
-              {
-                title: "Agevolazione accise Gas",
-                description: "Per aziende: agevolazione imposte erariali in base al codice ateco dell'attività.",
-                icons: [<FaFire className="text-2xl text-red-600" />],
-              },
-              {
-                title: "Agevolazione IVA Luce e Gas",
-                description: "Per aziende: valutazione fattibilità per aventi diritto ad iva ridotta.",
-                icons: [<FaLightbulb className="text-2xl text-yellow-500" />, <FaFire className="text-2xl text-red-600" />],
-              },
-            ].map((service, index) => (
-              <motion.div
-                key={index}
-                className="bg-white p-6 rounded-xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2"
-                variants={cardFadeIn}
-              >
-                <div className="flex items-center space-x-3 mb-3">
-                  {service.icons}
-                  <h3 className="text-xl font-bold text-[#4A6FA5]">{service.title}</h3>
-                </div>
-                <p className="text-gray-700 leading-relaxed">{service.description}</p>
-              </motion.div>
-            ))}
-          </div>
-
-          {/* Pulsante Contatti */}
-          <motion.div
-            className="text-center mt-16"
-            initial="hidden"
-            animate="visible"
-            variants={fadeIn}
-          >
-            <a
-              href="#Contatti"
-              className="inline-block px-10 py-4 bg-[#4A6FA5] text-white font-semibold rounded-full shadow-xl hover:bg-[#3B5D8A] transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-[#4A6FA5]/50"
-            >
-              Contattami ora
-            </a>
-          </motion.div>
-        </div>
-      </section>
-    </>
+            Iscriviti al Pellegrinaggio
+          </a>
+        </motion.div>
+      </div>
+    </section>
   );
 };
 

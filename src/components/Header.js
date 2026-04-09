@@ -1,78 +1,44 @@
 import React, { useState, useEffect } from "react";
 import { FaBars, FaTimes } from "react-icons/fa";
-import { motion } from "framer-motion"; // For animations
+import { motion, AnimatePresence } from "framer-motion";
+import { scrollToElement } from "../utils/scrollUtils"; // Utility esterna
 
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
 
-  // Menu Items
   const menuItems = [
-    { name: "Chi sono", link: "#ChiSono" },
-    { name: "Servizi", link: "#Servizi" },
+    { name: "La Sacra & Storia", link: "Storia" },
+    { name: "Il Percorso", link: "Percorso" },
+    { name: "Logistica Pratica", link: "Logistica" },
   ];
 
-  // Animation variants for smooth transitions
-  const menuFadeIn = {
-    hidden: { opacity: 0, y: -20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.4, staggerChildren: 0.1 },
-    },
-  };
-
-  const menuItemFade = {
-    hidden: { opacity: 0, y: -10 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.3 } },
-  };
-
-  // Function to handle smooth scrolling to an element
-  const scrollToElement = (id) => {
-    const element = document.getElementById(id);
-    if (element) {
-      const headerHeight = 80; // Header height
-      const offset = element.offsetTop - headerHeight;
-      window.scrollTo({
-        top: offset,
-        behavior: "smooth",
-      });
-    }
-    setMenuOpen(false); // Close mobile menu after clicking
-  };
-
-  // Handle hashchange event
+  // Blocca lo scroll quando il menu mobile è aperto
   useEffect(() => {
-    const handleHashChange = () => {
-      const id = window.location.hash.substring(1);
-      if (id) {
-        scrollToElement(id);
-      }
-    };
+    if (menuOpen) document.body.style.overflow = "hidden";
+    else document.body.style.overflow = "unset";
+  }, [menuOpen]);
 
-    window.addEventListener("hashchange", handleHashChange);
-    return () => window.removeEventListener("hashchange", handleHashChange);
-  }, []);
+  const handleNavClick = (e, id) => {
+    e.preventDefault();
+    scrollToElement(id);
+    setMenuOpen(false);
+  };
 
   return (
     <motion.header
-      className="bg-white shadow-lg fixed top-0 w-full z-50 transition-all duration-300"
+      className="bg-white/95 backdrop-blur-md shadow-md fixed top-0 w-full z-50 transition-all duration-300"
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.5 }}
     >
-      {/* Contenitore Header */}
-      <div className="flex justify-between items-center py-4 px-4 sm:px-6 lg:px-8">
-        {/* Logo - Nome professionale */}
+      <div className="flex justify-between items-center py-4 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        {/* Logo */}
         <a
           href="#top"
-          onClick={(e) => {
-            e.preventDefault();
-            scrollToElement("top");
-          }}
-          className="text-2xl sm:text-3xl font-extrabold tracking-tight transition-colors duration-300"
-          style={{ color: "#4A6FA5" }}
+          onClick={(e) => handleNavClick(e, "top")}
+          className="text-2xl sm:text-3xl font-extrabold tracking-tight text-sacra-primary"
         >
-          Martino <span className="text-gray-900">Bani</span>
+          Pellegrinaggio <span className="text-gray-900 font-light">San Michele</span>
         </a>
 
         {/* Navigazione Desktop */}
@@ -80,81 +46,62 @@ const Header = () => {
           {menuItems.map((item, index) => (
             <a
               key={index}
-              href={item.link}
-              onClick={(e) => {
-                e.preventDefault();
-                scrollToElement(item.link.substring(1));
-              }}
-              className="text-gray-900 hover:text-[#4A6FA5] text-lg font-semibold transition-colors duration-300 relative group"
+              href={`#${item.link}`}
+              onClick={(e) => handleNavClick(e, item.link)}
+              className="text-gray-700 hover:text-sacra-primary text-lg font-medium transition-colors duration-300 relative group"
             >
               {item.name}
-              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#4A6FA5] transition-all duration-300 group-hover:w-full"></span>
+              <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-sacra-primary transition-all duration-300 group-hover:w-full"></span>
             </a>
           ))}
-          {/* Pulsante Contatti Desktop */}
           <a
-            href="#Contatti"
-            onClick={(e) => {
-              e.preventDefault();
-              scrollToElement("Contatti");
-            }}
-            className="px-6 py-2 bg-[#4A6FA5] text-white rounded-full font-semibold hover:bg-[#3B5D8A] transition-all duration-300 shadow-md hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-[#4A6FA5]/50"
+            href="#Iscrizione"
+            onClick={(e) => handleNavClick(e, "Iscrizione")}
+            className="px-6 py-2 bg-sacra-accent text-gray-900 font-bold text-sm uppercase tracking-wider rounded-full shadow hover:bg-yellow-400 transition-all duration-300 transform hover:-translate-y-0.5"
           >
-            Contatti
+            Iscriviti
           </a>
         </nav>
 
-        {/* Menu Hamburger Mobile */}
+        {/* Hamburger */}
         <button
           onClick={() => setMenuOpen(!menuOpen)}
-          className="md:hidden text-gray-900 focus:outline-none"
-          aria-label="Toggle Menu"
+          className="md:hidden text-sacra-primary focus:outline-none p-2"
+          aria-expanded={menuOpen}
         >
-          {menuOpen ? (
-            <FaTimes className="text-3xl hover:text-[#4A6FA5] transition-colors duration-300" />
-          ) : (
-            <FaBars className="text-3xl hover:text-[#4A6FA5] transition-colors duration-300" />
-          )}
+          {menuOpen ? <FaTimes className="text-2xl" /> : <FaBars className="text-2xl" />}
         </button>
       </div>
 
-      {/* Navigazione Mobile */}
-      <motion.div
-        className={`md:hidden fixed top-0 left-0 w-full h-screen bg-white/95 backdrop-blur-md flex flex-col items-center justify-center space-y-8 transition-transform duration-500 ${
-          menuOpen ? "translate-y-0 opacity-100" : "-translate-y-full opacity-0"
-        }`}
-        style={{ visibility: menuOpen ? "visible" : "hidden" }}
-        initial="hidden"
-        animate={menuOpen ? "visible" : "hidden"}
-        variants={menuFadeIn}
-      >
-        {menuItems.map((item, index) => (
-          <motion.a
-            key={index}
-            href={item.link}
-            onClick={(e) => {
-              e.preventDefault();
-              scrollToElement(item.link.substring(1));
-            }}
-            className="text-gray-900 hover:text-[#4A6FA5] text-2xl font-semibold transition-colors duration-300"
-            variants={menuItemFade}
+      {/* Navigazione Mobile con AnimatePresence per uscite fluide */}
+      <AnimatePresence>
+        {menuOpen && (
+          <motion.div
+            className="md:hidden fixed top-[72px] left-0 w-full h-[calc(100vh-72px)] bg-white flex flex-col items-center justify-start pt-12 space-y-8"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
           >
-            {item.name}
-          </motion.a>
-        ))}
-        {/* Pulsante Contatti Mobile */}
-        <motion.a
-          href="#Contatti"
-          onClick={(e) => {
-            e.preventDefault();
-            scrollToElement("Contatti");
-          }}
-          className="px-8 py-3 bg-[#4A6FA5] text-white rounded-full font-semibold hover:bg-[#3B5D8A] transition-all duration-300 text-xl shadow-md hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-[#4A6FA5]/50"
-          variants={menuItemFade}
-        >
-          Contatti
-        </motion.a>
-      </motion.div>
+            {menuItems.map((item, index) => (
+              <a
+                key={index}
+                href={`#${item.link}`}
+                onClick={(e) => handleNavClick(e, item.link)}
+                className="text-gray-900 text-2xl font-medium hover:text-sacra-primary transition-colors duration-300"
+              >
+                {item.name}
+              </a>
+            ))}
+            <a
+              href="#Iscrizione"
+              onClick={(e) => handleNavClick(e, "Iscrizione")}
+              className="px-8 py-4 mt-4 bg-sacra-accent text-gray-900 font-bold text-lg uppercase rounded-full shadow-md"
+            >
+              Iscriviti
+            </a>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.header>
   );
 };

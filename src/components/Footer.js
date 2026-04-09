@@ -1,9 +1,9 @@
 import React from "react";
-import { FaEnvelope, FaWhatsapp } from "react-icons/fa";
+import { FaEnvelope, FaFacebook, FaInstagram, FaMapMarkerAlt, FaChurch } from "react-icons/fa";
 import { motion } from "framer-motion";
+import { scrollToElement } from "../utils/scrollUtils";
 
 const Footer = () => {
-  // Animation variants for smooth transitions
   const fadeIn = {
     hidden: { opacity: 0, y: 20 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.6, staggerChildren: 0.2 } },
@@ -17,90 +17,99 @@ const Footer = () => {
   return (
     <motion.footer
       id="Contatti"
-      className="w-full bg-gradient-to-t from-[#1F2937] to-[#111827] text-white py-12"
+      className="w-full bg-gray-900 text-white pt-16 pb-8 border-t-4 border-sacra-primary"
       initial="hidden"
-      animate="visible"
+      whileInView="visible"
+      viewport={{ once: true }}
       variants={fadeIn}
     >
       <div className="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-        {/* Sezione CTA Bollette */}
+        
+        {/* Sezione CTA (Box Evidenziato) */}
         <motion.div
-          className="text-center bg-[#10B981]/10 rounded-2xl p-6 sm:p-8 mb-10 border border-[#10B981]/20 shadow-lg"
+          className="text-center bg-gray-800 rounded-3xl p-8 sm:p-12 mb-16 border border-gray-700 shadow-2xl relative overflow-hidden"
           variants={itemFadeIn}
         >
-          <h2 className="text-2xl sm:text-3xl font-extrabold text-[#10B981] mb-3 tracking-tight">
-            Invia le tue bollette
+          {/* Elemento decorativo */}
+          <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-sacra-primary via-sacra-accent to-sacra-primary"></div>
+          
+          <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight mb-4 text-white">
+            Unisciti al Pellegrinaggio
           </h2>
-          <p className="text-base sm:text-lg text-gray-200 mb-6 max-w-xl mx-auto">
-            Allega qui le tue fatture di luce e gas e sarai ricontattato per una consulenza gratuita!
+          <p className="text-lg text-gray-300 mb-8 max-w-2xl mx-auto font-light leading-relaxed">
+            Contattaci per ricevere informazioni sulla prossima partenza verso la Sacra di San Michele o per partecipare come volontario.
           </p>
+          
           <div className="flex flex-col sm:flex-row justify-center gap-4">
             <motion.a
-              href="mailto:unioservizi@gmail.com?subject=Consulenza Bollette"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center px-6 py-3 bg-[#EF4444] text-white font-semibold rounded-lg shadow-md hover:bg-[#DC2626] transition-all duration-300"
-              whileHover={{ scale: 1.05 }}
+              href="mailto:info@pellegrinaggiosacra.it?subject=Informazioni Pellegrinaggio"
+              className="inline-flex justify-center items-center px-8 py-3 bg-transparent border-2 border-white text-white font-bold text-base uppercase tracking-wide rounded-full hover:bg-white hover:text-gray-900 transition-all duration-300"
+              whileHover={{ scale: 1.02 }}
               variants={itemFadeIn}
             >
-              <FaEnvelope className="mr-2 text-lg" />
-              Invia per Email
+              <FaEnvelope className="mr-2" />
+              Inviaci un'email
             </motion.a>
             <motion.a
-              href="https://wa.me/393338401484?text=Salve, vorrei inviare le mie bollette per una consulenza."
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center px-6 py-3 bg-[#22C55E] text-white font-semibold rounded-lg shadow-md hover:bg-[#16A34A] transition-all duration-300"
-              whileHover={{ scale: 1.05 }}
+              href="#Iscrizione"
+              onClick={(e) => {
+                e.preventDefault();
+                scrollToElement("Iscrizione");
+              }}
+              className="inline-flex justify-center items-center px-8 py-3 bg-sacra-accent text-gray-900 font-bold text-base uppercase tracking-wide rounded-full shadow-lg hover:bg-yellow-400 transition-all duration-300"
+              whileHover={{ scale: 1.02 }}
               variants={itemFadeIn}
             >
-              <FaWhatsapp className="mr-2 text-lg" />
-              Invia via WhatsApp
+              Iscriviti Ora
             </motion.a>
           </div>
         </motion.div>
 
-        {/* Sezione Contatti */}
+        {/* Footer Bottom: Links e Contatti */}
         <motion.div
-          className="flex flex-col sm:flex-row justify-between items-center gap-8 text-center sm:text-left"
+          className="grid grid-cols-1 md:grid-cols-3 gap-10 text-center md:text-left border-t border-gray-800 pt-10"
           variants={fadeIn}
         >
+          {/* Colonna 1: Logo/Nome */}
           <motion.div variants={itemFadeIn}>
-            <h3 className="text-lg font-semibold text-[#4A6FA5] mb-3">Contatti</h3>
-            <a
-              href="mailto:unioservizi@gmail.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center justify-center sm:justify-start space-x-2 text-gray-300 hover:text-[#EF4444] transition-all duration-300"
-            >
-              <FaEnvelope className="text-lg" />
-              <span>unioservizi@gmail.com</span>
-            </a>
-            <a
-              href="https://wa.me/393338401484"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center justify-center sm:justify-start space-x-2 text-gray-300 hover:text-[#22C55E] mt-2"
-            >
-              <FaWhatsapp className="text-lg" />
-              <span>+39 333 8401484</span>
-            </a>
-          </motion.div>
-          <motion.div variants={itemFadeIn}>
-            <p className="text-sm text-gray-400">
-              Powered by{" "}
-              <a
-                href="https://www.giorgiosforza.it"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="font-semibold text-[#4A6FA5] hover:text-[#3B5D8A] transition-colors duration-300"
-              >
-                Giorgio Sforza
-              </a>{" "}
-              © 2025
+            <h3 className="text-2xl font-bold mb-4 flex items-center justify-center md:justify-start text-sacra-accent">
+              <FaChurch className="mr-3" />
+              San Michele
+            </h3>
+            <p className="text-sm text-gray-400 leading-relaxed">
+              Il cammino storico dalla città di Avigliana all'Abbazia millenaria della Valle di Susa. Un'esperienza di fede e natura.
             </p>
           </motion.div>
+
+          {/* Colonna 2: Social */}
+          <motion.div variants={itemFadeIn} className="flex flex-col items-center md:items-start">
+            <h4 className="text-lg font-semibold mb-4 text-white uppercase tracking-wider text-sm">Resta Connesso</h4>
+            <div className="space-y-3">
+              <a href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer" className="flex items-center space-x-3 text-gray-400 hover:text-sacra-accent transition-colors duration-300">
+                <FaFacebook className="text-xl" />
+                <span>Facebook</span>
+              </a>
+              <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" className="flex items-center space-x-3 text-gray-400 hover:text-sacra-accent transition-colors duration-300">
+                <FaInstagram className="text-xl" />
+                <span>Instagram</span>
+              </a>
+            </div>
+          </motion.div>
+
+          {/* Colonna 3: Luogo & Info */}
+          <motion.div variants={itemFadeIn} className="flex flex-col items-center md:items-start">
+            <h4 className="text-lg font-semibold mb-4 text-white uppercase tracking-wider text-sm">Dove Siamo</h4>
+            <div className="flex items-start space-x-3 text-gray-400 mb-4">
+              <FaMapMarkerAlt className="text-xl shrink-0 mt-1" />
+              <span>Piazza della Stazione<br/>10051 Avigliana (TO)<br/>Valle di Susa, Piemonte</span>
+            </div>
+          </motion.div>
         </motion.div>
+
+        {/* Copyright */}
+        <div className="mt-12 text-center text-sm text-gray-500 pb-4">
+          © {new Date().getFullYear()} Pellegrinaggio Sacra di San Michele. Tutti i diritti riservati.
+        </div>
       </div>
     </motion.footer>
   );

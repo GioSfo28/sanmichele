@@ -4,22 +4,20 @@ import { motion } from "framer-motion";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
-// Importa i loghi
-import BluenergyLogo from "../assets/bluenergy.jpg";
-import VivigasLogo from "../assets/vivigas.jpg";
-import EnergiaCorrenteLogo from "../assets/energia-corrente.jpg";
-import AlperiaLogo from "../assets/alperia.png";
-import EniPlenitudeLogo from "../assets/eni-plenitude.png";
-import A2ALogo from "../assets/a2a.png";
+import CisomLogo from "../assets/CISOM.png";
+import VociDelVerboLogo from "../assets/VociVerbo.png";
+// Loghi segnaposto per chi non lo ha ancora
+const ScoutLogo = "https://via.placeholder.com/200x100?text=SCOUT+Logo";
+const ProtezioneCivileLogo = "https://via.placeholder.com/200x100?text=Prot.+Civile+Logo";
+const GruppoAlpiniLogo = "https://via.placeholder.com/200x100?text=Gruppo+Alpini+Logo";
+const DiocesiLogo = "https://via.placeholder.com/200x100?text=Diocesi+Torino+Logo";
 
-const Partners = () => {
-  // Animazione per il fade-in
+const Collaborazioni = () => {
   const fadeIn = {
     hidden: { opacity: 0, y: 20 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
   };
 
-  // Configurazione del carosello
   const settings = {
     dots: true,
     infinite: true,
@@ -30,77 +28,77 @@ const Partners = () => {
     autoplaySpeed: 3000,
     arrows: true,
     responsive: [
-      {
-        breakpoint: 1024, // tablet grande
-        settings: {
-          slidesToShow: 2,
-          slidesToScroll: 1,
-          arrows: false,
-        },
-      },
-      {
-        breakpoint: 768, // tablet e mobile
-        settings: {
-          slidesToShow: 1,
-          slidesToScroll: 1,
-          arrows: false,
-        },
-      },
+      { breakpoint: 1024, settings: { slidesToShow: 2, arrows: false } },
+      { breakpoint: 768, settings: { slidesToShow: 1, arrows: false } },
     ],
   };
 
-  // Array dei partner con loghi e nomi
-  const partners = [
-    { name: "Bluenergy", logo: BluenergyLogo },
-    { name: "Vivigas", logo: VivigasLogo },
-    { name: "Energia Corrente", logo: EnergiaCorrenteLogo },
-    { name: "Alperia", logo: AlperiaLogo },
-    { name: "Eni Plenitude", logo: EniPlenitudeLogo },
-    { name: "A2A", logo: A2ALogo },
+  const supportGroups = [
+    { name: "CISOM (Corpo Italiano di Soccorso)", logo: CisomLogo },
+    { name: "Gruppi Scout (AGESCI / FSE)", logo: ScoutLogo },
+    { name: "Voci del Verbo (Animazione Liturgica)", logo: VociDelVerboLogo },
+    { name: "Protezione Civile Locale", logo: ProtezioneCivileLogo },
+    { name: "Gruppo Alpini - Sezione Avigliana", logo: GruppoAlpiniLogo },
+    { name: "Diocesi di Torino", logo: DiocesiLogo },
   ];
 
   return (
-    <section className="w-full py-20 bg-gradient-to-b from-gray-100 to-gray-50">
-      <div className="px-4 sm:px-6 lg:px-8">
-        {/* Titolo della sezione */}
+    <section className="w-full py-20 bg-gray-100" id="Collaborazioni">
+      <div className="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
         <motion.div
           className="text-center mb-16"
           initial="hidden"
-          animate="visible"
+          whileInView="visible"
+          viewport={{ once: true }}
           variants={fadeIn}
         >
-          <h2 className="text-4xl sm:text-5xl font-extrabold text-[#3B5D8A] tracking-tight drop-shadow-md">
-            I miei partners
+          <h2 className="text-4xl sm:text-5xl font-extrabold tracking-tight text-sacra-primary">
+            Supporto e Volontariato
           </h2>
-          <p className="text-lg text-gray-700 leading-relaxed mt-4">
-            Collaboro con le migliori compagnie per offrirti soluzioni affidabili e convenienti.
+          <p className="text-lg text-gray-600 font-light leading-relaxed mt-4 max-w-2xl mx-auto">
+            Il nostro cammino è reso possibile grazie al supporto essenziale di associazioni, volontari e comunità locali.
           </p>
         </motion.div>
 
-        {/* Carosello dei loghi */}
         <motion.div
           initial="hidden"
-          animate="visible"
+          whileInView="visible"
+          viewport={{ once: true }}
           variants={fadeIn}
-          className="max-w-5xl mx-auto overflow-hidden"
+          className="max-w-5xl mx-auto"
         >
-          <Slider {...settings}>
-            {partners.map((partner, index) => (
-              <div key={index} className="flex justify-center items-center px-4">
-                <div className="bg-white p-6 rounded-xl shadow-md hover:shadow-xl transition-all duration-300 flex justify-center items-center w-full h-40">
+          <Slider {...settings} className="pb-8">
+            {supportGroups.map((group, index) => (
+              <div key={index} className="px-4 outline-none">
+                <div className="bg-white p-6 rounded-2xl shadow hover:shadow-lg transition-all duration-300 flex flex-col justify-center items-center h-56 border border-gray-100 group">
                   <img
-                    src={partner.logo}
-                    alt={`${partner.name} logo`}
-                    className="max-h-20 w-full max-w-[180px] object-contain mx-auto"
+                    src={group.logo}
+                    alt={`${group.name} logo`}
+                    className="max-h-24 w-full max-w-[180px] object-contain mb-4 transition-transform duration-300 group-hover:scale-105"
                   />
+                  <p className="text-sm font-medium text-gray-700 text-center leading-snug">
+                    {group.name}
+                  </p>
                 </div>
               </div>
             ))}
           </Slider>
+        </motion.div>
+
+        <motion.div
+          className="text-center mt-12"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          variants={fadeIn}
+        >
+          <p className="text-gray-500 leading-relaxed italic text-sm">
+            Un ringraziamento speciale a tutti i volontari che assicurano la sicurezza e l’assistenza spirituale.
+          </p>
         </motion.div>
       </div>
     </section>
   );
 };
 
-export default Partners;
+export default Collaborazioni;
