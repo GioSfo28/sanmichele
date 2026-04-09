@@ -67,14 +67,14 @@ const Footer = () => {
 
         {/* Footer Bottom: Links e Contatti */}
         <motion.div
-          className="grid grid-cols-1 md:grid-cols-3 gap-10 text-center md:text-left border-t border-gray-800 pt-10"
+          className="grid grid-cols-1 md:grid-cols-2 gap-10 text-center md:text-left border-t border-gray-800 pt-10"
           variants={fadeIn}
         >
           {/* Colonna 1: Logo/Nome */}
           <motion.div variants={itemFadeIn}>
             <h3 className="text-2xl font-bold mb-4 flex items-center justify-center md:justify-start text-sacra-accent">
               <FaChurch className="mr-3" />
-              San Michele
+              Pellegrinaggio Sacra San Michele
             </h3>
             <p className="text-sm text-gray-400 leading-relaxed">
               Il cammino storico dalla città di Avigliana all'Abbazia millenaria della Valle di Susa. Un'esperienza di fede e natura.
@@ -85,23 +85,10 @@ const Footer = () => {
           <motion.div variants={itemFadeIn} className="flex flex-col items-center md:items-start">
             <h4 className="text-lg font-semibold mb-4 text-white uppercase tracking-wider text-sm">Resta Connesso</h4>
             <div className="space-y-3">
-              <a href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer" className="flex items-center space-x-3 text-gray-400 hover:text-sacra-accent transition-colors duration-300">
-                <FaFacebook className="text-xl" />
-                <span>Facebook</span>
-              </a>
-              <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" className="flex items-center space-x-3 text-gray-400 hover:text-sacra-accent transition-colors duration-300">
+              <a href="https://www.instagram.com/pellegrinaggiosanmichele/" target="_blank" rel="noopener noreferrer" className="flex items-center space-x-3 text-gray-400 hover:text-sacra-accent transition-colors duration-300">
                 <FaInstagram className="text-xl" />
                 <span>Instagram</span>
               </a>
-            </div>
-          </motion.div>
-
-          {/* Colonna 3: Luogo & Info */}
-          <motion.div variants={itemFadeIn} className="flex flex-col items-center md:items-start">
-            <h4 className="text-lg font-semibold mb-4 text-white uppercase tracking-wider text-sm">Dove Siamo</h4>
-            <div className="flex items-start space-x-3 text-gray-400 mb-4">
-              <FaMapMarkerAlt className="text-xl shrink-0 mt-1" />
-              <span>Piazza della Stazione<br/>10051 Avigliana (TO)<br/>Valle di Susa, Piemonte</span>
             </div>
           </motion.div>
         </motion.div>

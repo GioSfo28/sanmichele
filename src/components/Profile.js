@@ -82,7 +82,7 @@ const Intento = () => {
               <motion.li className="flex items-start" variants={itemFadeIn}>
                 <FaHeart className="mr-4 mt-1 text-2xl text-sacra-primary shrink-0" />
                 <span>
-                  <strong className="text-gray-900">La storia Micaelica:</strong> approfondire il legame con l’allineamento dei sette santuari dedicati a San Michele Arcangelo.
+                  <strong className="text-gray-900">La storia Micaelica:</strong> approfondire il legame con il santuario dedicato a San Michele Arcangelo.
                 </span>
               </motion.li>
               <motion.li className="flex items-start" variants={itemFadeIn}>

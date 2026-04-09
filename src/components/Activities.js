@@ -1,9 +1,43 @@
 import React from "react";
-import { FaMapMarkerAlt, FaHiking, FaSuitcase, FaTrain, FaCalendarAlt } from "react-icons/fa";
+import { FaMapMarkerAlt, FaHiking, FaSuitcase, FaTrain, FaCalendarAlt, FaExternalLinkAlt, FaImages } from "react-icons/fa";
 import { motion } from "framer-motion";
-import { MapContainer, TileLayer, Polyline } from "react-leaflet";
+import { MapContainer, TileLayer, GeoJSON, Marker, Popup } from "react-leaflet";
+import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { scrollToElement } from "../utils/scrollUtils";
+import routeData from "../data/routeCoordinates.json";
+
+// --- IMPORT SWIPER PER LA GALLERIA ---
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Autoplay, Pagination } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/pagination";
+
+// --- CREAZIONE ICONE PERSONALIZZATE ---
+const startIcon = new L.divIcon({
+  className: "bg-transparent border-none",
+  html: `<div style="background-color: #688e26; color: white; border-radius: 50%; width: 32px; height: 32px; display: flex; justify-content: center; align-items: center; font-weight: bold; border: 3px solid white; box-shadow: 0 4px 6px rgba(0,0,0,0.3); font-size: 14px;">A</div>`,
+  iconSize: [32, 32],
+  iconAnchor: [16, 16],
+  popupAnchor: [0, -16]
+});
+
+const endIcon = new L.divIcon({
+  className: "bg-transparent border-none",
+  html: `<div style="background-color: #800020; color: white; border-radius: 50%; width: 36px; height: 36px; display: flex; justify-content: center; align-items: center; font-size: 18px; border: 3px solid white; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">🏁</div>`,
+  iconSize: [36, 36],
+  iconAnchor: [18, 18],
+  popupAnchor: [0, -18]
+});
+
+// --- FOTO SEGNAPOSTO PER LA GALLERIA (Sostituiscile con i tuoi import da ../assets/) ---
+const galleryImages = [
+  "https://images.unsplash.com/photo-1551632811-561732d1e306?q=80&w=800&auto=format&fit=crop", // Esempio escursionismo
+  "https://images.unsplash.com/photo-1501555088652-021faa106b9b?q=80&w=800&auto=format&fit=crop", // Esempio montagne
+  "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=800&auto=format&fit=crop", // Esempio natura
+  "https://images.unsplash.com/photo-1551632436-cbf8dd35adfa?q=80&w=800&auto=format&fit=crop", // Esempio cammino
+  "https://images.unsplash.com/photo-1519098901909-b1553a1190af?q=80&w=800&auto=format&fit=crop"  // Esempio gruppo
+];
 
 const Activities = () => {
   const fadeIn = {
@@ -15,11 +49,6 @@ const Activities = () => {
     hidden: { opacity: 0, y: 20 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.4 } },
   };
-
-  const pathCoordinates = [
-    [45.1106, 7.3419], // Avigliana
-    [45.0976, 7.3428], // Sacra di San Michele
-  ];
 
   return (
     <section className="w-full bg-gradient-to-b from-gray-50 to-white">
@@ -36,7 +65,7 @@ const Activities = () => {
             Il percorso del pellegrinaggio
           </h2>
           <p className="text-lg text-gray-600 font-light leading-relaxed mt-4 max-w-3xl mx-auto">
-            Un cammino di <strong className="font-semibold text-gray-900">14 km</strong> da Avigliana alla Sacra di San Michele, con <strong className="font-semibold text-gray-900">600 metri di dislivello</strong>, immersi nella natura e nella spiritualità della Valle di Susa.
+            Un cammino di <strong className="font-semibold text-gray-900">14 km</strong> da Avigliana alla Sacra di San Michele, con <strong className="font-semibold text-gray-900">620 metri di dislivello</strong>, immersi nella natura e nella spiritualità della Valle di Susa.
           </p>
         </motion.div>
 
@@ -47,20 +76,58 @@ const Activities = () => {
           viewport={{ once: true }}
           variants={fadeIn}
         >
-          <motion.div className="w-full lg:w-1/2" variants={cardFadeIn}>
-            <div className="rounded-2xl overflow-hidden shadow-xl border-4 border-white">
+          <motion.div className="w-full lg:w-1/2 flex flex-col gap-4" variants={cardFadeIn}>
+            {/* Contenitore Mappa */}
+            <div className="rounded-2xl overflow-hidden shadow-xl border-4 border-white relative z-0">
               <MapContainer
                 center={[45.1041, 7.3423]}
                 zoom={13}
                 className="h-[400px] w-full"
                 aria-label="Mappa del percorso da Avigliana alla Sacra di San Michele"
               >
-                <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-                <Polyline pathOptions={{ color: "#800020", weight: 4 }} positions={pathCoordinates} />
+                <TileLayer
+                  url="https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png"
+                  attribution='&copy; <a href="https://opentopomap.org">OpenTopoMap</a> contributors'
+                />
+
+                <GeoJSON
+                  data={routeData}
+                  style={{ color: "#800020", weight: 5, lineCap: "round" }}
+                />
+
+                {/* MARKER DI PARTENZA */}
+                <Marker position={[45.069498, 7.392144]} icon={startIcon}>
+                  <Popup>
+                    <strong className="text-[#688e26]">Partenza</strong><br />
+                    Santuario Madonna dei Laghi
+                  </Popup>
+                </Marker>
+
+                {/* MARKER DI ARRIVO */}
+                <Marker position={[45.0976, 7.3428]} icon={endIcon}>
+                  <Popup>
+                    <strong className="text-[#800020]">Arrivo</strong><br />
+                    Sacra di San Michele
+                  </Popup>
+                </Marker>
+
               </MapContainer>
+            </div>
+
+            {/* Bottone KOMOOT */}
+            <div className="flex justify-end">
+              <a
+                href="https://www.komoot.com/tour/2584007841?ref=aso&share_token=aTVPA7OgSZKhuFeq8UoBfDW3ihSHB4dIpGVL5CRVdypKTAUYMG"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-6 py-3 bg-[#9fb53a] text-white font-bold rounded-xl shadow-md hover:bg-[#8da32f] transition-colors duration-300"
+              >
+                <FaMapMarkerAlt /> Guarda su Komoot <FaExternalLinkAlt className="text-sm ml-1" />
+              </a>
             </div>
           </motion.div>
 
+          {/* Dettagli Tecnici */}
           <motion.div className="w-full lg:w-1/2" variants={cardFadeIn}>
             <h3 className="text-3xl font-bold mb-6 flex items-center text-sacra-primary border-b border-gray-200 pb-4">
               <FaMapMarkerAlt className="mr-3 text-sacra-accent" />
@@ -152,8 +219,65 @@ const Activities = () => {
           </motion.div>
         </div>
 
+        {/* --- NUOVA SEZIONE GALLERIA PREVIEW --- */}
         <motion.div
-          className="text-center mt-16"
+          className="mt-24 max-w-6xl mx-auto"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          variants={fadeIn}
+        >
+          <div className="text-center mb-10">
+            <h3 className="text-3xl font-bold flex items-center justify-center text-sacra-primary mb-4">
+              <FaImages className="mr-3 text-sacra-accent" />
+              I momenti del pellegrinaggio
+            </h3>
+            <p className="text-gray-600 text-lg">
+              Scorri per un'anteprima delle edizioni passate!
+            </p>
+          </div>
+
+          <Swiper
+            modules={[Autoplay, Pagination]}
+            spaceBetween={20}
+            loop={true}
+            autoplay={{ delay: 3000, disableOnInteraction: false }}
+            pagination={{ clickable: true }}
+            className="pb-12 px-4"
+            breakpoints={{
+              0: { slidesPerView: 1.2, spaceBetween: 15 }, // Su mobile mostra un pezzetto della foto successiva per invitare a scorrere
+              640: { slidesPerView: 2 },
+              1024: { slidesPerView: 3 }
+            }}
+          >
+            {galleryImages.map((src, index) => (
+              <SwiperSlide key={index}>
+                <div className="rounded-2xl overflow-hidden shadow-lg h-64 border border-gray-100">
+                  <img
+                    src={src}
+                    alt={`Momento del pellegrinaggio ${index + 1}`}
+                    className="w-full h-full object-cover hover:scale-110 transition-transform duration-700"
+                  />
+                </div>
+              </SwiperSlide>
+            ))}
+          </Swiper>
+
+          {/* Bottone che porta alla pagina della galleria completa */}
+          <div className="text-center mt-8">
+            <a
+              href="/galleria" /* Questo link punterà alla tua nuova pagina dedicata */
+              className="inline-block px-8 py-3 border-2 border-sacra-primary text-sacra-primary font-bold text-lg uppercase tracking-wide rounded-full shadow hover:bg-sacra-primary hover:text-white transition-all duration-300"
+            >
+              Guarda la galleria completa
+            </a>
+          </div>
+        </motion.div>
+        {/* --- FINE SEZIONE GALLERIA PREVIEW --- */}
+
+        {/* CTA Iscrizione Finale */}
+        <motion.div
+          className="text-center mt-20 pt-10 border-t border-gray-200"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
