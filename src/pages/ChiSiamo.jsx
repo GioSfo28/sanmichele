@@ -11,8 +11,6 @@ import PadreMarco from "../assets/PadreMarco.jpeg"
 import Giovanni from "../assets/Giovanni.jpeg"
 import DonLodovico from "../assets/DonLodovico.jpeg"
 
-// Sostituisci questi link con le tue immagini importate da assets!
-const placeholderImage = "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=400&auto=format&fit=crop";
 
 
 const founders = [
