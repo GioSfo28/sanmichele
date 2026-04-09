@@ -72,7 +72,7 @@ const Intento = () => {
 
           <div className="bg-gray-50 p-8 sm:p-12 rounded-2xl shadow-lg border border-gray-100">
             <motion.p className="text-gray-700 leading-relaxed text-lg" variants={itemFadeIn}>
-              Questo pellegrinaggio nasce dal desiderio di riscoprire e valorizzare un percorso antico e profondo: i <strong className="text-sacra-primary">15 chilometri</strong> che uniscono la città di Avigliana, porta della Valle di Susa, all’imponente <strong className="text-sacra-primary">Sacra di San Michele</strong>, simbolo del Piemonte e custode della fede.
+              Questo pellegrinaggio nasce dal desiderio di riscoprire e valorizzare un percorso antico e profondo: i <strong className="text-sacra-primary">14 chilometri</strong> che uniscono la città di Avigliana, porta della Valle di Susa, all’imponente <strong className="text-sacra-primary">Sacra di San Michele</strong>, simbolo del Piemonte e custode della fede.
             </motion.p>
             <motion.p className="text-gray-700 leading-relaxed mt-4 text-lg" variants={itemFadeIn}>
               Il nostro intento è creare un’occasione di <strong>comunione, riflessione e sforzo fisico</strong>, un cammino che non sia solo una passeggiata, ma un vero e proprio atto devozionale. Ci concentriamo su tre pilastri:
