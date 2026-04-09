@@ -8,7 +8,7 @@ import "swiper/css";
 import "swiper/css/pagination";
 
 import CisomLogo from "../assets/CISOM.png";
-import OperaSanMichele from "../assets/OperaSanMichele.jpeg";
+import OperaSanMichele from "../assets/OperaSanMichele.jpg";
 // Loghi segnaposto per chi non lo ha ancora, da aggiungere in futuro
 
 const Collaborazioni = () => {
