@@ -61,7 +61,7 @@ const Intento = () => {
           <div className="absolute top-0 left-0 w-2 h-full bg-sacra-primary"></div>
 
           <h3 className="text-2xl font-bold text-sacra-primary mb-5">
-            Una Via Millenaria
+            Una via millenaria
           </h3>
           <div className="space-y-5 text-gray-700 leading-relaxed text-lg font-light">
             <p>

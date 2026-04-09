@@ -13,6 +13,16 @@ import { Autoplay, Pagination } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
 
+// --- IMPORT DEI TUOI ASSETS LOCALI ---
+// Assicurati che il percorso e i nomi dei file siano esattamente questi!
+import img1 from "../assets/1.jpg";
+import img2 from "../assets/2.jpeg";
+import vid3 from "../assets/3.mp4";
+import img4 from "../assets/4.jpeg";
+import img5 from "../assets/5.jpeg";
+import img6 from "../assets/6.jpeg";
+import img7 from "../assets/7.jpeg";
+
 // --- CREAZIONE ICONE PERSONALIZZATE ---
 const startIcon = new L.divIcon({
   className: "bg-transparent border-none",
@@ -30,13 +40,15 @@ const endIcon = new L.divIcon({
   popupAnchor: [0, -18]
 });
 
-// --- FOTO SEGNAPOSTO PER LA GALLERIA (Sostituiscile con i tuoi import da ../assets/) ---
-const galleryImages = [
-  "https://images.unsplash.com/photo-1551632811-561732d1e306?q=80&w=800&auto=format&fit=crop", // Esempio escursionismo
-  "https://images.unsplash.com/photo-1501555088652-021faa106b9b?q=80&w=800&auto=format&fit=crop", // Esempio montagne
-  "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=800&auto=format&fit=crop", // Esempio natura
-  "https://images.unsplash.com/photo-1551632436-cbf8dd35adfa?q=80&w=800&auto=format&fit=crop", // Esempio cammino
-  "https://images.unsplash.com/photo-1519098901909-b1553a1190af?q=80&w=800&auto=format&fit=crop"  // Esempio gruppo
+// --- STRUTTURA DELLA GALLERIA (Misto Foto/Video) ---
+const galleryMedia = [
+  { type: "image", src: img1 },
+  { type: "image", src: img2 },
+  { type: "video", src: vid3 },
+  { type: "image", src: img4 },
+  { type: "image", src: img5 },
+  { type: "image", src: img6 },
+  { type: "image", src: img7 }
 ];
 
 const Activities = () => {
@@ -110,7 +122,6 @@ const Activities = () => {
                     Sacra di San Michele
                   </Popup>
                 </Marker>
-
               </MapContainer>
             </div>
 
@@ -219,7 +230,7 @@ const Activities = () => {
           </motion.div>
         </div>
 
-        {/* --- NUOVA SEZIONE GALLERIA PREVIEW --- */}
+        {/* --- SEZIONE GALLERIA PREVIEW --- */}
         <motion.div
           className="mt-24 max-w-6xl mx-auto"
           initial="hidden"
@@ -245,19 +256,30 @@ const Activities = () => {
             pagination={{ clickable: true }}
             className="pb-12 px-4"
             breakpoints={{
-              0: { slidesPerView: 1.2, spaceBetween: 15 }, // Su mobile mostra un pezzetto della foto successiva per invitare a scorrere
+              0: { slidesPerView: 1.2, spaceBetween: 15 },
               640: { slidesPerView: 2 },
               1024: { slidesPerView: 3 }
             }}
           >
-            {galleryImages.map((src, index) => (
+            {galleryMedia.map((media, index) => (
               <SwiperSlide key={index}>
-                <div className="rounded-2xl overflow-hidden shadow-lg h-64 border border-gray-100">
-                  <img
-                    src={src}
-                    alt={`Momento del pellegrinaggio ${index + 1}`}
-                    className="w-full h-full object-cover hover:scale-110 transition-transform duration-700"
-                  />
+                <div className="rounded-2xl overflow-hidden shadow-lg h-64 border border-gray-100 group">
+                  {media.type === "video" ? (
+                    <video
+                      src={media.src}
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                      autoPlay
+                      loop
+                      muted
+                      playsInline
+                    />
+                  ) : (
+                    <img
+                      src={media.src}
+                      alt={`Momento del pellegrinaggio ${index + 1}`}
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                    />
+                  )}
                 </div>
               </SwiperSlide>
             ))}
@@ -266,7 +288,7 @@ const Activities = () => {
           {/* Bottone che porta alla pagina della galleria completa */}
           <div className="text-center mt-8">
             <a
-              href="/galleria" /* Questo link punterà alla tua nuova pagina dedicata */
+              href="/galleria"
               className="inline-block px-8 py-3 border-2 border-sacra-primary text-sacra-primary font-bold text-lg uppercase tracking-wide rounded-full shadow hover:bg-sacra-primary hover:text-white transition-all duration-300"
             >
               Guarda la galleria completa
