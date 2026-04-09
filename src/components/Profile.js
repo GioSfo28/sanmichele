@@ -51,6 +51,32 @@ const Intento = () => {
         >
           Un’esperienza unica lungo la Via Micaelica, dalla Valle di Susa all’Abbazia millenaria. La riscoperta del cammino storico.
         </motion.p>
+
+        {/* --- NUOVO BLOCCO STORICO AGGIUNTO --- */}
+        <motion.div
+          className="mt-14 bg-white p-8 sm:p-12 rounded-2xl shadow-sm border border-gray-100 max-w-4xl mx-auto text-justify  relative overflow-hidden"
+          variants={itemFadeIn}
+        >
+          {/* Sottile linea decorativa laterale */}
+          <div className="absolute top-0 left-0 w-2 h-full bg-sacra-primary"></div>
+
+          <h3 className="text-2xl font-bold text-sacra-primary mb-5">
+            Una Via Millenaria
+          </h3>
+          <div className="space-y-5 text-gray-700 leading-relaxed text-lg font-light">
+            <p>
+              Fin dal Medioevo, la <strong className="font-semibold text-gray-900">Valle di Susa</strong> è stata un crocevia fondamentale per i pellegrini in transito lungo le vie della fede verso Roma o Santiago. Salire lungo i pendii boscosi verso la cima del Monte Pirchiriano non ha mai rappresentato solo uno sforzo fisico, ma un vero e proprio atto di purificazione e preghiera.
+            </p>
+            <p>
+              Ripercorrere oggi i sentieri che separano Avigliana dalla Sacra significa riconnettersi a questa antica energia. L'Abbazia, infatti, non è un luogo scelto a caso: si erge maestosa come punto centrale della misteriosa <strong className="font-semibold text-gray-900">Linea Micaelica</strong>, un perfetto e inspiegabile allineamento di oltre duemila chilometri che unisce sette grandi santuari dedicati all'Arcangelo Michele, dall'Irlanda fino a Gerusalemme.
+            </p>
+            <p className="italic text-gray-600 mt-4 border-t border-gray-100 pt-4">
+              Camminare verso la Sacra significa mettere i propri passi in quelli di chi, per secoli, ha cercato la luce e la protezione dell'Arcangelo guerriero.
+            </p>
+          </div>
+        </motion.div>
+        {/* --- FINE BLOCCO STORICO --- */}
+
       </motion.div>
 
       {/* Sezione Intento */}
