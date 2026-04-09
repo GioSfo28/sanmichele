@@ -1,6 +1,6 @@
 import React from "react";
-// Aggiunta l'icona FaUtensils per il pranzo e FaChurch per la messa
-import { FaMapMarkerAlt, FaHiking, FaSuitcase, FaTrain, FaCalendarAlt, FaExternalLinkAlt, FaImages, FaUtensils, FaChurch } from "react-icons/fa";
+// Aggiunta l'icona FaHeartbeat per la preparazione fisica, FaUtensils per il pranzo e FaChurch per la messa
+import { FaMapMarkerAlt, FaHiking, FaSuitcase, FaTrain, FaCalendarAlt, FaExternalLinkAlt, FaImages, FaUtensils, FaChurch, FaHeartbeat } from "react-icons/fa";
 import { motion } from "framer-motion";
 import { MapContainer, TileLayer, GeoJSON, Marker, Popup } from "react-leaflet";
 import L from "leaflet";
@@ -139,7 +139,7 @@ const Activities = () => {
             </div>
           </motion.div>
 
-          {/* Dettagli Tecnici (AGGIORNATI) */}
+          {/* Dettagli Tecnici */}
           <motion.div className="w-full lg:w-1/2" variants={cardFadeIn}>
             <h3 className="text-3xl font-bold mb-6 flex items-center text-sacra-primary border-b border-gray-200 pb-4">
               <FaMapMarkerAlt className="mr-3 text-sacra-accent" />
@@ -189,31 +189,57 @@ const Activities = () => {
           </h2>
         </motion.div>
 
-        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
-          <motion.div
-            className="bg-white p-8 rounded-2xl shadow-md border border-gray-100 hover:shadow-xl transition-shadow duration-300"
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={cardFadeIn}
-          >
-            <div className="flex items-center mb-6">
-              <div className="p-3 bg-sacra-primary/10 rounded-lg mr-4">
-                <FaSuitcase className="text-2xl text-sacra-primary" />
+        <div className="max-w-6xl mx-auto">
+          {/* Griglia a 2 colonne per Zaino e Trasporti */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <motion.div
+              className="bg-white p-8 rounded-2xl shadow-md border border-gray-100 hover:shadow-xl transition-shadow duration-300"
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              variants={cardFadeIn}
+            >
+              <div className="flex items-center mb-6">
+                <div className="p-3 bg-sacra-primary/10 rounded-lg mr-4">
+                  <FaSuitcase className="text-2xl text-sacra-primary" />
+                </div>
+                <h3 className="text-2xl font-bold text-sacra-primary">Cosa portare</h3>
               </div>
-              <h3 className="text-2xl font-bold text-sacra-primary">Cosa Portare</h3>
-            </div>
-            <ul className="space-y-3 text-gray-700 text-lg">
-              {["Scarpe da trekking comode e robuste", "Pranzo al sacco e borraccia (minimo 1 litro)", "Snack energetici (frutta secca, barrette)", "Giacca impermeabile o poncho", "Cappello o bandana per il sole", "Zaino leggero (15-20 litri)", "Rosario o oggetti devozionali (opzionale)"].map((item, i) => (
-                <li key={i} className="flex items-start">
-                  <span className="mr-3 text-sacra-accent text-xl font-bold">•</span> {item}
-                </li>
-              ))}
-            </ul>
-          </motion.div>
+              <ul className="space-y-3 text-gray-700 text-lg">
+                {["Scarpe da trekking comode e robuste", "Pranzo al sacco e borraccia (minimo 1 litro)", "Snack energetici (frutta secca, barrette)", "Giacca impermeabile o poncho", "Cappello o bandana per il sole", "Zaino leggero (15-20 litri)", "Rosario o oggetti devozionali (opzionale)"].map((item, i) => (
+                  <li key={i} className="flex items-start">
+                    <span className="mr-3 text-sacra-accent text-xl font-bold">•</span> {item}
+                  </li>
+                ))}
+              </ul>
+            </motion.div>
 
+            <motion.div
+              className="bg-white p-8 rounded-2xl shadow-md border border-gray-100 hover:shadow-xl transition-shadow duration-300"
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              variants={cardFadeIn}
+            >
+              <div className="flex items-center mb-6">
+                <div className="p-3 bg-sacra-primary/10 rounded-lg mr-4">
+                  <FaTrain className="text-2xl text-sacra-primary" />
+                </div>
+                <h3 className="text-2xl font-bold text-sacra-primary">Come arrivare</h3>
+              </div>
+              <div className="space-y-4 text-gray-700 text-lg leading-relaxed">
+                <p><strong className="text-gray-900">Treno:</strong> da Torino Porta Nuova ad Avigliana (30 minuti). Ritrovo: Stazione di Avigliana, ore 8:00.</p>
+                <p><strong className="text-gray-900">Auto:</strong> parcheggio disponibile presso il centro di Avigliana.</p>
+                <div className="bg-yellow-50 border-l-4 border-sacra-accent p-4 mt-4 text-sm text-gray-800 rounded-lg">
+                  <strong>Consiglio:</strong> Arriva con anticipo per il check-in e la distribuzione delle mappe del percorso.
+                </div>
+              </div>
+            </motion.div>
+          </div>
+
+          {/* NUOVO BLOCCO: Preparazione Fisica (A tutta larghezza) */}
           <motion.div
-            className="bg-white p-8 rounded-2xl shadow-md border border-gray-100 hover:shadow-xl transition-shadow duration-300"
+            className="bg-white p-8 rounded-2xl shadow-md border border-gray-100 hover:shadow-xl transition-shadow duration-300 mt-8"
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
@@ -221,16 +247,31 @@ const Activities = () => {
           >
             <div className="flex items-center mb-6">
               <div className="p-3 bg-sacra-primary/10 rounded-lg mr-4">
-                <FaTrain className="text-2xl text-sacra-primary" />
+                <FaHeartbeat className="text-2xl text-sacra-primary" />
               </div>
-              <h3 className="text-2xl font-bold text-sacra-primary">Come Arrivare</h3>
+              <h3 className="text-2xl font-bold text-sacra-primary">Preparazione fisica</h3>
             </div>
-            <div className="space-y-4 text-gray-700 text-lg leading-relaxed">
-              <p><strong className="text-gray-900">Treno:</strong> da Torino Porta Nuova ad Avigliana (30 minuti). Ritrovo: Stazione di Avigliana, ore 8:00.</p>
-              <p><strong className="text-gray-900">Auto:</strong> parcheggio disponibile presso il centro di Avigliana.</p>
-              <div className="bg-yellow-50 border-l-4 border-sacra-accent p-4 mt-4 text-sm text-gray-800">
-                <strong>Consiglio:</strong> Arriva con anticipo per il check-in e la distribuzione delle mappe del percorso.
-              </div>
+            
+            <p className="text-gray-700 text-lg leading-relaxed mb-6">
+              Il cammino è aperto a tutti, ma <strong className="text-gray-900">14 km e oltre 600 metri di dislivello richiedono un po' di allenamento base</strong> per chi non fa attività sportiva. Arrivare preparati vi farà godere appieno l'esperienza spirituale senza soffrire troppo la fatica!
+            </p>
+            
+            <div className="bg-gray-50 p-6 rounded-xl border border-gray-200">
+              <h4 className="font-bold text-gray-900 mb-4 text-lg">Nelle 2 settimane precedenti ti consigliamo di:</h4>
+              <ul className="space-y-4 text-gray-700 text-lg">
+                <li className="flex items-start">
+                  <span className="mr-3 text-sacra-secondary text-xl font-bold">1.</span> 
+                  <span><strong>Fare 4 uscite a passo svelto:</strong> non serve correre, bastano un paio di camminate a settimana da circa 5-6 km per abituare le gambe.</span>
+                </li>
+                <li className="flex items-start">
+                  <span className="mr-3 text-sacra-secondary text-xl font-bold">2.</span> 
+                  <span><strong>Cercare un po' di salita:</strong> durante le tue camminate, fai qualche rampa di scale o un percorso in leggera pendenza per simulare il dislivello della montagna.</span>
+                </li>
+                <li className="flex items-start">
+                  <span className="mr-3 text-sacra-secondary text-xl font-bold">3.</span> 
+                  <span><strong>Usare le scarpe del pellegrinaggio:</strong> sfrutta queste uscite di prova per "rodare" le scarpe da trekking ed evitare la comparsa di fastidiose vesciche il giorno del cammino.</span>
+                </li>
+              </ul>
             </div>
           </motion.div>
         </div>
