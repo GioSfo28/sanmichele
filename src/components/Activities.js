@@ -143,8 +143,8 @@ const Activities = () => {
               <h3 className="text-2xl font-bold text-sacra-primary">Come Arrivare</h3>
             </div>
             <div className="space-y-4 text-gray-700 text-lg leading-relaxed">
-              <p><strong className="text-gray-900">Treno:</strong> Da Torino Porta Nuova ad Avigliana (30 minuti). Ritrovo: Stazione di Avigliana, ore 8:00.</p>
-              <p><strong className="text-gray-900">Auto:</strong> Parcheggio disponibile presso il centro di Avigliana.</p>
+              <p><strong className="text-gray-900">Treno:</strong> da Torino Porta Nuova ad Avigliana (30 minuti). Ritrovo: Stazione di Avigliana, ore 8:00.</p>
+              <p><strong className="text-gray-900">Auto:</strong> parcheggio disponibile presso il centro di Avigliana.</p>
               <div className="bg-yellow-50 border-l-4 border-sacra-accent p-4 mt-4 text-sm text-gray-800">
                 <strong>Consiglio:</strong> Arriva con anticipo per il check-in e la distribuzione delle mappe del percorso.
               </div>
