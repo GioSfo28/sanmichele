@@ -67,7 +67,7 @@ const Intento = () => {
             variants={itemFadeIn}
           >
             <FaChurch className="mr-4 text-3xl text-sacra-accent drop-shadow-sm" />
-            Il Nostro Intento
+            Il nostro intento
           </motion.h2>
 
           <div className="bg-gray-50 p-8 sm:p-12 rounded-2xl shadow-lg border border-gray-100">

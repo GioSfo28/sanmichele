@@ -33,7 +33,7 @@ const Hero = () => {
           className="text-5xl sm:text-6xl md:text-7xl font-extrabold tracking-tight drop-shadow-lg leading-tight text-sacra-accent"
           variants={fadeIn}
         >
-          Sulle Orme dell'Arcangelo
+          Sulle orme dell'Arcangelo
         </motion.h1>
 
         <motion.p
