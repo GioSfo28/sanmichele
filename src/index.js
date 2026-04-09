@@ -7,6 +7,7 @@ import App from "./App";
 import Galleria from "./pages/Galleria"; 
 
 import "./index.css"; // Importa TailwindCSS
+import ChiSiamo from "./pages/ChiSiamo";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
@@ -17,6 +18,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         
         {/* La nuova pagina dedicata alla Galleria */}
         <Route path="/Galleria" element={<Galleria />} />
+        <Route path="/Chi-siamo" element={<ChiSiamo />} />
       </Routes>
     </Router>
   </React.StrictMode>

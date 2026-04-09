@@ -143,7 +143,7 @@ const Activities = () => {
           <motion.div className="w-full lg:w-1/2" variants={cardFadeIn}>
             <h3 className="text-3xl font-bold mb-6 flex items-center text-sacra-primary border-b border-gray-200 pb-4">
               <FaMapMarkerAlt className="mr-3 text-sacra-accent" />
-              Dettagli Tecnici
+              Dettagli tecnici
             </h3>
             <ul className="space-y-4 text-gray-700 text-lg">
               <li className="flex items-center">
@@ -185,7 +185,7 @@ const Activities = () => {
           variants={fadeIn}
         >
           <h2 className="text-4xl sm:text-5xl font-extrabold tracking-tight text-sacra-primary">
-            Logistica e Preparazione
+            Logistica e preparazione
           </h2>
         </motion.div>
 
