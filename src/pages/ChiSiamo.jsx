@@ -37,8 +37,8 @@ const founders = [
 ];
 
 const spiritualFathers = [
-    { name: "Don Marco", role: "Padre Spirituale", img: placeholderImage },
-    { name: "Don Alessandro", role: "Padre Spirituale", img: placeholderImage },
+    { name: "Padre Marco Moioli", role: "Padre Spirituale", img: placeholderImage },
+    { name: "Don Lodovico De Bernardi", role: "Padre Spirituale", img: placeholderImage },
 ];
 
 const ChiSiamo = () => {
