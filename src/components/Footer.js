@@ -95,7 +95,7 @@ const Footer = () => {
 
         {/* Copyright */}
         <div className="mt-12 text-center text-sm text-gray-500 pb-4">
-          © {new Date().getFullYear()} Pellegrinaggio Sacra di San Michele. Tutti i diritti riservati.
+          © 2025 - {new Date().getFullYear()} Pellegrinaggio Sacra di San Michele. Tutti i diritti riservati.
         </div>
       </div>
     </motion.footer>

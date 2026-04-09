@@ -1,11 +1,13 @@
 import React from "react";
-import { FaMapMarkerAlt, FaHiking, FaSuitcase, FaTrain, FaCalendarAlt, FaExternalLinkAlt, FaImages } from "react-icons/fa";
+// Aggiunta l'icona FaUtensils per il pranzo e FaChurch per la messa
+import { FaMapMarkerAlt, FaHiking, FaSuitcase, FaTrain, FaCalendarAlt, FaExternalLinkAlt, FaImages, FaUtensils, FaChurch } from "react-icons/fa";
 import { motion } from "framer-motion";
 import { MapContainer, TileLayer, GeoJSON, Marker, Popup } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { scrollToElement } from "../utils/scrollUtils";
 import routeData from "../data/routeCoordinates.json";
+import { Link } from "react-router-dom"; // <-- Importato Link per la navigazione fluida
 
 // --- IMPORT SWIPER PER LA GALLERIA ---
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -14,7 +16,6 @@ import "swiper/css";
 import "swiper/css/pagination";
 
 // --- IMPORT DEI TUOI ASSETS LOCALI ---
-// Assicurati che il percorso e i nomi dei file siano esattamente questi!
 import img1 from "../assets/1.jpg";
 import img2 from "../assets/2.jpeg";
 import vid3 from "../assets/3.mp4";
@@ -138,13 +139,13 @@ const Activities = () => {
             </div>
           </motion.div>
 
-          {/* Dettagli Tecnici */}
+          {/* Dettagli Tecnici (AGGIORNATI) */}
           <motion.div className="w-full lg:w-1/2" variants={cardFadeIn}>
             <h3 className="text-3xl font-bold mb-6 flex items-center text-sacra-primary border-b border-gray-200 pb-4">
               <FaMapMarkerAlt className="mr-3 text-sacra-accent" />
               Dettagli Tecnici
             </h3>
-            <ul className="space-y-5 text-gray-700 text-lg">
+            <ul className="space-y-4 text-gray-700 text-lg">
               <li className="flex items-center">
                 <FaHiking className="mr-4 text-2xl text-sacra-secondary shrink-0" />
                 <span><strong className="text-gray-900">Distanza:</strong> 14 km (solo andata)</span>
@@ -155,15 +156,19 @@ const Activities = () => {
               </li>
               <li className="flex items-center">
                 <FaCalendarAlt className="mr-4 text-2xl text-sacra-secondary shrink-0" />
-                <span><strong className="text-gray-900">Durata:</strong> Circa 4-5 ore</span>
+                <span><strong className="text-gray-900">Durata:</strong> 4-5 ore di camminata (in base al passo)</span>
               </li>
               <li className="flex items-start">
+                <FaUtensils className="mr-4 mt-1 text-2xl text-sacra-secondary shrink-0" />
+                <span><strong className="text-gray-900">Pausa:</strong> Prevista pausa con pranzo al sacco.</span>
+              </li>
+              <li className="flex items-start border-t border-gray-100 pt-4 mt-2">
                 <FaMapMarkerAlt className="mr-4 mt-1 text-2xl text-sacra-secondary shrink-0" />
                 <span><strong className="text-gray-900">Partenza:</strong> Santuario Madonna dei Laghi</span>
               </li>
               <li className="flex items-start">
-                <FaMapMarkerAlt className="mr-4 mt-1 text-2xl text-sacra-secondary shrink-0" />
-                <span><strong className="text-gray-900">Arrivo:</strong> Sacra di San Michele</span>
+                <FaChurch className="mr-4 mt-1 text-2xl text-sacra-secondary shrink-0" />
+                <span><strong className="text-gray-900">Arrivo:</strong> Sacra di San Michele. Previsto per la S. Messa delle ore 16:00/17:00.</span>
               </li>
             </ul>
           </motion.div>
@@ -199,7 +204,7 @@ const Activities = () => {
               <h3 className="text-2xl font-bold text-sacra-primary">Cosa Portare</h3>
             </div>
             <ul className="space-y-3 text-gray-700 text-lg">
-              {["Scarpe da trekking comode e robuste", "Borraccia d’acqua (minimo 1 litro)", "Snack energetici (frutta secca, barrette)", "Giacca impermeabile o poncho", "Cappello o bandana per il sole", "Zaino leggero (15-20 litri)", "Rosario o oggetti devozionali (opzionale)"].map((item, i) => (
+              {["Scarpe da trekking comode e robuste", "Pranzo al sacco e borraccia (minimo 1 litro)", "Snack energetici (frutta secca, barrette)", "Giacca impermeabile o poncho", "Cappello o bandana per il sole", "Zaino leggero (15-20 litri)", "Rosario o oggetti devozionali (opzionale)"].map((item, i) => (
                 <li key={i} className="flex items-start">
                   <span className="mr-3 text-sacra-accent text-xl font-bold">•</span> {item}
                 </li>
@@ -263,7 +268,7 @@ const Activities = () => {
           >
             {galleryMedia.map((media, index) => (
               <SwiperSlide key={index}>
-                <div className="rounded-2xl overflow-hidden shadow-lg h-64 border border-gray-100 group">
+                <div className="rounded-2xl overflow-hidden shadow-lg h-64 border border-gray-100 group bg-black">
                   {media.type === "video" ? (
                     <video
                       src={media.src}
@@ -285,14 +290,14 @@ const Activities = () => {
             ))}
           </Swiper>
 
-          {/* Bottone che porta alla pagina della galleria completa */}
+          {/* Bottone corretto con Link di React Router */}
           <div className="text-center mt-8">
-            <a
-              href="/galleria"
+            <Link
+              to="/galleria"
               className="inline-block px-8 py-3 border-2 border-sacra-primary text-sacra-primary font-bold text-lg uppercase tracking-wide rounded-full shadow hover:bg-sacra-primary hover:text-white transition-all duration-300"
             >
               Guarda la galleria completa
-            </a>
+            </Link>
           </div>
         </motion.div>
         {/* --- FINE SEZIONE GALLERIA PREVIEW --- */}
