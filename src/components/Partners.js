@@ -7,10 +7,7 @@ import "slick-carousel/slick/slick-theme.css";
 import CisomLogo from "../assets/CISOM.png";
 import VociDelVerboLogo from "../assets/VociVerbo.png";
 // Loghi segnaposto per chi non lo ha ancora
-const ScoutLogo = "https://via.placeholder.com/200x100?text=SCOUT+Logo";
-const ProtezioneCivileLogo = "https://via.placeholder.com/200x100?text=Prot.+Civile+Logo";
-const GruppoAlpiniLogo = "https://via.placeholder.com/200x100?text=Gruppo+Alpini+Logo";
-const DiocesiLogo = "https://via.placeholder.com/200x100?text=Diocesi+Torino+Logo";
+
 
 const Collaborazioni = () => {
   const fadeIn = {
@@ -35,11 +32,7 @@ const Collaborazioni = () => {
 
   const supportGroups = [
     { name: "CISOM (Corpo Italiano di Soccorso)", logo: CisomLogo },
-    { name: "Gruppi Scout (AGESCI / FSE)", logo: ScoutLogo },
     { name: "Voci del Verbo (Animazione Liturgica)", logo: VociDelVerboLogo },
-    { name: "Protezione Civile Locale", logo: ProtezioneCivileLogo },
-    { name: "Gruppo Alpini - Sezione Avigliana", logo: GruppoAlpiniLogo },
-    { name: "Diocesi di Torino", logo: DiocesiLogo },
   ];
 
   return (
