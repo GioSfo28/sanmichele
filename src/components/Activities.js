@@ -1,5 +1,5 @@
 import React from "react";
-import { FaMapMarkerAlt, FaHiking, FaSuitcase, FaTrain, FaCalendarAlt, FaExternalLinkAlt, FaImages, FaUtensils, FaChurch, FaHeartbeat, FaBus, FaFilePdf } from "react-icons/fa";
+import { FaMapMarkerAlt, FaHiking, FaSuitcase, FaTrain, FaCalendarAlt, FaExternalLinkAlt, FaImages, FaUtensils, FaChurch, FaHeartbeat, FaFilePdf } from "react-icons/fa";
 import { motion } from "framer-motion";
 import { MapContainer, TileLayer, GeoJSON, Marker, Popup } from "react-leaflet";
 import L from "leaflet";
