@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { FaBars, FaTimes } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
 import { scrollToElement } from "../utils/scrollUtils"; // Utility esterna
+import { Link } from "react-router-dom"; // <-- IMPORTANTE: Importiamo Link dal router
 
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -54,6 +55,16 @@ const Header = () => {
               <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-sacra-primary transition-all duration-300 group-hover:w-full"></span>
             </a>
           ))}
+          
+          {/* --- NUOVO LINK ALLA GALLERIA (DESKTOP) --- */}
+          <Link
+            to="/galleria"
+            className="text-gray-700 hover:text-sacra-primary text-lg font-medium transition-colors duration-300 relative group"
+          >
+            Galleria
+            <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-sacra-primary transition-all duration-300 group-hover:w-full"></span>
+          </Link>
+
           <a
             href="#Iscrizione"
             onClick={(e) => handleNavClick(e, "Iscrizione")}
@@ -92,6 +103,16 @@ const Header = () => {
                 {item.name}
               </a>
             ))}
+
+            {/* --- NUOVO LINK ALLA GALLERIA (MOBILE) --- */}
+            <Link
+              to="/galleria"
+              onClick={() => setMenuOpen(false)} // Chiude il menu dopo il click
+              className="text-gray-900 text-2xl font-medium hover:text-sacra-primary transition-colors duration-300"
+            >
+              Galleria
+            </Link>
+
             <a
               href="#Iscrizione"
               onClick={(e) => handleNavClick(e, "Iscrizione")}
