@@ -1,5 +1,5 @@
 import React from "react";
-import { FaEnvelope, FaFacebook, FaInstagram, FaMapMarkerAlt, FaChurch } from "react-icons/fa";
+import { FaEnvelope, FaInstagram, FaChurch } from "react-icons/fa";
 import { motion } from "framer-motion";
 import { scrollToElement } from "../utils/scrollUtils";
 
