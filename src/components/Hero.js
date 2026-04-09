@@ -40,7 +40,7 @@ const Hero = () => {
           className="mt-6 text-xl sm:text-2xl text-gray-200 font-light leading-relaxed"
           variants={fadeIn}
         >
-          Il tuo pellegrinaggio da Avigliana alla maestosa <strong className="font-semibold text-white">Sacra di San Michele</strong>.
+          Il pellegrinaggio dei giovani da Avigliana alla maestosa <strong className="font-semibold text-white">Sacra di San Michele</strong>.
         </motion.p>
 
         <motion.div variants={fadeIn} className="mt-8 flex flex-col items-center gap-2">

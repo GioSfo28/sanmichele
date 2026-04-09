@@ -8,7 +8,7 @@ import "swiper/css";
 import "swiper/css/pagination";
 
 import CisomLogo from "../assets/CISOM.png";
-import VociDelVerboLogo from "../assets/VociVerbo.png";
+import OperaSanMichele from "../assets/OperaSanMichele.jpeg";
 // Loghi segnaposto per chi non lo ha ancora, da aggiungere in futuro
 
 const Collaborazioni = () => {
@@ -19,7 +19,7 @@ const Collaborazioni = () => {
 
   const supportGroups = [
     { name: "CISOM (Corpo Italiano di Soccorso)", logo: CisomLogo },
-    { name: "Voci del Verbo", logo: VociDelVerboLogo },
+    { name: "Opera San Michele - Torino", logo: OperaSanMichele },
   ];
 
   return (

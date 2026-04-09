@@ -42,7 +42,7 @@ const Footer = () => {
           
           <div className="flex flex-col sm:flex-row justify-center gap-4">
             <motion.a
-              href="mailto:info@pellegrinaggiosacra.it?subject=Informazioni Pellegrinaggio"
+              href="mailto:pellegrinaggiodisanmichele@gmail.com?subject=Informazioni Pellegrinaggio"
               className="inline-flex justify-center items-center px-8 py-3 bg-transparent border-2 border-white text-white font-bold text-base uppercase tracking-wide rounded-full hover:bg-white hover:text-gray-900 transition-all duration-300"
               whileHover={{ scale: 1.02 }}
               variants={itemFadeIn}

@@ -1,13 +1,12 @@
 import React from "react";
-// Aggiunta l'icona FaHeartbeat per la preparazione fisica, FaUtensils per il pranzo e FaChurch per la messa
-import { FaMapMarkerAlt, FaHiking, FaSuitcase, FaTrain, FaCalendarAlt, FaExternalLinkAlt, FaImages, FaUtensils, FaChurch, FaHeartbeat } from "react-icons/fa";
+import { FaMapMarkerAlt, FaHiking, FaSuitcase, FaTrain, FaCalendarAlt, FaExternalLinkAlt, FaImages, FaUtensils, FaChurch, FaHeartbeat, FaBus, FaFilePdf } from "react-icons/fa";
 import { motion } from "framer-motion";
 import { MapContainer, TileLayer, GeoJSON, Marker, Popup } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { scrollToElement } from "../utils/scrollUtils";
 import routeData from "../data/routeCoordinates.json";
-import { Link } from "react-router-dom"; // <-- Importato Link per la navigazione fluida
+import { Link } from "react-router-dom";
 
 // --- IMPORT SWIPER PER LA GALLERIA ---
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -23,6 +22,9 @@ import img4 from "../assets/4.jpeg";
 import img5 from "../assets/5.jpeg";
 import img6 from "../assets/6.jpeg";
 import img7 from "../assets/7.jpeg";
+
+// --- IMPORT PDF AUTOBUS ---
+import autobusPdf from "../assets/Autobus.pdf";
 
 // --- CREAZIONE ICONE PERSONALIZZATE ---
 const startIcon = new L.divIcon({
@@ -41,7 +43,7 @@ const endIcon = new L.divIcon({
   popupAnchor: [0, -18]
 });
 
-// --- STRUTTURA DELLA GALLERIA (Misto Foto/Video) ---
+// --- STRUTTURA DELLA GALLERIA ---
 const galleryMedia = [
   { type: "image", src: img1 },
   { type: "image", src: img2 },
@@ -102,21 +104,16 @@ const Activities = () => {
                   url="https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png"
                   attribution='&copy; <a href="https://opentopomap.org">OpenTopoMap</a> contributors'
                 />
-
                 <GeoJSON
                   data={routeData}
                   style={{ color: "#800020", weight: 5, lineCap: "round" }}
                 />
-
-                {/* MARKER DI PARTENZA */}
                 <Marker position={[45.069498, 7.392144]} icon={startIcon}>
                   <Popup>
                     <strong className="text-[#688e26]">Partenza</strong><br />
                     Santuario Madonna dei Laghi
                   </Popup>
                 </Marker>
-
-                {/* MARKER DI ARRIVO */}
                 <Marker position={[45.0976, 7.3428]} icon={endIcon}>
                   <Popup>
                     <strong className="text-[#800020]">Arrivo</strong><br />
@@ -164,7 +161,7 @@ const Activities = () => {
               </li>
               <li className="flex items-start border-t border-gray-100 pt-4 mt-2">
                 <FaMapMarkerAlt className="mr-4 mt-1 text-2xl text-sacra-secondary shrink-0" />
-                <span><strong className="text-gray-900">Partenza:</strong> Santuario Madonna dei Laghi</span>
+                <span><strong className="text-gray-900">Partenza:</strong> Santuario Madonna dei Laghi ore 10:00</span>
               </li>
               <li className="flex items-start">
                 <FaChurch className="mr-4 mt-1 text-2xl text-sacra-secondary shrink-0" />
@@ -190,8 +187,8 @@ const Activities = () => {
         </motion.div>
 
         <div className="max-w-6xl mx-auto">
-          {/* Griglia a 2 colonne per Zaino e Trasporti */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {/* Box Cosa Portare */}
             <motion.div
               className="bg-white p-8 rounded-2xl shadow-md border border-gray-100 hover:shadow-xl transition-shadow duration-300"
               initial="hidden"
@@ -214,6 +211,7 @@ const Activities = () => {
               </ul>
             </motion.div>
 
+            {/* Box Come Arrivare */}
             <motion.div
               className="bg-white p-8 rounded-2xl shadow-md border border-gray-100 hover:shadow-xl transition-shadow duration-300"
               initial="hidden"
@@ -228,16 +226,34 @@ const Activities = () => {
                 <h3 className="text-2xl font-bold text-sacra-primary">Come arrivare</h3>
               </div>
               <div className="space-y-4 text-gray-700 text-lg leading-relaxed">
-                <p><strong className="text-gray-900">Treno:</strong> da Torino Porta Nuova ad Avigliana (30 minuti). Ritrovo: Stazione di Avigliana, ore 8:00.</p>
-                <p><strong className="text-gray-900">Auto:</strong> parcheggio disponibile presso il centro di Avigliana.</p>
+                <p>
+                  <strong className="text-gray-900">Treno:</strong> da Torino Porta Nuova ad Avigliana (30 minuti).
+                  <br /> Ritrovo: Santuario Madonna dei Laghi ore 10:00
+                </p>
+                <p>
+                  <strong className="text-gray-900">Autobus per il Santuario:</strong> se arrivi in treno, dalla stazione di Avigliana è possibile prendere il pullman alle ore 9:00 che porta direttamente al Santuario di partenza.
+                </p>
+                
+                {/* BOTTONE PDF AUTOBUS */}
+                <a 
+                  href={autobusPdf} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 mt-2 px-5 py-2 bg-gray-100 text-[#800020] font-semibold rounded-lg hover:bg-gray-200 transition-colors border border-gray-200 text-sm"
+                >
+                  <FaFilePdf className="text-red-600" />
+                  Scarica Orari Autobus (PDF)
+                </a>
+
+                <p className="mt-4"><strong className="text-gray-900">Auto:</strong> parcheggio disponibile presso il Santuario.</p>
                 <div className="bg-yellow-50 border-l-4 border-sacra-accent p-4 mt-4 text-sm text-gray-800 rounded-lg">
-                  <strong>Consiglio:</strong> Arriva con anticipo per il check-in e la distribuzione delle mappe del percorso.
+                  <strong>Consiglio:</strong> arriva con anticipo per il check-in e la distribuzione delle mappe del percorso.
                 </div>
               </div>
             </motion.div>
           </div>
 
-          {/* NUOVO BLOCCO: Preparazione Fisica (A tutta larghezza) */}
+          {/* BLOCCO Preparazione Fisica */}
           <motion.div
             className="bg-white p-8 rounded-2xl shadow-md border border-gray-100 hover:shadow-xl transition-shadow duration-300 mt-8"
             initial="hidden"
@@ -331,7 +347,6 @@ const Activities = () => {
             ))}
           </Swiper>
 
-          {/* Bottone corretto con Link di React Router */}
           <div className="text-center mt-8">
             <Link
               to="/galleria"
@@ -341,7 +356,6 @@ const Activities = () => {
             </Link>
           </div>
         </motion.div>
-        {/* --- FINE SEZIONE GALLERIA PREVIEW --- */}
 
         {/* CTA Iscrizione Finale */}
         <motion.div

@@ -68,7 +68,7 @@ const Intento = () => {
               Fin dal Medioevo, la <strong className="font-semibold text-gray-900">Valle di Susa</strong> è stata un crocevia fondamentale per i pellegrini in transito lungo le vie della fede verso Roma o Santiago. Salire lungo i pendii boscosi verso la cima del Monte Pirchiriano non ha mai rappresentato solo uno sforzo fisico, ma un vero e proprio atto di purificazione e preghiera.
             </p>
             <p>
-              Ripercorrere oggi i sentieri che separano Avigliana dalla Sacra significa riconnettersi a questa antica energia. L'Abbazia, infatti, non è un luogo scelto a caso: si erge maestosa come punto centrale della misteriosa <strong className="font-semibold text-gray-900">Linea Micaelica</strong>, un perfetto e inspiegabile allineamento di oltre duemila chilometri che unisce sette grandi santuari dedicati all'Arcangelo Michele, dall'Irlanda fino a Gerusalemme.
+              Ripercorrere oggi i sentieri che separano Avigliana dalla Sacra significa riconnettersi a questa antica tradizione. L'Abbazia non è un luogo scelto a caso: si erge maestosa come punto centrale della misteriosa <strong className="font-semibold text-gray-900">Linea Micaelica</strong>, un perfetto e inspiegabile allineamento di oltre duemila chilometri che unisce sette grandi santuari dedicati all'Arcangelo Michele, dall'Irlanda fino a Gerusalemme.
             </p>
             <p className="italic text-gray-600 mt-4 border-t border-gray-100 pt-4">
               Camminare verso la Sacra significa mettere i propri passi in quelli di chi, per secoli, ha cercato la luce e la protezione dell'Arcangelo guerriero.

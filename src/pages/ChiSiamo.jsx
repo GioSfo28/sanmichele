@@ -5,27 +5,32 @@ import { FaArrowLeft, FaCross } from "react-icons/fa";
 import { motion } from "framer-motion";
 import Footer from "../components/Footer"; // Aggiusta il percorso se necessario
 import Gio from "../assets/Gio.jpg";
+import Ferdinando from "../assets/Ferdinando.jpeg"
+import Simone from "../assets/Simone.jpeg"
+import PadreMarco from "../assets/PadreMarco.jpeg"
+import Giovanni from "../assets/Giovanni.jpeg"
+
 // Sostituisci questi link con le tue immagini importate da assets!
 const placeholderImage = "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=400&auto=format&fit=crop";
 
 
 const founders = [
     {
-        name: "Simone Morano",
+        name: "Simone Morano Gabbiani",
         role: "Ideatore",
-        img: placeholderImage,
+        img: Simone,
         desc: "Ideatore del pellegrinaggio. Ha dato vita a questo progetto, coinvolgendo fin da subito i fratelli Giovanni e Ferdinando nell'organizzazione."
     },
     {
         name: "Giovanni di Gropello",
         role: "Organizzatore",
-        img: placeholderImage,
+        img: Giovanni,
         desc: "Coinvolto nell'organizzazione dall'ideatore, si occupa in prima linea della logistica e della gestione pratica del cammino."
     },
     {
         name: "Ferdinando di Gropello",
         role: "Organizzatore",
-        img: placeholderImage,
+        img: Ferdinando,
         desc: "Insieme al fratello Giovanni, cura i dettagli organizzativi, il coordinamento dei partecipanti e la sicurezza dell'evento."
     },
     {
@@ -37,7 +42,7 @@ const founders = [
 ];
 
 const spiritualFathers = [
-    { name: "Padre Marco Moioli", role: "Padre Spirituale", img: placeholderImage },
+    { name: "Padre Marco Moioli", role: "Padre Spirituale", img: PadreMarco },
     { name: "Don Lodovico De Bernardi", role: "Padre Spirituale", img: placeholderImage },
 ];
 
