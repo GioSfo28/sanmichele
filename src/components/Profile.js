@@ -82,19 +82,19 @@ const Intento = () => {
               <motion.li className="flex items-start" variants={itemFadeIn}>
                 <FaHeart className="mr-4 mt-1 text-2xl text-sacra-primary shrink-0" />
                 <span>
-                  <strong className="text-gray-900">La Storia Micaelica:</strong> Approfondire il legame con l’allineamento dei sette santuari dedicati a San Michele Arcangelo.
+                  <strong className="text-gray-900">La storia Micaelica:</strong> approfondire il legame con l’allineamento dei sette santuari dedicati a San Michele Arcangelo.
                 </span>
               </motion.li>
               <motion.li className="flex items-start" variants={itemFadeIn}>
                 <FaMountain className="mr-4 mt-1 text-2xl text-sacra-primary shrink-0" />
                 <span>
-                  <strong className="text-gray-900">L’Impegno Comunitario:</strong> Coinvolgere associazioni locali per garantire sicurezza e supporto logistico.
+                  <strong className="text-gray-900">L’impegno Comunitario:</strong> coinvolgere associazioni locali per garantire sicurezza e supporto logistico.
                 </span>
               </motion.li>
               <motion.li className="flex items-start" variants={itemFadeIn}>
                 <FaChurch className="mr-4 mt-1 text-2xl text-sacra-primary shrink-0" />
                 <span>
-                  <strong className="text-gray-900">La Sfida del Sentiero:</strong> Affrontare i 600 metri di dislivello come metafora del cammino spirituale personale.
+                  <strong className="text-gray-900">La sfida del sentiero:</strong> affrontare i 620 metri di dislivello come metafora del cammino spirituale personale.
                 </span>
               </motion.li>
             </motion.ul>

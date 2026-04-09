@@ -33,10 +33,10 @@ const Activities = () => {
           variants={fadeIn}
         >
           <h2 className="text-4xl sm:text-5xl font-extrabold tracking-tight text-sacra-primary">
-            Il Percorso del Pellegrinaggio
+            Il percorso del pellegrinaggio
           </h2>
           <p className="text-lg text-gray-600 font-light leading-relaxed mt-4 max-w-3xl mx-auto">
-            Un cammino di <strong className="font-semibold text-gray-900">15 km</strong> da Avigliana alla Sacra di San Michele, con <strong className="font-semibold text-gray-900">600 metri di dislivello</strong>, immersi nella natura e nella spiritualità della Valle di Susa.
+            Un cammino di <strong className="font-semibold text-gray-900">14 km</strong> da Avigliana alla Sacra di San Michele, con <strong className="font-semibold text-gray-900">600 metri di dislivello</strong>, immersi nella natura e nella spiritualità della Valle di Susa.
           </p>
         </motion.div>
 
@@ -69,11 +69,11 @@ const Activities = () => {
             <ul className="space-y-5 text-gray-700 text-lg">
               <li className="flex items-center">
                 <FaHiking className="mr-4 text-2xl text-sacra-secondary shrink-0" />
-                <span><strong className="text-gray-900">Distanza:</strong> 15 km (solo andata)</span>
+                <span><strong className="text-gray-900">Distanza:</strong> 14 km (solo andata)</span>
               </li>
               <li className="flex items-center">
                 <FaHiking className="mr-4 text-2xl text-sacra-secondary shrink-0" />
-                <span><strong className="text-gray-900">Dislivello:</strong> 600 metri</span>
+                <span><strong className="text-gray-900">Dislivello:</strong> 620 metri</span>
               </li>
               <li className="flex items-center">
                 <FaCalendarAlt className="mr-4 text-2xl text-sacra-secondary shrink-0" />
@@ -81,7 +81,7 @@ const Activities = () => {
               </li>
               <li className="flex items-start">
                 <FaMapMarkerAlt className="mr-4 mt-1 text-2xl text-sacra-secondary shrink-0" />
-                <span><strong className="text-gray-900">Partenza:</strong> Piazza della Stazione, Avigliana</span>
+                <span><strong className="text-gray-900">Partenza:</strong> Santuario Madonna dei Laghi</span>
               </li>
               <li className="flex items-start">
                 <FaMapMarkerAlt className="mr-4 mt-1 text-2xl text-sacra-secondary shrink-0" />
