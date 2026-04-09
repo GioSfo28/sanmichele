@@ -45,7 +45,7 @@ const Hero = () => {
 
         <motion.div variants={fadeIn} className="mt-8 flex flex-col items-center gap-2">
           <span className="px-4 py-1 bg-sacra-primary/80 backdrop-blur-sm rounded-full text-sm font-bold uppercase tracking-widest text-sacra-accent border border-sacra-accent/30">
-            15 KM • 600m Dislivello
+            14 KM • 620m Dislivello
           </span>
         </motion.div>
 
