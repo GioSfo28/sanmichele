@@ -160,7 +160,7 @@ const Activities = () => {
               </li>
               <li className="flex items-start border-t border-gray-100 pt-4 mt-2">
                 <FaMapMarkerAlt className="mr-4 mt-1 text-2xl text-sacra-secondary shrink-0" />
-                <span><strong className="text-gray-900">Partenza:</strong> Santuario Madonna dei Laghi ore 10:00</span>
+                <span><strong className="text-gray-900">Partenza:</strong> Santuario Madonna dei Laghi ore 9:30</span>
               </li>
               <li className="flex items-start">
                 <FaChurch className="mr-4 mt-1 text-2xl text-sacra-secondary shrink-0" />
