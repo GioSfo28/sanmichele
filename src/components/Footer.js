@@ -104,8 +104,19 @@ const Footer = () => {
         </motion.div>
 
         {/* Copyright */}
-        <div className="mt-12 text-center text-sm text-gray-500 pb-4">
-          © 2025 - {new Date().getFullYear()} Pellegrinaggio Sacra di San Michele. Tutti i diritti riservati.
+        <div className="mt-12 text-center text-sm text-gray-500 pb-4 flex flex-col sm:flex-row justify-center items-center gap-1 sm:gap-2">
+          <span>© 2025 – {new Date().getFullYear()} Pellegrinaggio Sacra di San Michele. Tutti i diritti riservati.</span>
+          <span>
+            Creato con <span className="text-red-500 mx-1">♥</span> da{" "}
+            <a 
+              href="https://www.giorgiosforza.it" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="text-[#d97706] hover:text-sacra-accent font-semibold transition-colors duration-300"
+            >
+              Giorgio Sforza
+            </a>.
+          </span>
         </div>
       </div>
     </motion.footer>
