@@ -4,7 +4,6 @@ import { motion } from "framer-motion";
 import { MapContainer, TileLayer, GeoJSON, Marker, Popup } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
-import { scrollToElement } from "../utils/scrollUtils";
 import routeData from "../data/routeCoordinates.json";
 import { Link } from "react-router-dom";
 
