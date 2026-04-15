@@ -357,7 +357,7 @@ const Activities = () => {
           </div>
         </motion.div>
 
-        {/* CTA Iscrizione Finale */}
+        {/* CTA Iscrizione Finale (AGGIORNATA CON REACT ROUTER) */}
         <motion.div
           className="text-center mt-20 pt-10 border-t border-gray-200"
           initial="hidden"
@@ -365,16 +365,12 @@ const Activities = () => {
           viewport={{ once: true }}
           variants={fadeIn}
         >
-          <a
-            href="#Iscrizione"
-            onClick={(e) => {
-              e.preventDefault();
-              scrollToElement("Iscrizione");
-            }}
+          <Link
+            to="/iscrizione"
             className="inline-block px-10 py-4 bg-sacra-accent text-gray-900 font-bold text-lg uppercase tracking-wide rounded-full shadow-lg hover:bg-yellow-400 transition-all duration-300 transform hover:-translate-y-1 focus:ring-4 focus:ring-sacra-accent/50"
           >
             Iscriviti al Pellegrinaggio
-          </a>
+          </Link>
         </motion.div>
       </div>
     </section>

@@ -8,6 +8,9 @@ import Galleria from "./pages/Galleria";
 
 import "./index.css"; // Importa TailwindCSS
 import ChiSiamo from "./pages/ChiSiamo";
+import Iscrizione from "./pages/Iscrizione";
+import Privacy from "./pages/Privacy";
+import Cookie from "./pages/Cookie";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
@@ -19,6 +22,9 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         {/* La nuova pagina dedicata alla Galleria */}
         <Route path="/Galleria" element={<Galleria />} />
         <Route path="/Chi-siamo" element={<ChiSiamo />} />
+        <Route path="/Iscrizione" element={<Iscrizione />} />
+        <Route path="/Privacy" element={<Privacy />} />
+        <Route path="/Cookie" element={<Cookie />} />
       </Routes>
     </Router>
   </React.StrictMode>

@@ -1,7 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import PellegrinaggioLogo from "../assets/Sacra.jpg";
-import { scrollToElement } from "../utils/scrollUtils";
+import { Link } from "react-router-dom"; // <-- Importato Link per la navigazione fluida
 
 const Hero = () => {
   const fadeIn = {
@@ -56,19 +56,20 @@ const Hero = () => {
           Unisciti al cammino che congiunge la Valle di Susa al sacro allineamento micaelico.
         </motion.p>
 
-        <motion.a
-          href="#Iscrizione"
-          onClick={(e) => {
-            e.preventDefault();
-            scrollToElement("Iscrizione");
-          }}
-          className="mt-10 inline-block px-10 py-4 bg-sacra-primary text-white font-bold text-lg uppercase tracking-wide rounded-full shadow-2xl hover:bg-sacra-hover transition-all duration-300 transform hover:-translate-y-1 focus:ring-4 focus:ring-sacra-primary/50"
+        {/* --- BOTTONE AGGIORNATO CON REACT ROUTER --- */}
+        <motion.div 
           variants={fadeIn}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
+          className="mt-10 inline-block"
         >
-          Scopri le Prossime Partenze
-        </motion.a>
+          <Link
+            to="/iscrizione"
+            className="inline-block px-10 py-4 bg-sacra-primary text-white font-bold text-lg uppercase tracking-wide rounded-full shadow-2xl hover:bg-sacra-hover transition-all duration-300 focus:ring-4 focus:ring-sacra-primary/50"
+          >
+            Scopri la data del prossimo pellegrinaggio
+          </Link>
+        </motion.div>
       </motion.div>
     </section>
   );

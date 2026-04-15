@@ -56,7 +56,7 @@ const Header = () => {
             </a>
           ))}
 
-          
+
 
           {/* --- LINK GALLERIA --- */}
           <Link
@@ -69,20 +69,19 @@ const Header = () => {
 
           {/* --- NUOVO LINK: CHI SIAMO --- */}
           <Link
-            to="/chi-siamo"
+            to="/Chi-siamo"
             className="text-gray-700 hover:text-sacra-primary text-lg font-medium transition-colors duration-300 relative group"
           >
             Chi Siamo
             <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-sacra-primary transition-all duration-300 group-hover:w-full"></span>
           </Link>
 
-          <a
-            href="#Iscrizione"
-            onClick={(e) => handleNavClick(e, "Iscrizione")}
+          <Link
+            to="/Iscrizione"
             className="px-6 py-2 bg-sacra-accent text-gray-900 font-bold text-sm uppercase tracking-wider rounded-full shadow hover:bg-yellow-400 transition-all duration-300 transform hover:-translate-y-0.5"
           >
             Iscriviti
-          </a>
+          </Link>
         </nav>
 
         {/* Hamburger */}

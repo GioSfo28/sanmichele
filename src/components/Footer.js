@@ -1,7 +1,7 @@
 import React from "react";
 import { FaEnvelope, FaInstagram, FaChurch } from "react-icons/fa";
 import { motion } from "framer-motion";
-import { scrollToElement } from "../utils/scrollUtils";
+import { Link } from "react-router-dom"; // <-- IMPORTANTE
 
 const Footer = () => {
   const fadeIn = {
@@ -50,24 +50,21 @@ const Footer = () => {
               <FaEnvelope className="mr-2" />
               Inviaci un'email
             </motion.a>
-            <motion.a
-              href="#Iscrizione"
-              onClick={(e) => {
-                e.preventDefault();
-                scrollToElement("Iscrizione");
-              }}
-              className="inline-flex justify-center items-center px-8 py-3 bg-sacra-accent text-gray-900 font-bold text-base uppercase tracking-wide rounded-full shadow-lg hover:bg-yellow-400 transition-all duration-300"
-              whileHover={{ scale: 1.02 }}
-              variants={itemFadeIn}
-            >
-              Iscriviti Ora
-            </motion.a>
+            {/* AGGIORNATO AL LINK REACT ROUTER */}
+            <motion.div variants={itemFadeIn} whileHover={{ scale: 1.02 }}>
+              <Link
+                to="/Iscrizione"
+                className="inline-flex justify-center items-center px-8 py-3 bg-sacra-accent text-gray-900 font-bold text-base uppercase tracking-wide rounded-full shadow-lg hover:bg-yellow-400 transition-all duration-300"
+              >
+                Iscriviti ora
+              </Link>
+            </motion.div>
           </div>
         </motion.div>
 
-        {/* Footer Bottom: Links e Contatti */}
+        {/* Footer Bottom: Links e Contatti (ORA A 3 COLONNE) */}
         <motion.div
-          className="grid grid-cols-1 md:grid-cols-2 gap-10 text-center md:text-left border-t border-gray-800 pt-10"
+          className="grid grid-cols-1 md:grid-cols-3 gap-10 text-center md:text-left border-t border-gray-800 pt-10"
           variants={fadeIn}
         >
           {/* Colonna 1: Logo/Nome */}
@@ -89,6 +86,19 @@ const Footer = () => {
                 <FaInstagram className="text-xl" />
                 <span>Instagram</span>
               </a>
+            </div>
+          </motion.div>
+
+          {/* COLONNA 3: NOTE LEGALI */}
+          <motion.div variants={itemFadeIn} className="flex flex-col items-center md:items-start">
+            <h4 className="text-lg font-semibold mb-4 text-white uppercase tracking-wider text-sm">Note Legali</h4>
+            <div className="flex flex-col space-y-3">
+              <Link to="/Privacy" className="text-gray-400 hover:text-sacra-accent transition-colors duration-300">
+                Privacy Policy
+              </Link>
+              <Link to="/Cookie" className="text-gray-400 hover:text-sacra-accent transition-colors duration-300">
+                Cookie Policy
+              </Link>
             </div>
           </motion.div>
         </motion.div>
