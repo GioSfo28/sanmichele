@@ -155,7 +155,7 @@ const Iscrizione = () => {
                                 <FaCheckCircle className="text-6xl text-green-500 mb-6" />
                                 <h3 className="text-3xl font-bold text-gray-900 mb-4">Email registrata!</h3>
                                 <p className="text-lg text-gray-600 mb-8">
-                                    Grazie per l'interesse. Ti invieremo un'email non appena i posti saranno prenotabili.
+                                    Grazie per l'interesse. Ti invieremo un'email non appena saranno aperte le iscrizioni.
                                 </p>
                                 <Link to="/" className="px-8 py-3 bg-[#800020] text-white font-bold rounded-full shadow-lg hover:bg-[#5C0017] transition-all">
                                     Torna alla Home
@@ -168,7 +168,7 @@ const Iscrizione = () => {
                                     <h2 className="text-2xl font-bold text-gray-900">Rimani aggiornato</h2>
                                 </div>
                                 <p className="text-gray-600 mb-8">
-                                    I posti saranno limitati. Inserisci la tua email per avere la priorità ed essere avvisato il giorno in cui apriremo il modulo di registrazione.
+                                    Inserisci la tua email per avere la priorità ed essere avvisato il giorno in cui apriremo il modulo di registrazione.
                                 </p>
 
                                 <form onSubmit={handleSubmit} className="space-y-6">
