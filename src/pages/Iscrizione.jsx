@@ -1,23 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { FaArrowLeft, FaCalendarAlt, FaMapMarkerAlt, FaClock, FaPizzaSlice, FaHiking, FaCheckCircle, FaInfoCircle } from "react-icons/fa";
+import { FaArrowLeft, FaCalendarAlt, FaMapMarkerAlt, FaClock, FaCheckCircle, FaEnvelope } from "react-icons/fa";
 import { motion } from "framer-motion";
 import Footer from "../components/Footer";
 
 // --- IMPORT CORRETTI PER FIREBASE ---
-// Importiamo SOLO il database (db) dal tuo file di configurazione
 import { db } from "../firebase/config.js";
-// Importiamo le funzioni del Realtime Database
 import { ref, push, set, serverTimestamp } from "firebase/database";
 
 const Iscrizione = () => {
-    const [formData, setFormData] = useState({
-        nome: "",
-        cognome: "",
+    // Stato semplificato solo per la mailing list
+    const [emailData, setEmailData] = useState({
         email: "",
-        telefono: "",
-        pacchetto: "solo_pellegrinaggio",
-        intolleranze: "",
         privacy: false
     });
 
@@ -31,7 +25,7 @@ const Iscrizione = () => {
 
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
-        setFormData(prev => ({
+        setEmailData(prev => ({
             ...prev,
             [name]: type === "checkbox" ? checked : value
         }));
@@ -43,29 +37,21 @@ const Iscrizione = () => {
         setErrorMessage("");
 
         try {
-            // 1. Crea un riferimento al "nodo" iscrizioni nel Realtime Database usando il nostro 'db' importato
-            const iscrizioniRef = ref(db, 'Iscrizioni');
+            // Crea un riferimento a un nuovo nodo per chi vuole essere avvisato
+            const mailingListRef = ref(db, 'MailingList');
+            const nuovaEmailRef = push(mailingListRef);
 
-            // 2. Genera una chiave univoca per la nuova iscrizione
-            const nuovaIscrizioneRef = push(iscrizioniRef);
-
-            // 3. Salva i dati
-            await set(nuovaIscrizioneRef, {
-                nome: formData.nome,
-                cognome: formData.cognome,
-                email: formData.email,
-                telefono: formData.telefono,
-                pacchetto: formData.pacchetto,
-                intolleranze: formData.intolleranze,
-                privacyAccettata: formData.privacy,
-                dataIscrizione: serverTimestamp() // Registra l'orario del server
+            // Salva solo l'email e l'accettazione della privacy
+            await set(nuovaEmailRef, {
+                email: emailData.email,
+                privacyAccettata: emailData.privacy,
+                dataRegistrazione: serverTimestamp()
             });
 
-            setIsSuccess(true); // Mostra la schermata di successo
-
+            setIsSuccess(true);
         } catch (error) {
             console.error("Errore di scrittura su Firebase: ", error);
-            setErrorMessage("Si è verificato un errore durante l'invio. Riprova più tardi.");
+            setErrorMessage("Si è verificato un errore. Riprova più tardi.");
         } finally {
             setIsSubmitting(false);
         }
@@ -78,7 +64,6 @@ const Iscrizione = () => {
 
     return (
         <div className="flex flex-col min-h-screen bg-gray-50">
-            {/* HEADER SEMPLIFICATO */}
             <header className="bg-white/95 backdrop-blur-md shadow-md fixed top-0 w-full z-50">
                 <div className="flex justify-between items-center py-4 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
                     <Link to="/" className="text-2xl sm:text-3xl font-extrabold tracking-tight text-[#800020]">
@@ -98,19 +83,19 @@ const Iscrizione = () => {
                         className="text-4xl sm:text-5xl font-extrabold tracking-tight text-[#800020] mb-4"
                         initial="hidden" animate="visible" variants={fadeIn}
                     >
-                        Iscriviti al pellegrinaggio
+                        Le iscrizioni apriranno presto
                     </motion.h1>
                     <motion.p
                         className="text-lg text-gray-600 font-light max-w-2xl mx-auto"
                         initial="hidden" animate="visible" variants={fadeIn}
                     >
-                        Compila il modulo per confermare la tua presenza. I posti potrebbero essere limitati!
+                        I dettagli del pellegrinaggio sono confermati, ma stiamo ultimando i preparativi. Lascia la tua email per ricevere una notifica non appena apriranno le iscrizioni ufficiali!
                     </motion.p>
                 </div>
 
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
 
-                    {/* COLONNA SINISTRA: Info Evento */}
+                    {/* COLONNA SINISTRA: Info Evento (Mantenuta inalterata) */}
                     <motion.div
                         className="lg:col-span-5 space-y-6"
                         initial="hidden" animate="visible" variants={fadeIn}
@@ -153,126 +138,89 @@ const Iscrizione = () => {
                         </div>
 
                         <div className="bg-yellow-50 border border-yellow-200 p-6 rounded-2xl">
-                            <h4 className="font-bold text-gray-900 mb-2">Importante:</h4>
+                            <h4 className="font-bold text-gray-900 mb-2">Nota sulle quote:</h4>
                             <p className="text-gray-700 text-sm">
-                                Il pagamento della quota di partecipazione avverrà in contanti la mattina stessa al momento del ritrovo. Si prega di portare la cifra esatta.
+                                I pacchetti (con e senza pizzata) e i relativi costi saranno visibili al momento dell'apertura ufficiale delle iscrizioni.
                             </p>
                         </div>
                     </motion.div>
 
-                    {/* COLONNA DESTRA: Form o Messaggio di Successo */}
+                    {/* COLONNA DESTRA: Form Notifica o Messaggio di Successo */}
                     <motion.div
-                        className="lg:col-span-7 bg-white p-8 rounded-3xl shadow-xl border border-gray-100 relative"
+                        className="lg:col-span-7 bg-white p-8 rounded-3xl shadow-xl border border-gray-100 relative flex flex-col justify-center"
                         initial="hidden" animate="visible" variants={fadeIn}
                     >
                         {isSuccess ? (
-                            // SCHERMATA DI SUCCESSO
-                            <div className="flex flex-col items-center justify-center text-center h-full py-10">
+                            <div className="flex flex-col items-center justify-center text-center py-10">
                                 <FaCheckCircle className="text-6xl text-green-500 mb-6" />
-                                <h3 className="text-3xl font-bold text-gray-900 mb-4">Iscrizione Ricevuta!</h3>
+                                <h3 className="text-3xl font-bold text-gray-900 mb-4">Email registrata!</h3>
                                 <p className="text-lg text-gray-600 mb-8">
-                                    Grazie {formData.nome}, abbiamo registrato correttamente la tua iscrizione. Ci vediamo il 26 Settembre!
+                                    Grazie per l'interesse. Ti invieremo un'email non appena i posti saranno prenotabili.
                                 </p>
                                 <Link to="/" className="px-8 py-3 bg-[#800020] text-white font-bold rounded-full shadow-lg hover:bg-[#5C0017] transition-all">
                                     Torna alla Home
                                 </Link>
                             </div>
                         ) : (
-                            // FORM DI ISCRIZIONE
-                            <form onSubmit={handleSubmit} className="space-y-6">
-
-                                {errorMessage && (
-                                    <div className="p-4 bg-red-50 border border-red-200 text-red-700 rounded-xl mb-4">
-                                        {errorMessage}
-                                    </div>
-                                )}
-
-                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                                    <div>
-                                        <label className="block text-sm font-semibold text-gray-700 mb-2">Nome *</label>
-                                        <input type="text" name="nome" required value={formData.nome} onChange={handleChange} disabled={isSubmitting} className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-[#800020] focus:border-transparent outline-none transition-all bg-gray-50 focus:bg-white disabled:opacity-50" placeholder="Mario" />
-                                    </div>
-                                    <div>
-                                        <label className="block text-sm font-semibold text-gray-700 mb-2">Cognome *</label>
-                                        <input type="text" name="cognome" required value={formData.cognome} onChange={handleChange} disabled={isSubmitting} className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-[#800020] focus:border-transparent outline-none transition-all bg-gray-50 focus:bg-white disabled:opacity-50" placeholder="Rossi" />
-                                    </div>
+                            <div>
+                                <div className="flex items-center mb-6">
+                                    <FaEnvelope className="text-[#800020] text-2xl mr-3" />
+                                    <h2 className="text-2xl font-bold text-gray-900">Rimani aggiornato</h2>
                                 </div>
+                                <p className="text-gray-600 mb-8">
+                                    I posti saranno limitati. Inserisci la tua email per avere la priorità ed essere avvisato il giorno in cui apriremo il modulo di registrazione.
+                                </p>
 
-                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                                <form onSubmit={handleSubmit} className="space-y-6">
+                                    {errorMessage && (
+                                        <div className="p-4 bg-red-50 border border-red-200 text-red-700 rounded-xl mb-4">
+                                            {errorMessage}
+                                        </div>
+                                    )}
+
                                     <div>
-                                        <label className="block text-sm font-semibold text-gray-700 mb-2">Email *</label>
-                                        <input type="email" name="email" required value={formData.email} onChange={handleChange} disabled={isSubmitting} className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-[#800020] focus:border-transparent outline-none transition-all bg-gray-50 focus:bg-white disabled:opacity-50" placeholder="mario@email.com" />
+                                        <label className="block text-sm font-semibold text-gray-700 mb-2">Indirizzo Email *</label>
+                                        <input 
+                                            type="email" 
+                                            name="email" 
+                                            required 
+                                            value={emailData.email} 
+                                            onChange={handleChange} 
+                                            disabled={isSubmitting} 
+                                            className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-[#800020] focus:border-transparent outline-none transition-all bg-gray-50 focus:bg-white disabled:opacity-50" 
+                                            placeholder="mario@email.com" 
+                                        />
                                     </div>
-                                    <div>
-                                        <label className="block text-sm font-semibold text-gray-700 mb-2">Telefono *</label>
-                                        <input type="tel" name="telefono" required value={formData.telefono} onChange={handleChange} disabled={isSubmitting} className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-[#800020] focus:border-transparent outline-none transition-all bg-gray-50 focus:bg-white disabled:opacity-50" placeholder="+39 333 1234567" />
-                                    </div>
-                                </div>
 
-                                {/* Scelta Pacchetto */}
-                                <div className="pt-4">
-                                    <label className="block text-base font-bold text-gray-900 mb-4 border-b border-gray-200 pb-2">Seleziona il pacchetto *</label>
-                                    <div className="space-y-3">
-                                        <label className={`flex items-center p-4 border rounded-xl cursor-pointer transition-all ${formData.pacchetto === "solo_pellegrinaggio" ? "border-[#800020] bg-[#800020]/5 ring-1 ring-[#800020]" : "border-gray-200 hover:border-gray-300"} ${isSubmitting ? "opacity-50" : ""}`}>
-                                            <input type="radio" name="pacchetto" value="solo_pellegrinaggio" checked={formData.pacchetto === "solo_pellegrinaggio"} onChange={handleChange} disabled={isSubmitting} className="w-5 h-5 text-[#800020] focus:ring-[#800020]" />
-                                            <div className="ml-4 flex-grow flex justify-between items-center">
-                                                <div className="flex items-center">
-                                                    <FaHiking className="text-gray-500 mr-2" />
-                                                    <span className="font-medium text-gray-900">Solo Pellegrinaggio</span>
-                                                </div>
-                                                <span className="font-bold text-[#800020]">5€</span>
-                                            </div>
-                                        </label>
-
-                                        <label className={`flex items-center p-4 border rounded-xl cursor-pointer transition-all ${formData.pacchetto === "pellegrinaggio_pizzata" ? "border-[#800020] bg-[#800020]/5 ring-1 ring-[#800020]" : "border-gray-200 hover:border-gray-300"} ${isSubmitting ? "opacity-50" : ""}`}>
-                                            <input type="radio" name="pacchetto" value="pellegrinaggio_pizzata" checked={formData.pacchetto === "pellegrinaggio_pizzata"} onChange={handleChange} disabled={isSubmitting} className="w-5 h-5 text-[#800020] focus:ring-[#800020]" />
-                                            <div className="ml-4 flex-grow flex justify-between items-center">
-                                                <div className="flex items-center">
-                                                    <FaPizzaSlice className="text-gray-500 mr-2" />
-                                                    <span className="font-medium text-gray-900">Pellegrinaggio + Pizzata serale</span>
-                                                </div>
-                                                <span className="font-bold text-[#800020]">10€</span>
-                                            </div>
+                                    <div className="pt-4 border-t border-gray-100">
+                                        <label className="flex items-start cursor-pointer">
+                                            <input 
+                                                type="checkbox" 
+                                                name="privacy" 
+                                                required 
+                                                checked={emailData.privacy} 
+                                                onChange={handleChange} 
+                                                disabled={isSubmitting} 
+                                                className="w-5 h-5 mt-1 text-[#800020] rounded focus:ring-[#800020]" 
+                                            />
+                                            <span className="ml-3 text-sm text-gray-600 leading-relaxed">
+                                                Acconsento al trattamento dei miei dati per essere ricontattato in merito all'apertura delle iscrizioni di questo evento. *
+                                            </span>
                                         </label>
                                     </div>
 
-                                    {/* NUOVO: Nota esplicativa sui costi */}
-                                    <div className="mt-4 flex items-start bg-blue-50 border border-blue-100 p-4 rounded-xl">
-                                        <FaInfoCircle className="text-blue-500 text-lg mt-0.5 mr-3 shrink-0" />
-                                        <p className="text-sm text-gray-700 leading-relaxed">
-                                            La quota di partecipazione copre esclusivamente i <strong>costi dell'assicurazione infortuni</strong> e il servizio del <strong>pulmino per il rientro</strong> dalla Sacra di San Michele al Santuario Madonna dei Laghi.
-                                        </p>
-                                    </div>
-                                </div>
-
-                                {/* Intolleranze */}
-                                {formData.pacchetto === "pellegrinaggio_pizzata" && (
-                                    <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} className="pt-2">
-                                        <label className="block text-sm font-semibold text-gray-700 mb-2">Segnala eventuali allergie o intolleranze alimentari</label>
-                                        <textarea name="intolleranze" value={formData.intolleranze} onChange={handleChange} disabled={isSubmitting} rows="2" className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-[#800020] focus:border-transparent outline-none transition-all bg-gray-50 focus:bg-white disabled:opacity-50" placeholder="Es. celiachia, intolleranza al lattosio, vegetariano..."></textarea>
-                                    </motion.div>
-                                )}
-
-                                {/* Privacy */}
-                                <div className="pt-4 border-t border-gray-100">
-                                    <label className="flex items-start cursor-pointer">
-                                        <input type="checkbox" name="privacy" required checked={formData.privacy} onChange={handleChange} disabled={isSubmitting} className="w-5 h-5 mt-1 text-[#800020] rounded focus:ring-[#800020]" />
-                                        <span className="ml-3 text-sm text-gray-600 leading-relaxed">
-                                            Ho letto e accetto l'informativa sulla privacy. Acconsento al trattamento dei miei dati e all'invio di email informative relative all'organizzazione di questo evento. *
-                                        </span>
-                                    </label>
-                                </div>
-
-                                {/* Submit */}
-                                <button type="submit" disabled={isSubmitting} className="w-full py-4 mt-6 bg-[#FFD700] text-gray-900 font-bold text-lg uppercase tracking-wider rounded-xl shadow-lg hover:bg-yellow-400 transition-all duration-300 transform hover:-translate-y-0.5 focus:outline-none focus:ring-4 focus:ring-[#FFD700]/50 disabled:opacity-50 disabled:cursor-not-allowed">
-                                    {isSubmitting ? "Invio in corso..." : "Conferma Iscrizione"}
-                                </button>
-
-                            </form>
+                                    <button 
+                                        type="submit" 
+                                        disabled={isSubmitting} 
+                                        className="w-full py-4 mt-6 bg-[#FFD700] text-gray-900 font-bold text-lg uppercase tracking-wider rounded-xl shadow-lg hover:bg-yellow-400 transition-all duration-300 transform hover:-translate-y-0.5 focus:outline-none focus:ring-4 focus:ring-[#FFD700]/50 disabled:opacity-50 disabled:cursor-not-allowed"
+                                    >
+                                        {isSubmitting ? "Registrazione in corso..." : "Avvisami quando aprono"}
+                                    </button>
+                                </form>
+                            </div>
                         )}
                     </motion.div>
                 </div>
-
             </main>
             <Footer />
         </div>
