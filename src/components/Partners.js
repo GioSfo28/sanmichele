@@ -9,7 +9,7 @@ import "swiper/css/pagination";
 
 import CisomLogo from "../assets/CISOM.png";
 import OperaSanMichele from "../assets/OperaSanMichele.jpg";
-import Salesiani from "../assets/Salesiani.jpg;"
+import Salesiani from "../assets/Salesiani.jpg";
 // Loghi segnaposto per chi non lo ha ancora, da aggiungere in futuro
 
 const Collaborazioni = () => {
