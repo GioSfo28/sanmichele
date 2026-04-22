@@ -9,6 +9,7 @@ import "swiper/css/pagination";
 
 import CisomLogo from "../assets/CISOM.png";
 import OperaSanMichele from "../assets/OperaSanMichele.jpg";
+import Salesiani from "../assets/Salesiani.jpg;"
 // Loghi segnaposto per chi non lo ha ancora, da aggiungere in futuro
 
 const Collaborazioni = () => {
@@ -18,6 +19,7 @@ const Collaborazioni = () => {
   };
 
   const supportGroups = [
+    { name: "Avigliana - Salesiani Don Bosco", logo: Salesiani },
     { name: "CISOM (Corpo Italiano di Soccorso)", logo: CisomLogo },
     { name: "Opera San Michele - Torino", logo: OperaSanMichele },
   ];
