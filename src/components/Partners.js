@@ -3,14 +3,13 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Pagination } from "swiper/modules";
 import { motion } from "framer-motion";
 
-// Import stili di Swiper (sostituiscono quelli di slick-carousel)
+// Import stili di Swiper
 import "swiper/css";
 import "swiper/css/pagination";
 
 import CisomLogo from "../assets/CISOM.png";
 import OperaSanMichele from "../assets/OperaSanMichele.jpg";
 import Salesiani from "../assets/Salesiani.jpg";
-// Loghi segnaposto per chi non lo ha ancora, da aggiungere in futuro
 
 const Collaborazioni = () => {
   const fadeIn = {
@@ -20,8 +19,8 @@ const Collaborazioni = () => {
 
   const supportGroups = [
     { name: "Avigliana - Salesiani Don Bosco", logo: Salesiani },
-    { name: "CISOM (Corpo Italiano di Soccorso)", logo: CisomLogo },
     { name: "Opera San Michele - Torino", logo: OperaSanMichele },
+    { name: "CISOM (Corpo Italiano di Soccorso)", logo: CisomLogo },
   ];
 
   return (
@@ -49,51 +48,64 @@ const Collaborazioni = () => {
           variants={fadeIn}
           className="max-w-5xl mx-auto"
         >
-          {/* Sostituito Slider con Swiper */}
           <Swiper
             modules={[Autoplay, Pagination]}
             spaceBetween={30}
-            // Il loop si attiva in sicurezza solo se ci sono abbastanza loghi
             loop={supportGroups.length >= 3} 
             autoplay={{
               delay: 3500,
               disableOnInteraction: false
             }}
             pagination={{ clickable: true }}
-            className="pb-12" // Aggiunto padding per non coprire le card con i "pallini"
+            className="pb-12" // Padding per i "pallini"
             breakpoints={{
-              0: {
-                slidesPerView: 1
-              },
-              640: {
-                slidesPerView: 1
-              },
-              768: {
-                slidesPerView: 2
-              },
-              1024: {
-                slidesPerView: 3
-              }
+              0: { slidesPerView: 1 },
+              640: { slidesPerView: 1 },
+              768: { slidesPerView: 2 },
+              1024: { slidesPerView: 3 }
             }}
           >
-            {supportGroups.map((group, index) => (
-              <SwiperSlide key={index}>
-                {/* Ho integrato l'animazione whileHover come nel primo file */}
-                <motion.div
-                  whileHover={{ y: -8 }}
-                  className="bg-white p-6 rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 flex flex-col justify-center items-center h-56 border border-gray-100 group mx-2"
-                >
-                  <img
-                    src={group.logo}
-                    alt={`${group.name} logo`}
-                    className="max-h-24 w-full max-w-[180px] object-contain mb-4 transition-transform duration-300 group-hover:scale-110"
-                  />
-                  <p className="text-sm font-medium text-gray-700 text-center leading-snug group-hover:text-sacra-primary transition-colors">
-                    {group.name}
-                  </p>
-                </motion.div>
-              </SwiperSlide>
-            ))}
+            {supportGroups.map((group, index) => {
+              // --- LOGICA DI INGRANDIMENTO E SPAZIATURA SPECIFICA ---
+              // Verifichiamo se il logo corrente è uno di quelli da ingrandire/distanziare.
+              const isSalesiani = group.logo === Salesiani;
+              const isOperaSanMichele = group.logo === OperaSanMichele;
+
+              // 1. Definiamo classi dinamiche per la dimensione del logo.
+              // Per Salesiani e Opera San Michele (che sono rettangolari lunghi),
+              // allentiamo i vincoli max-h e max-w per farli sembrare più grandi visivamente.
+              // Il default rimane invariato per il CISOM.
+              const dynamicLogoClasses = (isSalesiani || isOperaSanMichele)
+                ? "max-h-40 max-w-[210px]" // Più grandi e larghi (rispetto a h-24 e w-180)
+                : "max-h-24 max-w-[180px]"; // Dimensioni di default (perfette per CISOM)
+
+              // 2. Definiamo classi dinamiche per lo spazio sotto il logo (margin-bottom).
+              // Per il CISOM (che è percepito come troppo attaccato), aumentiamo la spaziatura.
+              // Per Salesiani e Opera San Michele, manteniamo il default.
+              const dynamicMarginClasses = (isSalesiani || isOperaSanMichele)
+                ? "mb-4" // Default (distanza normale)
+                : "mb-7"; // Aumentato (più spazio per CISOM)
+
+              return (
+                <SwiperSlide key={index}>
+                  <motion.div
+                    whileHover={{ y: -8 }}
+                    className="bg-white p-6 rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 flex flex-col justify-center items-center h-56 border border-gray-100 group mx-2"
+                  >
+                    <img
+                      src={group.logo}
+                      alt={`${group.name} logo`}
+                      // Applichiamo le classi dinamiche calcolate sopra
+                      // Ho aggiunto ${dynamicMarginClasses} al posto del fisso mb-4
+                      className={`${dynamicLogoClasses} ${dynamicMarginClasses} w-full object-contain transition-transform duration-300 group-hover:scale-110`}
+                    />
+                    <p className="text-sm font-medium text-gray-700 text-center leading-snug group-hover:text-sacra-primary transition-colors">
+                      {group.name}
+                    </p>
+                  </motion.div>
+                </SwiperSlide>
+              );
+            })}
           </Swiper>
         </motion.div>
 
