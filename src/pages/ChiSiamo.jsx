@@ -10,8 +10,7 @@ import Simone from "../assets/Simone.jpeg"
 import PadreMarco from "../assets/PadreMarco.jpeg"
 import Giovanni from "../assets/Giovanni.jpeg"
 import DonLodovico from "../assets/DonLodovico.jpeg"
-
-
+import Claudio from "../assets/Claudio.jpeg"
 
 const founders = [
     {
@@ -37,6 +36,12 @@ const founders = [
         role: "Responsabile Web",
         img: Gio,
         desc: "Responsabile di tutta la parte web, cura lo sviluppo della piattaforma digitale e la comunicazione online del pellegrinaggio."
+    },
+    {
+        name: "Claudio Maglione",
+        role: "Responsabile Val d'Aosta",
+        img: Claudio,
+        desc: "Responsabile per la regione Valle d'Aosta, si occupa di coordinare i pellegrini e gestire le attività logistiche sul territorio valdostano."
     },
 ];
 
@@ -89,20 +94,26 @@ const ChiSiamo = () => {
 
                 {/* I FONDATORI */}
                 <motion.div
-                    className="mb-20"
+                    className="mb-20 max-w-6xl mx-auto"
                     initial="hidden"
                     whileInView="visible"
                     viewport={{ once: true, amount: 0.2 }}
                     variants={containerFadeIn}
                 >
-                    <h2 className="text-3xl font-bold text-gray-900 mb-10 border-b-2 border-gray-200 pb-4 inline-block">I Fondatori</h2>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <h2 className="text-3xl font-bold text-gray-900 mb-10 border-b-2 border-gray-200 pb-4 inline-block">Il Team</h2>
+                    
+                    {/* Griglia aggiornata a 3 colonne centrali */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 justify-items-center">
                         {founders.map((person, index) => (
-                            <motion.div key={index} variants={itemFadeIn} className="bg-white p-6 rounded-2xl shadow-md border border-gray-100 hover:shadow-xl transition-shadow duration-300 flex flex-col items-center">
+                            <motion.div 
+                                key={index} 
+                                variants={itemFadeIn} 
+                                className="bg-white p-6 rounded-2xl shadow-md border border-gray-100 hover:shadow-xl transition-shadow duration-300 flex flex-col items-center w-full max-w-sm h-full"
+                            >
                                 <img src={person.img} alt={person.name} className="w-32 h-32 rounded-full object-cover mb-4 border-4 border-gray-50 shadow-sm" />
                                 <h3 className="text-xl font-bold text-[#800020]">{person.name}</h3>
                                 <p className="text-[#FFD700] font-semibold text-sm uppercase tracking-wider mb-4">{person.role}</p>
-                                <p className="text-gray-600 text-sm leading-relaxed">{person.desc}</p>
+                                <p className="text-gray-600 text-sm leading-relaxed flex-grow">{person.desc}</p>
                             </motion.div>
                         ))}
                     </div>

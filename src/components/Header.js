@@ -56,8 +56,6 @@ const Header = () => {
             </a>
           ))}
 
-
-
           {/* --- LINK GALLERIA --- */}
           <Link
             to="/galleria"
@@ -130,13 +128,14 @@ const Header = () => {
               Chi Siamo
             </Link>
 
-            <a
-              href="#Iscrizione"
-              onClick={(e) => handleNavClick(e, "Iscrizione")}
-              className="px-8 py-4 mt-4 bg-sacra-accent text-gray-900 font-bold text-lg uppercase rounded-full shadow-md"
+            {/* --- FIX: Iscrizione Mobile come Link --- */}
+            <Link
+              to="/Iscrizione"
+              onClick={() => setMenuOpen(false)}
+              className="px-8 py-4 mt-4 bg-sacra-accent text-gray-900 font-bold text-lg uppercase rounded-full shadow-md text-center"
             >
               Iscriviti
-            </a>
+            </Link>
           </motion.div>
         )}
       </AnimatePresence>
