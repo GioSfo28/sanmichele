@@ -44,12 +44,12 @@ const Hero = () => {
         animate="visible"
         variants={fadeIn}
       >
-        {/* LOGO INGRANDITO E AVVICINATO AL TESTO */}
+        {/* LOGO INGRANDITO SU MOBILE */}
         <motion.img
           src={logoSacra}
           alt="Logo Pellegrinaggio San Michele"
           variants={fadeIn}
-          className="w-32 sm:w-48 md:w-64 h-auto mx-auto mb-2 drop-shadow-2xl object-contain"
+          className="w-48 sm:w-56 md:w-72 h-auto mx-auto mb-2 drop-shadow-2xl object-contain"
         />
 
         <motion.h1
