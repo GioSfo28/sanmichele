@@ -1,9 +1,9 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-// Import delle immagini specifiche per PC e Mobile
-import imgPC from "../assets/4.jpeg";
-import imgMobile from "../assets/7.jpeg";
+// Import dei video specifici per PC e Mobile
+import videoPC from "../assets/back.mp4";
+import videoMobile from "../assets/3.mp4";
 // Import del Logo
 import logoSacra from "../assets/SanMichele.png";
 
@@ -22,19 +22,27 @@ const Hero = () => {
       className="relative w-full min-h-[90vh] flex flex-col justify-center items-center text-center text-white px-4 sm:px-6 lg:px-8 pt-24 pb-16 overflow-hidden"
       id="top"
     >
-      {/* SFONDO PER PC (Visibile da tablet in su) */}
-      <div 
-        className="absolute inset-0 z-0 hidden md:block bg-cover bg-center bg-no-repeat transform scale-105"
-        style={{ backgroundImage: `url(${imgPC})` }}
+      {/* SFONDO VIDEO PER PC (Visibile da tablet in su) */}
+      <video 
+        className="absolute inset-0 z-0 hidden md:block w-full h-full object-cover transform scale-105"
+        src={videoPC}
+        autoPlay
+        loop
+        muted
+        playsInline
       />
 
-      {/* SFONDO PER MOBILE (Visibile solo su smartphone) */}
-      <div 
-        className="absolute inset-0 z-0 block md:hidden bg-cover bg-center bg-no-repeat transform scale-105"
-        style={{ backgroundImage: `url(${imgMobile})` }}
+      {/* SFONDO VIDEO PER MOBILE (Visibile solo su smartphone) */}
+      <video 
+        className="absolute inset-0 z-0 block md:hidden w-full h-full object-cover transform scale-105"
+        src={videoMobile}
+        autoPlay
+        loop
+        muted
+        playsInline
       />
 
-      {/* Overlay gradiente - leggermente più scuro per leggere meglio su foto diverse */}
+      {/* Overlay gradiente - per leggere meglio il testo sopra il video */}
       <div className="absolute inset-0 z-0 bg-gradient-to-b from-black/70 via-black/40 to-black/80"></div>
 
       {/* Contenuto */}
@@ -49,7 +57,7 @@ const Hero = () => {
           src={logoSacra}
           alt="Logo Pellegrinaggio San Michele"
           variants={fadeIn}
-          className="w-48 sm:w-56 md:w-72 h-auto mx-auto mb-2 drop-shadow-2xl object-contain"
+          className="w-72 sm:w-72 md:w-96 h-auto mx-auto mb-2 drop-shadow-2xl object-contain"
         />
 
         <motion.h1
