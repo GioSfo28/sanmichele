@@ -74,7 +74,7 @@ const Footer = () => {
               Pellegrinaggio Sacra San Michele
             </h3>
             <p className="text-sm text-gray-400 leading-relaxed">
-              Il cammino storico dalla città di Avigliana all'Abbazia millenaria della Valle di Susa. Un'esperienza di fede e natura.
+              Il cammino storico dalla città di Avigliana all'Abbazia millenaria della Valle di Susa. Un'esperienza di fede e natura, ideato e organizzato dall'Opera San Michele di Torino.
             </p>
           </motion.div>
 
