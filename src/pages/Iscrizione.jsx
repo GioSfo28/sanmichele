@@ -110,7 +110,7 @@ const Iscrizione = () => {
                                     </div>
                                     <div>
                                         <h3 className="font-semibold text-lg text-[#FFD700]">Data</h3>
-                                        <p className="text-white/90">Sabato 26 Settembre 2026</p>
+                                        <p className="text-white/90">Domenica 27 Settembre 2026</p>
                                     </div>
                                 </div>
 
