@@ -164,7 +164,7 @@ const Activities = () => {
               </li>
               <li className="flex items-start">
                 <FaChurch className="mr-4 mt-1 text-2xl text-sacra-secondary shrink-0" />
-                <span><strong className="text-gray-900">Arrivo:</strong> Sacra di San Michele. Previsto per la S. Messa delle ore 16:00/17:00.</span>
+                <span><strong className="text-gray-900">Arrivo:</strong> Sacra di San Michele. Previsto per la S. Messa delle ore 17:00.</span>
               </li>
             </ul>
           </motion.div>

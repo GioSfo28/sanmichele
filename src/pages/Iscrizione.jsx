@@ -121,7 +121,7 @@ const Iscrizione = () => {
                                     <div>
                                         <h3 className="font-semibold text-lg text-[#FFD700]">Orari</h3>
                                         <p className="text-white/90">Ritrovo: ore 09:00</p>
-                                        <p className="text-white/90">Fine prevista: ore 18:00</p>
+                                        <p className="text-white/90">Messa finale: ore 17:00</p>
                                     </div>
                                 </div>
 
