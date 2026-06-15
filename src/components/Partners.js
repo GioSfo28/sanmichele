@@ -10,6 +10,7 @@ import "swiper/css/pagination";
 import CisomLogo from "../assets/CISOM.png";
 import OperaSanMichele from "../assets/OperaSanMichele.jpg";
 import Salesiani from "../assets/Salesiani.jpg";
+import PastoraleCamilliana from "../assets/PastoraleCamilliana.jpeg"; 
 
 const Collaborazioni = () => {
   const fadeIn = {
@@ -17,7 +18,6 @@ const Collaborazioni = () => {
     visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
   };
 
-  // 1. Aggiunti i "link" corrispondenti dove disponibili
   const supportGroups = [
     { 
       name: "Avigliana - Salesiani Don Bosco", 
@@ -27,12 +27,17 @@ const Collaborazioni = () => {
     { 
       name: "Opera San Michele - Torino", 
       logo: OperaSanMichele, 
-      link: null // Nessun link specificato, non sarà cliccabile
+      link: null 
     },
     { 
       name: "CISOM (Corpo Italiano di Soccorso)", 
       logo: CisomLogo, 
       link: "https://www.cisom.org/" 
+    },
+    { 
+      name: "Pastorale Giovanile Camilliana", 
+      logo: PastoraleCamilliana, 
+      link: "https://www.facebook.com/PastoraleGiovanileCamillianaNordItaliana/?locale=it_IT" 
     },
   ];
 
@@ -70,7 +75,7 @@ const Collaborazioni = () => {
               disableOnInteraction: false
             }}
             pagination={{ clickable: true }}
-            className="pb-12" // Padding per i "pallini"
+            className="pb-12 px-2"
             breakpoints={{
               0: { slidesPerView: 1 },
               640: { slidesPerView: 1 },
@@ -79,42 +84,42 @@ const Collaborazioni = () => {
             }}
           >
             {supportGroups.map((group, index) => {
-              // --- LOGICA DI INGRANDIMENTO E SPAZIATURA SPECIFICA ---
-              const isSalesiani = group.logo === Salesiani;
-              const isOperaSanMichele = group.logo === OperaSanMichele;
-
-              const dynamicLogoClasses = (isSalesiani || isOperaSanMichele)
-                ? "max-h-40 max-w-[210px]" 
-                : "max-h-24 max-w-[180px]"; 
-
-              const dynamicMarginClasses = (isSalesiani || isOperaSanMichele)
-                ? "mb-4" 
-                : "mb-7"; 
-
-              // 2. Determiniamo dinamicamente se usare un tag <a> o un <div>
+              // Determiniamo dinamicamente se usare un tag <a> o un <div>
               const MotionTag = group.link ? motion.a : motion.div;
               
-              // 3. Impostiamo le proprietà del link solo se è presente
               const tagProps = group.link 
                 ? { href: group.link, target: "_blank", rel: "noopener noreferrer" } 
                 : {};
 
               return (
-                <SwiperSlide key={index}>
-                  {/* Se c'è un link, questo elemento diventerà un <a> cliccabile */}
+                <SwiperSlide key={index} className="h-auto"> 
+                  {/* STRUTTURA CARD PULITA E PROFESSIONALE */}
                   <MotionTag
                     {...tagProps}
                     whileHover={{ y: -8 }}
-                    className="bg-white p-6 rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 flex flex-col justify-center items-center h-56 border border-gray-100 group mx-2 cursor-pointer"
+                    // La card è un flex in colonna. h-full assicura che tutte le card siano alte uguali.
+                    className="bg-white p-6 rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 flex flex-col h-full border border-gray-100 group mx-2 cursor-pointer"
                   >
-                    <img
-                      src={group.logo}
-                      alt={`${group.name} logo`}
-                      className={`${dynamicLogoClasses} ${dynamicMarginClasses} w-full object-contain transition-transform duration-300 group-hover:scale-110`}
-                    />
-                    <p className="text-sm font-medium text-gray-700 text-center leading-snug group-hover:text-sacra-primary transition-colors">
-                      {group.name}
-                    </p>
+                    
+                    {/* CONTENITORE LOGO (Bounding Box fissa) */}
+                    {/* h-36 fissa l'altezza. I loghi si centreranno senza deformarsi */}
+                    <div className="h-36 w-full flex items-center justify-center mb-6 overflow-hidden">
+                      <img
+                        src={group.logo}
+                        alt={`${group.name} logo`}
+                        // max-h-full max-w-full object-contain sono il segreto per loghi perfetti
+                        className="max-h-full max-w-full object-contain transition-transform duration-300 group-hover:scale-105"
+                      />
+                    </div>
+
+                    {/* CONTENITORE TESTO */}
+                    {/* flex-grow spinge il testo a occupare lo spazio rimanente, allineandolo al centro in basso */}
+                    <div className="flex-grow flex items-center justify-center w-full">
+                      <p className="text-sm font-medium text-gray-700 text-center leading-snug group-hover:text-sacra-primary transition-colors">
+                        {group.name}
+                      </p>
+                    </div>
+
                   </MotionTag>
                 </SwiperSlide>
               );

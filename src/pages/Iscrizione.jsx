@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { FaArrowLeft, FaCalendarAlt, FaMapMarkerAlt, FaClock, FaCheckCircle, FaEnvelope } from "react-icons/fa";
+import { FaArrowLeft, FaCalendarAlt, FaMapMarkerAlt, FaClock, FaCheckCircle, FaInfoCircle } from "react-icons/fa";
 import { motion } from "framer-motion";
 import Footer from "../components/Footer";
 
@@ -9,9 +9,11 @@ import { db } from "../firebase/config.js";
 import { ref, push, set, serverTimestamp } from "firebase/database";
 
 const Iscrizione = () => {
-    // Stato semplificato solo per la mailing list
-    const [emailData, setEmailData] = useState({
+    const [formData, setFormData] = useState({
+        nome: "",
+        cognome: "",
         email: "",
+        telefono: "",
         privacy: false
     });
 
@@ -25,7 +27,7 @@ const Iscrizione = () => {
 
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
-        setEmailData(prev => ({
+        setFormData(prev => ({
             ...prev,
             [name]: type === "checkbox" ? checked : value
         }));
@@ -37,21 +39,34 @@ const Iscrizione = () => {
         setErrorMessage("");
 
         try {
-            // Crea un riferimento a un nuovo nodo per chi vuole essere avvisato
-            const mailingListRef = ref(db, 'MailingList');
-            const nuovaEmailRef = push(mailingListRef);
+            const iscrizioniRef = ref(db, 'iscrizioni');
+            const nuovaIscrizioneRef = push(iscrizioniRef);
 
-            // Salva solo l'email e l'accettazione della privacy
-            await set(nuovaEmailRef, {
-                email: emailData.email,
-                privacyAccettata: emailData.privacy,
-                dataRegistrazione: serverTimestamp()
+            // 1. Creiamo la data formattata (GG/MM/AAAA HH:mm)
+            const dataAttuale = new Date();
+            const dataLeggibile = dataAttuale.toLocaleString('it-IT', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            }).replace(',', ''); 
+
+            // 2. Salvataggio dei dati completi (con stringa leggibile e timestamp)
+            await set(nuovaIscrizioneRef, {
+                nome: formData.nome,
+                cognome: formData.cognome,
+                email: formData.email,
+                telefono: formData.telefono,
+                privacyAccettata: formData.privacy,
+                dataIscrizione: dataLeggibile,
+                timestamp: serverTimestamp()
             });
 
             setIsSuccess(true);
         } catch (error) {
             console.error("Errore di scrittura su Firebase: ", error);
-            setErrorMessage("Si è verificato un errore. Riprova più tardi.");
+            setErrorMessage("Si è verificato un errore durante l'invio. Riprova più tardi.");
         } finally {
             setIsSubmitting(false);
         }
@@ -83,19 +98,19 @@ const Iscrizione = () => {
                         className="text-4xl sm:text-5xl font-extrabold tracking-tight text-[#800020] mb-4"
                         initial="hidden" animate="visible" variants={fadeIn}
                     >
-                        Le iscrizioni apriranno presto
+                        Iscriviti al pellegrinaggio
                     </motion.h1>
                     <motion.p
                         className="text-lg text-gray-600 font-light max-w-2xl mx-auto"
                         initial="hidden" animate="visible" variants={fadeIn}
                     >
-                        I dettagli del pellegrinaggio sono confermati, ma stiamo ultimando i preparativi. Lascia la tua email per ricevere una notifica non appena apriranno le iscrizioni ufficiali!
+                        Compila il modulo per confermare la tua presenza. I posti potrebbero essere limitati!
                     </motion.p>
                 </div>
 
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
 
-                    {/* COLONNA SINISTRA: Info Evento (Mantenuta inalterata) */}
+                    {/* COLONNA SINISTRA: Info Evento */}
                     <motion.div
                         className="lg:col-span-5 space-y-6"
                         initial="hidden" animate="visible" variants={fadeIn}
@@ -137,15 +152,22 @@ const Iscrizione = () => {
                             </div>
                         </div>
 
+                        {/* INFO PAGAMENTO E QUOTA AGGIORNATE (Solo Contanti) */}
                         <div className="bg-yellow-50 border border-yellow-200 p-6 rounded-2xl">
-                            <h4 className="font-bold text-gray-900 mb-2">Nota sulle quote:</h4>
-                            <p className="text-gray-700 text-sm">
-                                I pacchetti (con e senza pizzata) e i relativi costi saranno visibili al momento dell'apertura ufficiale delle iscrizioni.
+                            <div className="flex items-center mb-3">
+                                <FaInfoCircle className="text-[#800020] text-xl mr-2" />
+                                <h4 className="font-bold text-gray-900 text-lg">Quota di partecipazione: 5€</h4>
+                            </div>
+                            <p className="text-gray-700 text-sm leading-relaxed mb-3">
+                                La quota serve a coprire esclusivamente i <strong>costi dell'assicurazione infortuni</strong> e il servizio del <strong>pulmino per il rientro</strong> dalla Sacra di San Michele al Santuario Madonna dei Laghi.
+                            </p>
+                            <p className="text-gray-700 text-sm leading-relaxed border-t border-yellow-200 pt-3">
+                                Il pagamento avverrà la mattina stessa in loco al momento del ritrovo. È accettato esclusivamente il pagamento in <strong>Contanti</strong> (si prega di portare la cifra esatta).
                             </p>
                         </div>
                     </motion.div>
 
-                    {/* COLONNA DESTRA: Form Notifica o Messaggio di Successo */}
+                    {/* COLONNA DESTRA: Form Iscrizione */}
                     <motion.div
                         className="lg:col-span-7 bg-white p-8 rounded-3xl shadow-xl border border-gray-100 relative flex flex-col justify-center"
                         initial="hidden" animate="visible" variants={fadeIn}
@@ -153,71 +175,59 @@ const Iscrizione = () => {
                         {isSuccess ? (
                             <div className="flex flex-col items-center justify-center text-center py-10">
                                 <FaCheckCircle className="text-6xl text-green-500 mb-6" />
-                                <h3 className="text-3xl font-bold text-gray-900 mb-4">Email registrata!</h3>
+                                <h3 className="text-3xl font-bold text-gray-900 mb-4">Iscrizione Ricevuta!</h3>
                                 <p className="text-lg text-gray-600 mb-8">
-                                    Grazie per l'interesse. Ti invieremo un'email non appena saranno aperte le iscrizioni.
+                                    Grazie {formData.nome}, abbiamo registrato correttamente la tua iscrizione. Ci vediamo il 27 Settembre!
                                 </p>
                                 <Link to="/" className="px-8 py-3 bg-[#800020] text-white font-bold rounded-full shadow-lg hover:bg-[#5C0017] transition-all">
                                     Torna alla Home
                                 </Link>
                             </div>
                         ) : (
-                            <div>
-                                <div className="flex items-center mb-6">
-                                    <FaEnvelope className="text-[#800020] text-2xl mr-3" />
-                                    <h2 className="text-2xl font-bold text-gray-900">Rimani aggiornato</h2>
-                                </div>
-                                <p className="text-gray-600 mb-8">
-                                    Inserisci la tua email per avere la priorità ed essere avvisato il giorno in cui apriremo il modulo di registrazione.
-                                </p>
+                            <form onSubmit={handleSubmit} className="space-y-6">
+                                {errorMessage && (
+                                    <div className="p-4 bg-red-50 border border-red-200 text-red-700 rounded-xl mb-4">
+                                        {errorMessage}
+                                    </div>
+                                )}
 
-                                <form onSubmit={handleSubmit} className="space-y-6">
-                                    {errorMessage && (
-                                        <div className="p-4 bg-red-50 border border-red-200 text-red-700 rounded-xl mb-4">
-                                            {errorMessage}
-                                        </div>
-                                    )}
-
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                                     <div>
-                                        <label className="block text-sm font-semibold text-gray-700 mb-2">Indirizzo Email *</label>
-                                        <input 
-                                            type="email" 
-                                            name="email" 
-                                            required 
-                                            value={emailData.email} 
-                                            onChange={handleChange} 
-                                            disabled={isSubmitting} 
-                                            className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-[#800020] focus:border-transparent outline-none transition-all bg-gray-50 focus:bg-white disabled:opacity-50" 
-                                            placeholder="mario@email.com" 
-                                        />
+                                        <label className="block text-sm font-semibold text-gray-700 mb-2">Nome *</label>
+                                        <input type="text" name="nome" required value={formData.nome} onChange={handleChange} disabled={isSubmitting} className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-[#800020] focus:border-transparent outline-none transition-all bg-gray-50 focus:bg-white disabled:opacity-50" placeholder="Mario" />
                                     </div>
-
-                                    <div className="pt-4 border-t border-gray-100">
-                                        <label className="flex items-start cursor-pointer">
-                                            <input 
-                                                type="checkbox" 
-                                                name="privacy" 
-                                                required 
-                                                checked={emailData.privacy} 
-                                                onChange={handleChange} 
-                                                disabled={isSubmitting} 
-                                                className="w-5 h-5 mt-1 text-[#800020] rounded focus:ring-[#800020]" 
-                                            />
-                                            <span className="ml-3 text-sm text-gray-600 leading-relaxed">
-                                                Acconsento al trattamento dei miei dati per essere ricontattato in merito all'apertura delle iscrizioni di questo evento. *
-                                            </span>
-                                        </label>
+                                    <div>
+                                        <label className="block text-sm font-semibold text-gray-700 mb-2">Cognome *</label>
+                                        <input type="text" name="cognome" required value={formData.cognome} onChange={handleChange} disabled={isSubmitting} className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-[#800020] focus:border-transparent outline-none transition-all bg-gray-50 focus:bg-white disabled:opacity-50" placeholder="Rossi" />
                                     </div>
+                                </div>
 
-                                    <button 
-                                        type="submit" 
-                                        disabled={isSubmitting} 
-                                        className="w-full py-4 mt-6 bg-[#FFD700] text-gray-900 font-bold text-lg uppercase tracking-wider rounded-xl shadow-lg hover:bg-yellow-400 transition-all duration-300 transform hover:-translate-y-0.5 focus:outline-none focus:ring-4 focus:ring-[#FFD700]/50 disabled:opacity-50 disabled:cursor-not-allowed"
-                                    >
-                                        {isSubmitting ? "Registrazione in corso..." : "Avvisami quando aprono"}
-                                    </button>
-                                </form>
-                            </div>
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                                    <div>
+                                        <label className="block text-sm font-semibold text-gray-700 mb-2">Email *</label>
+                                        <input type="email" name="email" required value={formData.email} onChange={handleChange} disabled={isSubmitting} className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-[#800020] focus:border-transparent outline-none transition-all bg-gray-50 focus:bg-white disabled:opacity-50" placeholder="mario@email.com" />
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm font-semibold text-gray-700 mb-2">Telefono *</label>
+                                        <input type="tel" name="telefono" required value={formData.telefono} onChange={handleChange} disabled={isSubmitting} className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-[#800020] focus:border-transparent outline-none transition-all bg-gray-50 focus:bg-white disabled:opacity-50" placeholder="+39 333 1234567" />
+                                    </div>
+                                </div>
+
+                                {/* Privacy */}
+                                <div className="pt-4 border-t border-gray-100">
+                                    <label className="flex items-start cursor-pointer">
+                                        <input type="checkbox" name="privacy" required checked={formData.privacy} onChange={handleChange} disabled={isSubmitting} className="w-5 h-5 mt-1 text-[#800020] rounded focus:ring-[#800020]" />
+                                        <span className="ml-3 text-sm text-gray-600 leading-relaxed">
+                                            Ho letto e accetto l'informativa sulla privacy. Acconsento al trattamento dei miei dati per la gestione logistica dell'evento. *
+                                        </span>
+                                    </label>
+                                </div>
+
+                                {/* Submit */}
+                                <button type="submit" disabled={isSubmitting} className="w-full py-4 mt-6 bg-[#FFD700] text-gray-900 font-bold text-lg uppercase tracking-wider rounded-xl shadow-lg hover:bg-yellow-400 transition-all duration-300 transform hover:-translate-y-0.5 focus:outline-none focus:ring-4 focus:ring-[#FFD700]/50 disabled:opacity-50 disabled:cursor-not-allowed">
+                                    {isSubmitting ? "Invio in corso..." : "Conferma Iscrizione"}
+                                </button>
+                            </form>
                         )}
                     </motion.div>
                 </div>

@@ -1,11 +1,15 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
+import { FaDownload } from "react-icons/fa"; // <-- Import dell'icona di download
+
 // Import dei video specifici per PC e Mobile
 import videoPC from "../assets/back.mp4";
 import videoMobile from "../assets/3.mp4";
 // Import del Logo
 import logoSacra from "../assets/SanMichele.png";
+// Import della Locandina
+import locandinaImg from "../assets/Locandina.jpeg"; // <-- Import della locandina
 
 const Hero = () => {
   const fadeIn = {
@@ -87,20 +91,34 @@ const Hero = () => {
           Unisciti al cammino che congiunge la Valle di Susa al sacro allineamento micaelico.
         </motion.p>
 
-        {/* Bottone con Link React Router */}
+        {/* CONTENITORE BOTTONI */}
         <motion.div 
           variants={fadeIn}
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          className="mt-10 inline-block"
+          className="mt-10 flex flex-col items-center gap-4"
         >
-          <Link
-            to="/iscrizione"
-            className="inline-block px-8 sm:px-10 py-4 bg-sacra-primary text-white font-bold text-base sm:text-lg uppercase tracking-wide rounded-full shadow-2xl hover:bg-sacra-hover transition-all duration-300 focus:ring-4 focus:ring-sacra-primary/50"
+          {/* Bottone Principale Iscrizione */}
+          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+            <Link
+              to="/iscrizione"
+              className="inline-block px-8 sm:px-10 py-4 bg-sacra-primary text-white font-bold text-base sm:text-lg uppercase tracking-wide rounded-full shadow-2xl hover:bg-sacra-hover transition-all duration-300 focus:ring-4 focus:ring-sacra-primary/50"
+            >
+              Scopri la data e iscriviti
+            </Link>
+          </motion.div>
+
+          {/* Bottone Secondario Download Locandina */}
+          <motion.a
+            href={locandinaImg}
+            download="Locandina_Pellegrinaggio_San_Michele.jpeg"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="inline-flex items-center justify-center px-6 py-2 border-2 border-white/50 text-white/90 font-semibold text-sm sm:text-base uppercase tracking-wide rounded-full hover:bg-white/20 hover:border-white hover:text-white transition-all duration-300"
           >
-            Scopri la data e iscriviti
-          </Link>
+            <FaDownload className="mr-2" />
+            Scarica la locandina
+          </motion.a>
         </motion.div>
+
       </motion.div>
     </section>
   );
