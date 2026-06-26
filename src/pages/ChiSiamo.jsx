@@ -1,7 +1,7 @@
 // File: src/pages/ChiSiamo.jsx
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
-import { FaArrowLeft, FaCross, FaStar, FaQuoteLeft } from "react-icons/fa";
+import { FaArrowLeft, FaCross, FaStar } from "react-icons/fa";
 import { motion } from "framer-motion";
 import Footer from "../components/Footer";
 

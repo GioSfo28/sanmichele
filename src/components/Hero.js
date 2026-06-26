@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { Link } from "react-router-dom";
-import { FaDownload, FaArrowDown, FaMountain } from "react-icons/fa";
+import { FaDownload} from "react-icons/fa";
 import * as THREE from "three";
 
 // Import dei video
@@ -19,7 +19,6 @@ const Hero = () => {
 
   const y = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
   const opacity = useTransform(scrollYProgress, [0, 1], [1, 0]);
-  const scale = useTransform(scrollYProgress, [0, 1], [1, 1.5]);
 
   // Configurazione Three.js per effetto particelle
   useEffect(() => {

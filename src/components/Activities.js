@@ -24,22 +24,22 @@ import autobusPdf from "../assets/Autobus.pdf";
 // Componente per forzare il resize della mappa
 const MapResizer = () => {
   const map = useMap();
-  
+
   useEffect(() => {
     setTimeout(() => {
       map.invalidateSize();
     }, 100);
-    
+
     const handleResize = () => {
       map.invalidateSize();
     };
-    
+
     window.addEventListener('resize', handleResize);
     return () => {
       window.removeEventListener('resize', handleResize);
     };
   }, [map]);
-  
+
   return null;
 };
 
@@ -96,7 +96,7 @@ const Activities = () => {
       setActiveTab(tab);
       document.getElementById('Percorso')?.scrollIntoView({ behavior: 'smooth' });
     };
-    
+
     return () => {
       delete window.changeActivityTab;
     };
@@ -117,11 +117,10 @@ const Activities = () => {
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`flex-1 flex items-center justify-center gap-2 py-4 px-4 text-base sm:text-lg font-semibold transition-all duration-300 border-b-2 ${
-                activeTab === tab.id
+              className={`flex-1 flex items-center justify-center gap-2 py-4 px-4 text-base sm:text-lg font-semibold transition-all duration-300 border-b-2 ${activeTab === tab.id
                   ? 'text-sacra-primary border-sacra-primary bg-sacra-primary/5'
                   : 'text-gray-400 border-transparent hover:text-gray-600 hover:bg-gray-50'
-              }`}
+                }`}
             >
               <tab.icon className="text-lg" />
               <span className="hidden sm:inline">{tab.label}</span>
@@ -150,12 +149,16 @@ const Activities = () => {
             <div className="grid lg:grid-cols-2 gap-12">
               {/* Mappa */}
               <div className="flex flex-col">
-                <div className="rounded-3xl overflow-hidden shadow-2xl border-4 border-white" style={{ height: '500px', width: '100%' }}>
+                <div
+                  className="rounded-3xl overflow-hidden shadow-2xl border-4 border-white map-wrapper"
+                  style={{ height: '500px', width: '100%', position: 'relative', zIndex: 1 }}
+                >
                   <MapContainer
                     center={[45.085, 7.367]}
                     zoom={13}
                     style={{ height: '100%', width: '100%' }}
                     scrollWheelZoom={true}
+                    zoomControl={true}
                   >
                     <MapResizer />
                     <TileLayer
@@ -164,9 +167,9 @@ const Activities = () => {
                     />
                     <GeoJSON
                       data={routeData}
-                      style={{ 
-                        color: "#800020", 
-                        weight: 6, 
+                      style={{
+                        color: "#800020",
+                        weight: 6,
                         lineCap: "round",
                         opacity: 0.9,
                         dashArray: "10, 10"
@@ -192,7 +195,7 @@ const Activities = () => {
                     </Marker>
                   </MapContainer>
                 </div>
-                
+
                 <div className="flex justify-end mt-3">
                   <a
                     href="https://www.komoot.com/tour/2584007841"
@@ -210,7 +213,7 @@ const Activities = () => {
                 <h3 className="text-4xl font-black text-sacra-primary mb-8">
                   Dettagli Tecnici
                 </h3>
-                
+
                 {[
                   { icon: FaHiking, title: "Distanza", value: "14 km (solo andata)" },
                   { icon: FaMountain, title: "Dislivello", value: "620 metri" },
@@ -304,7 +307,7 @@ const Activities = () => {
                   <p><strong className="text-sacra-primary">Treno:</strong> da Torino Porta Nuova ad Avigliana (30 min)</p>
                   <p><strong className="text-sacra-primary">Autobus:</strong> dalla stazione al Santuario</p>
                   <a href={autobusPdf} target="_blank" rel="noopener noreferrer"
-                     className="inline-flex items-center gap-2 px-4 py-2 bg-red-50 text-red-600 rounded-xl hover:bg-red-100 transition-colors">
+                    className="inline-flex items-center gap-2 px-4 py-2 bg-red-50 text-red-600 rounded-xl hover:bg-red-100 transition-colors">
                     <FaFilePdf /> Scarica Orari
                   </a>
                 </div>
@@ -368,19 +371,19 @@ const Activities = () => {
                 <SwiperSlide key={index}>
                   <div className="bg-white rounded-3xl shadow-2xl overflow-hidden">
                     {media.type === "video" ? (
-                      <video 
-                        src={media.src} 
-                        className="w-full h-96 object-cover" 
-                        autoPlay 
-                        loop 
-                        muted 
-                        playsInline 
+                      <video
+                        src={media.src}
+                        className="w-full h-96 object-cover"
+                        autoPlay
+                        loop
+                        muted
+                        playsInline
                       />
                     ) : (
-                      <img 
-                        src={media.src} 
+                      <img
+                        src={media.src}
                         alt={`Momento del pellegrinaggio ${index + 1}`}
-                        className="w-full h-96 object-cover" 
+                        className="w-full h-96 object-cover"
                       />
                     )}
                   </div>
@@ -390,7 +393,7 @@ const Activities = () => {
 
             <div className="text-center mt-8">
               <Link to="/galleria"
-                    className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-sacra-primary to-sacra-accent text-white font-bold rounded-full hover:shadow-lg transition-all">
+                className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-sacra-primary to-sacra-accent text-white font-bold rounded-full hover:shadow-lg transition-all">
                 <FaImages /> Galleria Completa
               </Link>
             </div>
