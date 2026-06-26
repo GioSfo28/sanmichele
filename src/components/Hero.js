@@ -17,8 +17,8 @@ const Hero = () => {
     offset: ["start start", "end start"]
   });
 
-  const y = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
-  const opacity = useTransform(scrollYProgress, [0, 1], [1, 0]);
+  // RIMOSSO l'effetto y - il contenuto rimane fermo
+  const opacity = useTransform(scrollYProgress, [0, 0.5, 0.9], [1, 0.8, 0]);
 
   // Configurazione Three.js per effetto particelle
   useEffect(() => {
@@ -125,10 +125,10 @@ const Hero = () => {
         <div className="absolute top-3/4 left-0 w-full h-px bg-gradient-to-r from-transparent via-sacra-accent to-transparent animate-pulse animation-delay-2000" />
       </div>
 
-      {/* Contenuto principale */}
+      {/* Contenuto principale - SENZA movimento verticale */}
       <motion.div
         className="relative z-20 max-w-5xl mx-auto px-4"
-        style={{ y, opacity }}
+        style={{ opacity }}
       >
         {/* Logo GRANDE come prima */}
         <motion.div
@@ -208,7 +208,7 @@ const Hero = () => {
           ))}
         </motion.div>
 
-        {/* Bottoni CTA */}
+        {/* Bottoni CTA - ORA RIMANGONO FERMI E VISIBILI */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
