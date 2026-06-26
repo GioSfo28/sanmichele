@@ -1,19 +1,17 @@
-import React from "react";
-import { FaMapMarkerAlt, FaHiking, FaSuitcase, FaTrain, FaCalendarAlt, FaExternalLinkAlt, FaImages, FaUtensils, FaChurch, FaHeartbeat, FaFilePdf } from "react-icons/fa";
+import React, { useEffect, useState } from "react";
+import { FaMapMarkerAlt, FaHiking, FaSuitcase, FaTrain, FaCalendarAlt, FaExternalLinkAlt, FaMountain, FaImages, FaUtensils, FaChurch, FaHeartbeat, FaFilePdf } from "react-icons/fa";
 import { motion } from "framer-motion";
-import { MapContainer, TileLayer, GeoJSON, Marker, Popup } from "react-leaflet";
+import { MapContainer, TileLayer, GeoJSON, Marker, Popup, useMap } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import routeData from "../data/routeCoordinates.json";
-import { Link } from "react-router-dom";
-
-// --- IMPORT SWIPER PER LA GALLERIA ---
+import { Link, useLocation } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay, Pagination } from "swiper/modules";
+import { Autoplay, Pagination, EffectCards } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
+import "swiper/css/effect-cards";
 
-// --- IMPORT DEI TUOI ASSETS LOCALI ---
 import img1 from "../assets/1.jpg";
 import img2 from "../assets/2.jpeg";
 import vid3 from "../assets/3.mp4";
@@ -21,28 +19,46 @@ import img4 from "../assets/4.jpeg";
 import img5 from "../assets/5.jpeg";
 import img6 from "../assets/6.jpeg";
 import img7 from "../assets/7.jpeg";
-
-// --- IMPORT PDF AUTOBUS ---
 import autobusPdf from "../assets/Autobus.pdf";
 
-// --- CREAZIONE ICONE PERSONALIZZATE ---
+// Componente per forzare il resize della mappa
+const MapResizer = () => {
+  const map = useMap();
+  
+  useEffect(() => {
+    setTimeout(() => {
+      map.invalidateSize();
+    }, 100);
+    
+    const handleResize = () => {
+      map.invalidateSize();
+    };
+    
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, [map]);
+  
+  return null;
+};
+
 const startIcon = new L.divIcon({
   className: "bg-transparent border-none",
-  html: `<div style="background-color: #688e26; color: white; border-radius: 50%; width: 32px; height: 32px; display: flex; justify-content: center; align-items: center; font-weight: bold; border: 3px solid white; box-shadow: 0 4px 6px rgba(0,0,0,0.3); font-size: 14px;">A</div>`,
-  iconSize: [32, 32],
-  iconAnchor: [16, 16],
-  popupAnchor: [0, -16]
+  html: `<div style="background: linear-gradient(135deg, #688e26, #4a6e1a); color: white; border-radius: 50%; width: 40px; height: 40px; display: flex; justify-content: center; align-items: center; font-weight: bold; border: 3px solid white; box-shadow: 0 8px 16px rgba(0,0,0,0.3); font-size: 16px; animation: pulse 2s infinite;">A</div>`,
+  iconSize: [40, 40],
+  iconAnchor: [20, 20],
+  popupAnchor: [0, -20]
 });
 
 const endIcon = new L.divIcon({
   className: "bg-transparent border-none",
-  html: `<div style="background-color: #800020; color: white; border-radius: 50%; width: 36px; height: 36px; display: flex; justify-content: center; align-items: center; font-size: 18px; border: 3px solid white; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">🏁</div>`,
-  iconSize: [36, 36],
-  iconAnchor: [18, 18],
-  popupAnchor: [0, -18]
+  html: `<div style="background: linear-gradient(135deg, #800020, #600018); color: white; border-radius: 50%; width: 44px; height: 44px; display: flex; justify-content: center; align-items: center; font-size: 20px; border: 3px solid white; box-shadow: 0 8px 16px rgba(0,0,0,0.3); animation: pulse 2s infinite;">🏁</div>`,
+  iconSize: [44, 44],
+  iconAnchor: [22, 22],
+  popupAnchor: [0, -22]
 });
 
-// --- STRUTTURA DELLA GALLERIA ---
 const galleryMedia = [
   { type: "image", src: img1 },
   { type: "image", src: img2 },
@@ -54,315 +70,339 @@ const galleryMedia = [
 ];
 
 const Activities = () => {
-  const fadeIn = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.6, staggerChildren: 0.2 } },
-  };
+  const [activeTab, setActiveTab] = useState('percorso');
+  const location = useLocation();
 
-  const cardFadeIn = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.4 } },
-  };
+  // Ascolta i cambiamenti di hash nell'URL
+  useEffect(() => {
+    const hash = window.location.hash;
+    if (hash === '#Logistica') {
+      setActiveTab('logistica');
+      // Scroll alla sezione
+      setTimeout(() => {
+        document.getElementById('Percorso')?.scrollIntoView({ behavior: 'smooth' });
+      }, 100);
+    } else if (hash === '#Percorso') {
+      setActiveTab('percorso');
+      setTimeout(() => {
+        document.getElementById('Percorso')?.scrollIntoView({ behavior: 'smooth' });
+      }, 100);
+    }
+  }, [location]);
+
+  // Esponi la funzione per cambiare tab globalmente
+  useEffect(() => {
+    window.changeActivityTab = (tab) => {
+      setActiveTab(tab);
+      document.getElementById('Percorso')?.scrollIntoView({ behavior: 'smooth' });
+    };
+    
+    return () => {
+      delete window.changeActivityTab;
+    };
+  }, []);
+
+  const tabs = [
+    { id: 'percorso', label: 'Percorso', icon: FaHiking },
+    { id: 'logistica', label: 'Logistica', icon: FaSuitcase },
+    { id: 'galleria', label: 'Galleria', icon: FaImages }
+  ];
 
   return (
-    <section className="w-full bg-gradient-to-b from-gray-50 to-white">
-      {/* Sezione Percorso */}
-      <div id="Percorso" className="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-        <motion.div
-          className="text-center mb-16"
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          variants={fadeIn}
-        >
-          <h2 className="text-4xl sm:text-5xl font-extrabold tracking-tight text-sacra-primary">
-            Il percorso del pellegrinaggio
-          </h2>
-          <p className="text-lg text-gray-600 font-light leading-relaxed mt-4 max-w-3xl mx-auto">
-            Un cammino di <strong className="font-semibold text-gray-900">14 km</strong> da Avigliana alla Sacra di San Michele, con <strong className="font-semibold text-gray-900">620 metri di dislivello</strong>, immersi nella natura e nella spiritualità della Valle di Susa.
-          </p>
-        </motion.div>
-
-        <motion.div
-          className="flex flex-col lg:flex-row gap-12 items-center"
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          variants={fadeIn}
-        >
-          <motion.div className="w-full lg:w-1/2 flex flex-col gap-4" variants={cardFadeIn}>
-            {/* Contenitore Mappa */}
-            <div className="rounded-2xl overflow-hidden shadow-xl border-4 border-white relative z-0">
-              <MapContainer
-                center={[45.1041, 7.3423]}
-                zoom={13}
-                className="h-[400px] w-full"
-                aria-label="Mappa del percorso da Avigliana alla Sacra di San Michele"
-              >
-                <TileLayer
-                  url="https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png"
-                  attribution='&copy; <a href="https://opentopomap.org">OpenTopoMap</a> contributors'
-                />
-                <GeoJSON
-                  data={routeData}
-                  style={{ color: "#800020", weight: 5, lineCap: "round" }}
-                />
-                <Marker position={[45.069498, 7.392144]} icon={startIcon}>
-                  <Popup>
-                    <strong className="text-[#688e26]">Partenza</strong><br />
-                    Santuario Madonna dei Laghi
-                  </Popup>
-                </Marker>
-                <Marker position={[45.0976, 7.3428]} icon={endIcon}>
-                  <Popup>
-                    <strong className="text-[#800020]">Arrivo</strong><br />
-                    Sacra di San Michele
-                  </Popup>
-                </Marker>
-              </MapContainer>
-            </div>
-
-            {/* Bottone KOMOOT */}
-            <div className="flex justify-end">
-              <a
-                href="https://www.komoot.com/tour/2584007841?ref=aso&share_token=aTVPA7OgSZKhuFeq8UoBfDW3ihSHB4dIpGVL5CRVdypKTAUYMG"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-6 py-3 bg-[#9fb53a] text-white font-bold rounded-xl shadow-md hover:bg-[#8da32f] transition-colors duration-300"
-              >
-                <FaMapMarkerAlt /> Guarda su Komoot <FaExternalLinkAlt className="text-sm ml-1" />
-              </a>
-            </div>
-          </motion.div>
-
-          {/* Dettagli Tecnici */}
-          <motion.div className="w-full lg:w-1/2" variants={cardFadeIn}>
-            <h3 className="text-3xl font-bold mb-6 flex items-center text-sacra-primary border-b border-gray-200 pb-4">
-              <FaMapMarkerAlt className="mr-3 text-sacra-accent" />
-              Dettagli tecnici
-            </h3>
-            <ul className="space-y-4 text-gray-700 text-lg">
-              <li className="flex items-center">
-                <FaHiking className="mr-4 text-2xl text-sacra-secondary shrink-0" />
-                <span><strong className="text-gray-900">Distanza:</strong> 14 km (solo andata)</span>
-              </li>
-              <li className="flex items-center">
-                <FaHiking className="mr-4 text-2xl text-sacra-secondary shrink-0" />
-                <span><strong className="text-gray-900">Dislivello:</strong> 620 metri</span>
-              </li>
-              <li className="flex items-center">
-                <FaCalendarAlt className="mr-4 text-2xl text-sacra-secondary shrink-0" />
-                <span><strong className="text-gray-900">Durata:</strong> 4-5 ore di camminata (in base al passo)</span>
-              </li>
-              <li className="flex items-start">
-                <FaUtensils className="mr-4 mt-1 text-2xl text-sacra-secondary shrink-0" />
-                <span><strong className="text-gray-900">Pausa:</strong> Prevista pausa con pranzo al sacco.</span>
-              </li>
-              <li className="flex items-start border-t border-gray-100 pt-4 mt-2">
-                <FaMapMarkerAlt className="mr-4 mt-1 text-2xl text-sacra-secondary shrink-0" />
-                <span><strong className="text-gray-900">Partenza:</strong> Santuario Madonna dei Laghi ore 9:30</span>
-              </li>
-              <li className="flex items-start">
-                <FaChurch className="mr-4 mt-1 text-2xl text-sacra-secondary shrink-0" />
-                <span><strong className="text-gray-900">Arrivo:</strong> Sacra di San Michele. Previsto per la S. Messa delle ore 17:00.</span>
-              </li>
-            </ul>
-          </motion.div>
-        </motion.div>
+    <section className="w-full bg-white" id="Percorso">
+      {/* Tab Navigation */}
+      <div className="sticky top-[72px] z-30 bg-white/95 backdrop-blur-md border-b border-gray-200 shadow-sm">
+        <div className="max-w-4xl mx-auto flex">
+          {tabs.map((tab) => (
+            <button
+              key={tab.id}
+              onClick={() => setActiveTab(tab.id)}
+              className={`flex-1 flex items-center justify-center gap-2 py-4 px-4 text-base sm:text-lg font-semibold transition-all duration-300 border-b-2 ${
+                activeTab === tab.id
+                  ? 'text-sacra-primary border-sacra-primary bg-sacra-primary/5'
+                  : 'text-gray-400 border-transparent hover:text-gray-600 hover:bg-gray-50'
+              }`}
+            >
+              <tab.icon className="text-lg" />
+              <span className="hidden sm:inline">{tab.label}</span>
+            </button>
+          ))}
+        </div>
       </div>
 
-      {/* Sezione Logistica */}
-      <div id="Logistica" className="py-20 px-4 sm:px-6 lg:px-8 bg-gray-50 border-t border-gray-200">
-        <motion.div
-          className="max-w-4xl mx-auto mb-16 text-center"
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          variants={fadeIn}
-        >
-          <h2 className="text-4xl sm:text-5xl font-extrabold tracking-tight text-sacra-primary">
-            Logistica e preparazione
-          </h2>
-        </motion.div>
-
-        <div className="max-w-6xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {/* Box Cosa Portare */}
-            <motion.div
-              className="bg-white p-8 rounded-2xl shadow-md border border-gray-100 hover:shadow-xl transition-shadow duration-300"
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              variants={cardFadeIn}
-            >
-              <div className="flex items-center mb-6">
-                <div className="p-3 bg-sacra-primary/10 rounded-lg mr-4">
-                  <FaSuitcase className="text-2xl text-sacra-primary" />
-                </div>
-                <h3 className="text-2xl font-bold text-sacra-primary">Cosa portare</h3>
-              </div>
-              <ul className="space-y-3 text-gray-700 text-lg">
-                {["Scarpe da trekking comode e robuste", "Pranzo al sacco e borraccia (minimo 1 litro)", "Snack energetici (frutta secca, barrette)", "Giacca impermeabile o poncho", "Cappello o bandana per il sole", "Zaino leggero (15-20 litri)", "Rosario o oggetti devozionali (opzionale)"].map((item, i) => (
-                  <li key={i} className="flex items-start">
-                    <span className="mr-3 text-sacra-accent text-xl font-bold">•</span> {item}
-                  </li>
-                ))}
-              </ul>
-            </motion.div>
-
-            {/* Box Come Arrivare */}
-            <motion.div
-              className="bg-white p-8 rounded-2xl shadow-md border border-gray-100 hover:shadow-xl transition-shadow duration-300"
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              variants={cardFadeIn}
-            >
-              <div className="flex items-center mb-6">
-                <div className="p-3 bg-sacra-primary/10 rounded-lg mr-4">
-                  <FaTrain className="text-2xl text-sacra-primary" />
-                </div>
-                <h3 className="text-2xl font-bold text-sacra-primary">Come arrivare</h3>
-              </div>
-              <div className="space-y-4 text-gray-700 text-lg leading-relaxed">
-                <p>
-                  <strong className="text-gray-900">Treno:</strong> da Torino Porta Nuova ad Avigliana (30 minuti).
-                  <br /> Ritrovo: Santuario Madonna dei Laghi ore 10:00
-                </p>
-                <p>
-                  <strong className="text-gray-900">Autobus per il Santuario:</strong> se arrivi in treno, dalla stazione di Avigliana è possibile prendere il pullman alle ore 9:00 che porta direttamente al Santuario di partenza.
-                </p>
-                
-                {/* BOTTONE PDF AUTOBUS */}
-                <a 
-                  href={autobusPdf} 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 mt-2 px-5 py-2 bg-gray-100 text-[#800020] font-semibold rounded-lg hover:bg-gray-200 transition-colors border border-gray-200 text-sm"
-                >
-                  <FaFilePdf className="text-red-600" />
-                  Scarica Orari Autobus (PDF)
-                </a>
-
-                <p className="mt-4"><strong className="text-gray-900">Auto:</strong> parcheggio disponibile presso il Santuario.</p>
-                <div className="bg-yellow-50 border-l-4 border-sacra-accent p-4 mt-4 text-sm text-gray-800 rounded-lg">
-                  <strong>Consiglio:</strong> arriva con anticipo per il check-in e la distribuzione delle mappe del percorso.
-                </div>
-              </div>
-            </motion.div>
-          </div>
-
-          {/* BLOCCO Preparazione Fisica */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        {/* TAB: PERCORSO */}
+        {activeTab === 'percorso' && (
           <motion.div
-            className="bg-white p-8 rounded-2xl shadow-md border border-gray-100 hover:shadow-xl transition-shadow duration-300 mt-8"
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={cardFadeIn}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="space-y-12"
           >
-            <div className="flex items-center mb-6">
-              <div className="p-3 bg-sacra-primary/10 rounded-lg mr-4">
-                <FaHeartbeat className="text-2xl text-sacra-primary" />
-              </div>
-              <h3 className="text-2xl font-bold text-sacra-primary">Preparazione fisica</h3>
+            <div className="text-center mb-8">
+              <h2 className="text-4xl sm:text-5xl font-extrabold tracking-tight text-sacra-primary">
+                Il percorso del pellegrinaggio
+              </h2>
+              <p className="text-lg text-gray-600 font-light leading-relaxed mt-4 max-w-3xl mx-auto">
+                Un cammino di <strong className="font-semibold text-gray-900">14 km</strong> da Avigliana alla Sacra di San Michele, con <strong className="font-semibold text-gray-900">620 metri di dislivello</strong>.
+              </p>
             </div>
-            
-            <p className="text-gray-700 text-lg leading-relaxed mb-6">
-              Il cammino è aperto a tutti, ma <strong className="text-gray-900">14 km e oltre 600 metri di dislivello richiedono un po' di allenamento base</strong> per chi non fa attività sportiva. Arrivare preparati vi farà godere appieno l'esperienza spirituale senza soffrire troppo la fatica!
-            </p>
-            
-            <div className="bg-gray-50 p-6 rounded-xl border border-gray-200">
-              <h4 className="font-bold text-gray-900 mb-4 text-lg">Nelle 2 settimane precedenti ti consigliamo di:</h4>
-              <ul className="space-y-4 text-gray-700 text-lg">
-                <li className="flex items-start">
-                  <span className="mr-3 text-sacra-secondary text-xl font-bold">1.</span> 
-                  <span><strong>Fare 4 uscite a passo svelto:</strong> non serve correre, bastano un paio di camminate a settimana da circa 5-6 km per abituare le gambe.</span>
-                </li>
-                <li className="flex items-start">
-                  <span className="mr-3 text-sacra-secondary text-xl font-bold">2.</span> 
-                  <span><strong>Cercare un po' di salita:</strong> durante le tue camminate, fai qualche rampa di scale o un percorso in leggera pendenza per simulare il dislivello della montagna.</span>
-                </li>
-                <li className="flex items-start">
-                  <span className="mr-3 text-sacra-secondary text-xl font-bold">3.</span> 
-                  <span><strong>Usare le scarpe del pellegrinaggio:</strong> sfrutta queste uscite di prova per "rodare" le scarpe da trekking ed evitare la comparsa di fastidiose vesciche il giorno del cammino.</span>
-                </li>
-              </ul>
+
+            <div className="grid lg:grid-cols-2 gap-12">
+              {/* Mappa */}
+              <div className="flex flex-col">
+                <div className="rounded-3xl overflow-hidden shadow-2xl border-4 border-white" style={{ height: '500px', width: '100%' }}>
+                  <MapContainer
+                    center={[45.085, 7.367]}
+                    zoom={13}
+                    style={{ height: '100%', width: '100%' }}
+                    scrollWheelZoom={true}
+                  >
+                    <MapResizer />
+                    <TileLayer
+                      url="https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png"
+                      attribution='&copy; <a href="https://opentopomap.org">OpenTopoMap</a> contributors'
+                    />
+                    <GeoJSON
+                      data={routeData}
+                      style={{ 
+                        color: "#800020", 
+                        weight: 6, 
+                        lineCap: "round",
+                        opacity: 0.9,
+                        dashArray: "10, 10"
+                      }}
+                    />
+                    <Marker position={[45.069498, 7.392144]} icon={startIcon}>
+                      <Popup>
+                        <div className="text-center">
+                          <strong className="text-[#688e26] text-lg">✦ Partenza</strong><br />
+                          Santuario Madonna dei Laghi<br />
+                          <span className="text-sm text-gray-500">Ore 9:30</span>
+                        </div>
+                      </Popup>
+                    </Marker>
+                    <Marker position={[45.0976, 7.3428]} icon={endIcon}>
+                      <Popup>
+                        <div className="text-center">
+                          <strong className="text-[#800020] text-lg">✦ Arrivo</strong><br />
+                          Sacra di San Michele<br />
+                          <span className="text-sm text-gray-500">S. Messa ore 17:00</span>
+                        </div>
+                      </Popup>
+                    </Marker>
+                  </MapContainer>
+                </div>
+                
+                <div className="flex justify-end mt-3">
+                  <a
+                    href="https://www.komoot.com/tour/2584007841"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 px-6 py-3 bg-[#9fb53a] text-white font-bold rounded-xl shadow-md hover:bg-[#8da32f] transition-colors duration-300"
+                  >
+                    <FaMapMarkerAlt /> Guarda su Komoot <FaExternalLinkAlt className="text-sm ml-1" />
+                  </a>
+                </div>
+              </div>
+
+              {/* Dettagli Tecnici */}
+              <div className="space-y-6">
+                <h3 className="text-4xl font-black text-sacra-primary mb-8">
+                  Dettagli Tecnici
+                </h3>
+                
+                {[
+                  { icon: FaHiking, title: "Distanza", value: "14 km (solo andata)" },
+                  { icon: FaMountain, title: "Dislivello", value: "620 metri" },
+                  { icon: FaCalendarAlt, title: "Durata", value: "4-5 ore di camminata" },
+                  { icon: FaUtensils, title: "Pausa", value: "Pranzo al sacco" },
+                  { icon: FaMapMarkerAlt, title: "Partenza", value: "Santuario Madonna dei Laghi ore 9:30" },
+                  { icon: FaChurch, title: "Arrivo", value: "Sacra di San Michele - S. Messa ore 17:00" }
+                ].map((item, i) => (
+                  <motion.div
+                    key={i}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: i * 0.1 }}
+                    className="flex items-center gap-4 p-4 bg-gray-50 rounded-2xl hover:bg-sacra-primary/5 transition-colors"
+                  >
+                    <div className="w-12 h-12 bg-sacra-primary/10 rounded-xl flex items-center justify-center">
+                      <item.icon className="text-2xl text-sacra-primary" />
+                    </div>
+                    <div>
+                      <p className="text-sm text-gray-500">{item.title}</p>
+                      <p className="text-lg font-bold text-gray-900">{item.value}</p>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
             </div>
           </motion.div>
-        </div>
+        )}
 
-        {/* --- SEZIONE GALLERIA PREVIEW --- */}
-        <motion.div
-          className="mt-24 max-w-6xl mx-auto"
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          variants={fadeIn}
-        >
-          <div className="text-center mb-10">
-            <h3 className="text-3xl font-bold flex items-center justify-center text-sacra-primary mb-4">
-              <FaImages className="mr-3 text-sacra-accent" />
-              I momenti del pellegrinaggio
-            </h3>
-            <p className="text-gray-600 text-lg">
-              Scorri per un'anteprima delle edizioni passate!
-            </p>
-          </div>
-
-          <Swiper
-            modules={[Autoplay, Pagination]}
-            spaceBetween={20}
-            loop={true}
-            autoplay={{ delay: 3000, disableOnInteraction: false }}
-            pagination={{ clickable: true }}
-            className="pb-12 px-4"
-            breakpoints={{
-              0: { slidesPerView: 1.2, spaceBetween: 15 },
-              640: { slidesPerView: 2 },
-              1024: { slidesPerView: 3 }
-            }}
+        {/* TAB: LOGISTICA */}
+        {activeTab === 'logistica' && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            id="Logistica"
           >
-            {galleryMedia.map((media, index) => (
-              <SwiperSlide key={index}>
-                <div className="rounded-2xl overflow-hidden shadow-lg h-64 border border-gray-100 group bg-black">
-                  {media.type === "video" ? (
-                    <video
-                      src={media.src}
-                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                      autoPlay
-                      loop
-                      muted
-                      playsInline
-                    />
-                  ) : (
-                    <img
-                      src={media.src}
-                      alt={`Momento del pellegrinaggio ${index + 1}`}
-                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                    />
-                  )}
+            <div className="text-center mb-12">
+              <h2 className="text-4xl sm:text-5xl font-extrabold tracking-tight text-sacra-primary">
+                Logistica e preparazione
+              </h2>
+              <p className="text-lg text-gray-600 font-light mt-4">
+                Tutto ciò che devi sapere per affrontare il cammino preparato
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-2 gap-8 mb-8">
+              {/* Card Cosa Portare */}
+              <motion.div
+                className="bg-gradient-to-br from-gray-50 to-white rounded-3xl p-8 shadow-xl border border-gray-100"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+              >
+                <div className="flex items-center gap-4 mb-6">
+                  <div className="w-16 h-16 bg-gradient-to-br from-sacra-primary to-sacra-accent rounded-2xl flex items-center justify-center">
+                    <FaSuitcase className="text-3xl text-white" />
+                  </div>
+                  <h3 className="text-2xl font-bold text-sacra-primary">Cosa Portare</h3>
                 </div>
-              </SwiperSlide>
-            ))}
-          </Swiper>
+                <ul className="space-y-3">
+                  {[
+                    "Scarpe da trekking comode e robuste",
+                    "Pranzo al sacco e borraccia (minimo 1 litro)",
+                    "Snack energetici (frutta secca, barrette)",
+                    "Giacca impermeabile o poncho",
+                    "Cappello o bandana per il sole",
+                    "Zaino leggero (15-20 litri)",
+                    "Rosario o oggetti devozionali (opzionale)"
+                  ].map((item, i) => (
+                    <li key={i} className="flex items-start gap-3 text-lg text-gray-700">
+                      <span className="text-sacra-accent font-bold mt-1">✦</span>
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </motion.div>
 
-          <div className="text-center mt-8">
-            <Link
-              to="/galleria"
-              className="inline-block px-8 py-3 border-2 border-sacra-primary text-sacra-primary font-bold text-lg uppercase tracking-wide rounded-full shadow hover:bg-sacra-primary hover:text-white transition-all duration-300"
+              {/* Card Come Arrivare */}
+              <motion.div
+                className="bg-gradient-to-br from-gray-50 to-white rounded-3xl p-8 shadow-xl border border-gray-100"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2 }}
+              >
+                <div className="flex items-center gap-4 mb-6">
+                  <div className="w-16 h-16 bg-gradient-to-br from-sacra-accent to-amber-500 rounded-2xl flex items-center justify-center">
+                    <FaTrain className="text-3xl text-white" />
+                  </div>
+                  <h3 className="text-2xl font-bold text-sacra-primary">Come Arrivare</h3>
+                </div>
+                <div className="space-y-4 text-lg text-gray-700">
+                  <p><strong className="text-sacra-primary">Treno:</strong> da Torino Porta Nuova ad Avigliana (30 min)</p>
+                  <p><strong className="text-sacra-primary">Autobus:</strong> dalla stazione al Santuario</p>
+                  <a href={autobusPdf} target="_blank" rel="noopener noreferrer"
+                     className="inline-flex items-center gap-2 px-4 py-2 bg-red-50 text-red-600 rounded-xl hover:bg-red-100 transition-colors">
+                    <FaFilePdf /> Scarica Orari
+                  </a>
+                </div>
+              </motion.div>
+            </div>
+
+            {/* Preparazione Fisica */}
+            <motion.div
+              className="bg-gradient-to-r from-sacra-primary/5 to-sacra-accent/5 rounded-3xl p-8 shadow-xl border border-sacra-accent/20"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
             >
-              Guarda la galleria completa
-            </Link>
-          </div>
-        </motion.div>
+              <div className="flex items-center gap-4 mb-6">
+                <div className="w-16 h-16 bg-gradient-to-br from-red-500 to-pink-500 rounded-2xl flex items-center justify-center">
+                  <FaHeartbeat className="text-3xl text-white" />
+                </div>
+                <h3 className="text-2xl font-bold text-sacra-primary">Preparazione Fisica</h3>
+              </div>
+              <div className="grid sm:grid-cols-3 gap-4">
+                {[
+                  { step: "1", text: "4 uscite a passo svelto da 5-6 km per abituare le gambe" },
+                  { step: "2", text: "Fai rampe di scale o percorsi in pendenza per simulare il dislivello" },
+                  { step: "3", text: "Usa le scarpe del pellegrinaggio per evitare vesciche" }
+                ].map((tip, i) => (
+                  <div key={i} className="bg-white rounded-2xl p-6 shadow-md">
+                    <span className="text-4xl font-black text-sacra-accent/30">{tip.step}</span>
+                    <p className="text-gray-700 mt-2">{tip.text}</p>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
 
-        {/* CTA Iscrizione Finale (AGGIORNATA CON REACT ROUTER) */}
+        {/* TAB: GALLERIA */}
+        {activeTab === 'galleria' && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+          >
+            <div className="text-center mb-10">
+              <h3 className="text-3xl font-bold flex items-center justify-center text-sacra-primary mb-4">
+                <FaImages className="mr-3 text-sacra-accent" />
+                I momenti del pellegrinaggio
+              </h3>
+              <p className="text-gray-600 text-lg">
+                Scorri per un'anteprima delle edizioni passate!
+              </p>
+            </div>
+
+            <Swiper
+              modules={[Autoplay, Pagination, EffectCards]}
+              effect="cards"
+              grabCursor={true}
+              autoplay={{ delay: 3000 }}
+              pagination={{ clickable: true }}
+              className="max-w-2xl mx-auto"
+            >
+              {galleryMedia.map((media, index) => (
+                <SwiperSlide key={index}>
+                  <div className="bg-white rounded-3xl shadow-2xl overflow-hidden">
+                    {media.type === "video" ? (
+                      <video 
+                        src={media.src} 
+                        className="w-full h-96 object-cover" 
+                        autoPlay 
+                        loop 
+                        muted 
+                        playsInline 
+                      />
+                    ) : (
+                      <img 
+                        src={media.src} 
+                        alt={`Momento del pellegrinaggio ${index + 1}`}
+                        className="w-full h-96 object-cover" 
+                      />
+                    )}
+                  </div>
+                </SwiperSlide>
+              ))}
+            </Swiper>
+
+            <div className="text-center mt-8">
+              <Link to="/galleria"
+                    className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-sacra-primary to-sacra-accent text-white font-bold rounded-full hover:shadow-lg transition-all">
+                <FaImages /> Galleria Completa
+              </Link>
+            </div>
+          </motion.div>
+        )}
+
+        {/* CTA Iscrizione */}
         <motion.div
           className="text-center mt-20 pt-10 border-t border-gray-200"
-          initial="hidden"
-          whileInView="visible"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          variants={fadeIn}
         >
           <Link
             to="/iscrizione"

@@ -1,9 +1,14 @@
 import React from "react";
-import { FaEnvelope, FaInstagram, FaChurch } from "react-icons/fa";
+import { FaEnvelope, FaInstagram, FaChurch, FaArrowUp } from "react-icons/fa";
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom"; // <-- IMPORTANTE
+import { Link } from "react-router-dom";
 
 const Footer = () => {
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  // Definisci le variabili di animazione
   const fadeIn = {
     hidden: { opacity: 0, y: 20 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.6, staggerChildren: 0.2 } },
@@ -15,56 +20,52 @@ const Footer = () => {
   };
 
   return (
-    <motion.footer
-      id="Contatti"
-      className="w-full bg-gray-900 text-white pt-16 pb-8 border-t-4 border-sacra-primary"
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true }}
-      variants={fadeIn}
-    >
-      <div className="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-        
-        {/* Sezione CTA (Box Evidenziato) */}
+    <footer className="relative bg-gray-900 text-white pt-20 pb-8 overflow-hidden">
+      {/* Effetto onda superiore */}
+      <div className="absolute top-0 left-0 w-full overflow-hidden leading-none">
+        <svg className="relative block w-full h-16" viewBox="0 0 1200 120" preserveAspectRatio="none">
+          <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" 
+                fill="white"></path>
+        </svg>
+      </div>
+
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* CTA Box */}
         <motion.div
-          className="text-center bg-gray-800 rounded-3xl p-8 sm:p-12 mb-16 border border-gray-700 shadow-2xl relative overflow-hidden"
-          variants={itemFadeIn}
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="bg-gradient-to-r from-sacra-primary to-sacra-accent rounded-3xl p-8 sm:p-12 mb-16 shadow-2xl"
         >
-          {/* Elemento decorativo */}
-          <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-sacra-primary via-sacra-accent to-sacra-primary"></div>
-          
-          <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight mb-4 text-white">
-            Unisciti al Pellegrinaggio
-          </h2>
-          <p className="text-lg text-gray-300 mb-8 max-w-2xl mx-auto font-light leading-relaxed">
-            Contattaci per ricevere informazioni sulla prossima partenza verso la Sacra di San Michele o per partecipare come volontario.
-          </p>
-          
-          <div className="flex flex-col sm:flex-row justify-center gap-4">
-            <motion.a
-              href="mailto:pellegrinaggiosacrasanmichele@gmail.com?subject=Informazioni Pellegrinaggio"
-              className="inline-flex justify-center items-center px-8 py-3 bg-transparent border-2 border-white text-white font-bold text-base uppercase tracking-wide rounded-full hover:bg-white hover:text-gray-900 transition-all duration-300"
-              whileHover={{ scale: 1.02 }}
-              variants={itemFadeIn}
-            >
-              <FaEnvelope className="mr-2" />
-              Inviaci un'email
-            </motion.a>
-            {/* AGGIORNATO AL LINK REACT ROUTER */}
-            <motion.div variants={itemFadeIn} whileHover={{ scale: 1.02 }}>
-              <Link
-                to="/Iscrizione"
-                className="inline-flex justify-center items-center px-8 py-3 bg-sacra-accent text-gray-900 font-bold text-base uppercase tracking-wide rounded-full shadow-lg hover:bg-yellow-400 transition-all duration-300"
+          <div className="max-w-3xl mx-auto text-center">
+            <h2 className="text-3xl sm:text-4xl font-black text-white mb-4">
+              Unisciti al Pellegrinaggio
+            </h2>
+            <p className="text-lg text-white/80 mb-8">
+              Contattaci per informazioni o per partecipare come volontario
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <motion.a
+                href="mailto:pellegrinaggiosacrasanmichele@gmail.com"
+                whileHover={{ scale: 1.05 }}
+                className="inline-flex items-center gap-2 px-8 py-4 bg-white text-gray-900 font-bold rounded-full"
               >
+                <FaEnvelope /> Inviaci un'email
+              </motion.a>
+              <Link to="/Iscrizione"
+                    className="inline-flex items-center gap-2 px-8 py-4 bg-gray-900 text-white font-bold rounded-full hover:bg-black transition-colors">
                 Iscriviti ora
               </Link>
-            </motion.div>
+            </div>
           </div>
         </motion.div>
 
-        {/* Footer Bottom: Links e Contatti (ORA A 3 COLONNE) */}
+        {/* Grid Footer */}
         <motion.div
           className="grid grid-cols-1 md:grid-cols-3 gap-10 text-center md:text-left border-t border-gray-800 pt-10"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
           variants={fadeIn}
         >
           {/* Colonna 1: Logo/Nome */}
@@ -118,8 +119,17 @@ const Footer = () => {
             </a>.
           </span>
         </div>
+
+        {/* Back to Top Button */}
+        <motion.button
+          onClick={scrollToTop}
+          whileHover={{ scale: 1.1 }}
+          className="fixed bottom-8 right-8 w-12 h-12 bg-sacra-accent text-gray-900 rounded-full flex items-center justify-center shadow-lg hover:bg-amber-400 transition-colors z-50"
+        >
+          <FaArrowUp />
+        </motion.button>
       </div>
-    </motion.footer>
+    </footer>
   );
 };
 

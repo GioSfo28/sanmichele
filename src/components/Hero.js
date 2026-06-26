@@ -1,124 +1,260 @@
-import React from "react";
-import { motion } from "framer-motion";
+import React, { useEffect, useRef } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { Link } from "react-router-dom";
-import { FaDownload } from "react-icons/fa"; // <-- Import dell'icona di download
+import { FaDownload, FaArrowDown, FaMountain } from "react-icons/fa";
+import * as THREE from "three";
 
-// Import dei video specifici per PC e Mobile
+// Import dei video
 import videoPC from "../assets/back.mp4";
 import videoMobile from "../assets/3.mp4";
-// Import del Logo
 import logoSacra from "../assets/SanMichele.png";
-// Import della Locandina
-import locandinaImg from "../assets/Locandina.jpeg"; // <-- Import della locandina
+import locandinaImg from "../assets/Locandina.jpeg";
 
 const Hero = () => {
-  const fadeIn = {
-    hidden: { opacity: 0, y: 30 },
-    visible: { 
-      opacity: 1, 
-      y: 0, 
-      transition: { duration: 0.8, ease: "easeOut", staggerChildren: 0.2 } 
-    },
-  };
+  const containerRef = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end start"]
+  });
+
+  const y = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
+  const opacity = useTransform(scrollYProgress, [0, 1], [1, 0]);
+  const scale = useTransform(scrollYProgress, [0, 1], [1, 1.5]);
+
+  // Configurazione Three.js per effetto particelle
+  useEffect(() => {
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer({ alpha: true });
+    
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    
+    const mountNode = document.getElementById('particle-container');
+    if (mountNode) {
+      mountNode.appendChild(renderer.domElement);
+    }
+
+    // Geometria particelle spirituali
+    const particlesGeometry = new THREE.BufferGeometry();
+    const particlesCount = 2000;
+    const posArray = new Float32Array(particlesCount * 3);
+
+    for (let i = 0; i < particlesCount * 3; i += 3) {
+      posArray[i] = (Math.random() - 0.5) * 5;
+      posArray[i + 1] = (Math.random() - 0.5) * 5;
+      posArray[i + 2] = (Math.random() - 0.5) * 5;
+    }
+
+    particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+
+    const particlesMaterial = new THREE.PointsMaterial({
+      size: 0.005,
+      color: 0xd4a017,
+      blending: THREE.AdditiveBlending,
+      transparent: true,
+      opacity: 0.6
+    });
+
+    const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
+    scene.add(particlesMesh);
+
+    camera.position.z = 2;
+
+    const animate = () => {
+      requestAnimationFrame(animate);
+      particlesMesh.rotation.y += 0.0005;
+      particlesMesh.rotation.x += 0.0003;
+      renderer.render(scene, camera);
+    };
+
+    animate();
+
+    const handleResize = () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      if (mountNode && mountNode.contains(renderer.domElement)) {
+        mountNode.removeChild(renderer.domElement);
+      }
+    };
+  }, []);
 
   return (
     <section
-      className="relative w-full min-h-[90vh] flex flex-col justify-center items-center text-center text-white px-4 sm:px-6 lg:px-8 pt-24 pb-16 overflow-hidden"
+      ref={containerRef}
+      className="relative w-full min-h-screen flex flex-col justify-center items-center text-center text-white overflow-hidden"
       id="top"
     >
-      {/* SFONDO VIDEO PER PC (Visibile da tablet in su) */}
-      <video 
-        className="absolute inset-0 z-0 hidden md:block w-full h-full object-cover transform scale-105"
-        src={videoPC}
-        autoPlay
-        loop
-        muted
-        playsInline
-      />
+      {/* Container particelle 3D */}
+      <div id="particle-container" className="absolute inset-0 z-10 pointer-events-none" />
 
-      {/* SFONDO VIDEO PER MOBILE (Visibile solo su smartphone) */}
-      <video 
-        className="absolute inset-0 z-0 block md:hidden w-full h-full object-cover transform scale-105"
-        src={videoMobile}
-        autoPlay
-        loop
-        muted
-        playsInline
-      />
-
-      {/* Overlay gradiente - per leggere meglio il testo sopra il video */}
-      <div className="absolute inset-0 z-0 bg-gradient-to-b from-black/70 via-black/40 to-black/80"></div>
-
-      {/* Contenuto */}
-      <motion.div
-        className="relative z-10 max-w-4xl mx-auto mt-10"
-        initial="hidden"
-        animate="visible"
-        variants={fadeIn}
-      >
-        {/* LOGO INGRANDITO SU MOBILE */}
-        <motion.img
-          src={logoSacra}
-          alt="Logo Pellegrinaggio San Michele"
-          variants={fadeIn}
-          className="w-72 sm:w-72 md:w-96 h-auto mx-auto mb-2 drop-shadow-2xl object-contain"
+      {/* Sfondo Video */}
+      <div className="absolute inset-0 z-0">
+        <video 
+          className="hidden md:block w-full h-full object-cover"
+          src={videoPC}
+          autoPlay
+          loop
+          muted
+          playsInline
+          style={{ filter: 'brightness(0.4) saturate(1.2)' }}
         />
+        <video 
+          className="block md:hidden w-full h-full object-cover"
+          src={videoMobile}
+          autoPlay
+          loop
+          muted
+          playsInline
+          style={{ filter: 'brightness(0.4) saturate(1.2)' }}
+        />
+      </div>
 
-        <motion.h1
-          className="text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight drop-shadow-2xl leading-tight text-sacra-accent"
-          variants={fadeIn}
+      {/* Overlay gradiente animato */}
+      <div className="absolute inset-0 z-0 bg-gradient-to-b from-black/80 via-transparent to-black/90" />
+      
+      {/* Linee decorative animate */}
+      <div className="absolute inset-0 z-0 opacity-20">
+        <div className="absolute top-1/4 left-0 w-full h-px bg-gradient-to-r from-transparent via-sacra-accent to-transparent animate-pulse" />
+        <div className="absolute top-3/4 left-0 w-full h-px bg-gradient-to-r from-transparent via-sacra-accent to-transparent animate-pulse animation-delay-2000" />
+      </div>
+
+      {/* Contenuto principale */}
+      <motion.div
+        className="relative z-20 max-w-5xl mx-auto px-4"
+        style={{ y, opacity }}
+      >
+        {/* Logo GRANDE come prima */}
+        <motion.div
+          initial={{ scale: 0, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ 
+            type: "spring",
+            stiffness: 260,
+            damping: 20,
+            duration: 1.5 
+          }}
+          className="relative mb-8 sm:mb-12"
         >
-          Pellegrinaggio <br className="md:hidden" /> di San Michele
-        </motion.h1>
-
-        <motion.p
-          className="mt-6 text-lg sm:text-xl md:text-2xl text-gray-100 font-light leading-relaxed px-2"
-          variants={fadeIn}
-        >
-          Il pellegrinaggio dei giovani da Avigliana alla maestosa <strong className="font-semibold text-white">Sacra di San Michele</strong>.
-        </motion.p>
-
-        <motion.div variants={fadeIn} className="mt-8 flex flex-col items-center gap-2">
-          <span className="px-5 py-1.5 bg-sacra-primary/80 backdrop-blur-md rounded-full text-xs sm:text-sm font-bold uppercase tracking-widest text-sacra-accent border border-sacra-accent/30">
-            14 KM • 620m Dislivello
-          </span>
+          <div className="absolute inset-0 bg-sacra-accent/20 rounded-full blur-3xl transform scale-150" />
+          <img
+            src={logoSacra}
+            alt="Logo Pellegrinaggio San Michele"
+            className="w-72 sm:w-80 md:w-96 lg:w-[28rem] h-auto mx-auto drop-shadow-2xl relative z-10 transform hover:scale-105 transition-transform duration-500"
+          />
         </motion.div>
 
-        <motion.p
-          className="mt-6 text-base sm:text-lg text-gray-300 italic font-medium max-w-2xl mx-auto"
-          variants={fadeIn}
+        {/* Titolo con effetto */}
+        <motion.h1
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5, duration: 0.8 }}
+          className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-extrabold tracking-tight drop-shadow-2xl leading-tight"
         >
-          Unisciti al cammino che congiunge la Valle di Susa al sacro allineamento micaelico.
+          <span className="bg-clip-text text-transparent bg-gradient-to-r from-sacra-accent via-amber-400 to-sacra-accent">
+            Pellegrinaggio
+          </span>
+          <br/>
+          <motion.span
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1, duration: 0.8 }}
+            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light tracking-wide block sm:inline"
+          >
+            {" "}di San Michele
+          </motion.span>
+        </motion.h1>
+
+        {/* Sottotitolo */}
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1.2, duration: 0.8 }}
+          className="mt-6 text-lg sm:text-xl md:text-2xl text-gray-200 font-light max-w-3xl mx-auto px-2 leading-relaxed"
+        >
+          Il pellegrinaggio dei giovani da Avigliana alla maestosa{" "}
+          <strong className="font-semibold text-sacra-accent">Sacra di San Michele</strong>.
         </motion.p>
 
-        {/* CONTENITORE BOTTONI */}
-        <motion.div 
-          variants={fadeIn}
-          className="mt-10 flex flex-col items-center gap-4"
+        {/* Stats */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1.5, duration: 0.8 }}
+          className="flex justify-center gap-3 sm:gap-6 mt-8 mb-10"
         >
-          {/* Bottone Principale Iscrizione */}
-          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+          {[
+            { value: "14", unit: "KM", label: "Distanza" },
+            { value: "620", unit: "M", label: "Dislivello" },
+            { value: "4-5", unit: "ORE", label: "Cammino" }
+          ].map((stat, i) => (
+            <motion.div
+              key={i}
+              whileHover={{ scale: 1.05, y: -5 }}
+              className="bg-white/10 backdrop-blur-lg rounded-2xl px-6 sm:px-8 py-4 border border-white/20 shadow-2xl"
+            >
+              <div className="text-3xl sm:text-4xl font-black text-white">
+                {stat.value}
+                <span className="text-lg sm:text-xl text-sacra-accent ml-1">{stat.unit}</span>
+              </div>
+              <div className="text-xs sm:text-sm text-gray-300 mt-1">{stat.label}</div>
+            </motion.div>
+          ))}
+        </motion.div>
+
+        {/* Bottoni CTA */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.8, duration: 0.8 }}
+          className="flex flex-col sm:flex-row gap-4 justify-center items-center mt-8"
+        >
+          <motion.div
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
             <Link
               to="/iscrizione"
-              className="inline-block px-8 sm:px-10 py-4 bg-sacra-primary text-white font-bold text-base sm:text-lg uppercase tracking-wide rounded-full shadow-2xl hover:bg-sacra-hover transition-all duration-300 focus:ring-4 focus:ring-sacra-primary/50"
+              className="group relative inline-flex items-center gap-3 px-10 py-4 bg-gradient-to-r from-sacra-accent to-amber-500 text-gray-900 font-bold text-lg uppercase tracking-wider rounded-full shadow-2xl hover:shadow-sacra-accent/50 transition-all duration-500 overflow-hidden"
             >
-              Scopri la data e iscriviti
+              <span className="relative z-10">Scopri la data e iscriviti</span>
+              <div className="absolute inset-0 bg-gradient-to-r from-amber-500 to-sacra-accent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-full" />
             </Link>
           </motion.div>
 
-          {/* Bottone Secondario Download Locandina */}
           <motion.a
             href={locandinaImg}
             download="Locandina_Pellegrinaggio_San_Michele.jpeg"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            className="inline-flex items-center justify-center px-6 py-2 border-2 border-white/50 text-white/90 font-semibold text-sm sm:text-base uppercase tracking-wide rounded-full hover:bg-white/20 hover:border-white hover:text-white transition-all duration-300"
+            className="inline-flex items-center gap-2 px-8 py-4 border-2 border-white/30 text-white font-semibold rounded-full hover:bg-white/10 backdrop-blur-sm transition-all duration-300"
           >
-            <FaDownload className="mr-2" />
+            <FaDownload className="text-lg" />
             Scarica la locandina
           </motion.a>
         </motion.div>
+      </motion.div>
 
+      {/* Indicatore scroll */}
+      <motion.div
+        className="absolute bottom-8 z-20"
+        animate={{ y: [0, 10, 0] }}
+        transition={{ duration: 2, repeat: Infinity }}
+      >
+        <div className="w-8 h-12 rounded-full border-2 border-white/30 flex justify-center">
+          <motion.div
+            animate={{ y: [0, 8, 0] }}
+            transition={{ duration: 1.5, repeat: Infinity }}
+            className="w-1.5 h-3 bg-sacra-accent rounded-full mt-2"
+          />
+        </div>
       </motion.div>
     </section>
   );
