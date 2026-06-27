@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { Link } from "react-router-dom";
-import { FaDownload} from "react-icons/fa";
+import { FaDownload } from "react-icons/fa";
 import * as THREE from "three";
 
 // Import dei video
@@ -25,10 +25,10 @@ const Hero = () => {
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
     const renderer = new THREE.WebGLRenderer({ alpha: true });
-    
+
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    
+
     const mountNode = document.getElementById('particle-container');
     if (mountNode) {
       mountNode.appendChild(renderer.domElement);
@@ -96,7 +96,7 @@ const Hero = () => {
 
       {/* Sfondo Video */}
       <div className="absolute inset-0 z-0">
-        <video 
+        <video
           className="hidden md:block w-full h-full object-cover"
           src={videoPC}
           autoPlay
@@ -105,7 +105,7 @@ const Hero = () => {
           playsInline
           style={{ filter: 'brightness(0.4) saturate(1.2)' }}
         />
-        <video 
+        <video
           className="block md:hidden w-full h-full object-cover"
           src={videoMobile}
           autoPlay
@@ -118,7 +118,7 @@ const Hero = () => {
 
       {/* Overlay gradiente animato */}
       <div className="absolute inset-0 z-0 bg-gradient-to-b from-black/80 via-transparent to-black/90" />
-      
+
       {/* Linee decorative animate */}
       <div className="absolute inset-0 z-0 opacity-20">
         <div className="absolute top-1/4 left-0 w-full h-px bg-gradient-to-r from-transparent via-sacra-accent to-transparent animate-pulse" />
@@ -127,26 +127,26 @@ const Hero = () => {
 
       {/* Contenuto principale - SENZA movimento verticale */}
       <motion.div
-        className="relative z-20 max-w-5xl mx-auto px-4"
+        className="relative z-20 max-w-5xl mx-auto px-4 w-full"
         style={{ opacity }}
       >
-        {/* Logo GRANDE come prima */}
+        {/* Logo - Margini inferiori ridotti su mobile (mb-4 invece di mb-8) */}
         <motion.div
           initial={{ scale: 0, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
-          transition={{ 
+          transition={{
             type: "spring",
             stiffness: 260,
             damping: 20,
-            duration: 1.5 
+            duration: 1.5
           }}
-          className="relative mb-8 sm:mb-12"
+          className="relative mb-4 sm:mb-10"
         >
           <div className="absolute inset-0 bg-sacra-accent/20 rounded-full blur-3xl transform scale-150" />
           <img
             src={logoSacra}
             alt="Logo Pellegrinaggio San Michele"
-            className="w-72 sm:w-80 md:w-96 lg:w-[28rem] h-auto mx-auto drop-shadow-2xl relative z-10 transform hover:scale-105 transition-transform duration-500"
+            className="w-56 sm:w-80 md:w-96 lg:w-[28rem] h-auto mx-auto drop-shadow-2xl relative z-10 transform hover:scale-105 transition-transform duration-500"
           />
         </motion.div>
 
@@ -160,7 +160,7 @@ const Hero = () => {
           <span className="bg-clip-text text-transparent bg-gradient-to-r from-sacra-accent via-amber-400 to-sacra-accent">
             Pellegrinaggio
           </span>
-          <br/>
+          <br />
           <motion.span
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -176,7 +176,7 @@ const Hero = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1.2, duration: 0.8 }}
-          className="mt-6 text-lg sm:text-xl md:text-2xl text-gray-200 font-light max-w-3xl mx-auto px-2 leading-relaxed"
+          className="mt-4 sm:mt-6 text-lg sm:text-xl md:text-2xl text-gray-200 font-light max-w-3xl mx-auto px-2 leading-relaxed"
         >
           Il pellegrinaggio dei giovani da Avigliana alla maestosa{" "}
           <strong className="font-semibold text-sacra-accent">Sacra di San Michele</strong>.
@@ -187,7 +187,7 @@ const Hero = () => {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1.5, duration: 0.8 }}
-          className="flex justify-center gap-3 sm:gap-6 mt-8 mb-10"
+          className="flex flex-wrap justify-center gap-3 sm:gap-6 mt-6 mb-6 sm:mt-8 sm:mb-10"
         >
           {[
             { value: "14", unit: "KM", label: "Distanza" },
@@ -197,31 +197,33 @@ const Hero = () => {
             <motion.div
               key={i}
               whileHover={{ scale: 1.05, y: -5 }}
-              className="bg-white/10 backdrop-blur-lg rounded-2xl px-6 sm:px-8 py-4 border border-white/20 shadow-2xl"
+              className="bg-white/10 backdrop-blur-lg rounded-2xl px-5 sm:px-8 py-3 sm:py-4 border border-white/20 shadow-2xl"
             >
-              <div className="text-3xl sm:text-4xl font-black text-white">
+              {/* Aggiunto whitespace-nowrap qui! */}
+              <div className="text-2xl sm:text-4xl font-black text-white whitespace-nowrap">
                 {stat.value}
-                <span className="text-lg sm:text-xl text-sacra-accent ml-1">{stat.unit}</span>
+                <span className="text-base sm:text-xl text-sacra-accent ml-1">{stat.unit}</span>
               </div>
               <div className="text-xs sm:text-sm text-gray-300 mt-1">{stat.label}</div>
             </motion.div>
           ))}
         </motion.div>
 
-        {/* Bottoni CTA - ORA RIMANGONO FERMI E VISIBILI */}
+        {/* Bottoni CTA - AGGIUNTO mb-24 su mobile per distanziarli dal fondo e dallo scroll */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1.8, duration: 0.8 }}
-          className="flex flex-col sm:flex-row gap-4 justify-center items-center mt-8"
+          className="flex flex-col sm:flex-row gap-4 justify-center items-center mt-6 mb-24 sm:mb-12"
         >
           <motion.div
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
+            className="w-full sm:w-auto"
           >
             <Link
               to="/iscrizione"
-              className="group relative inline-flex items-center gap-3 px-10 py-4 bg-gradient-to-r from-sacra-accent to-amber-500 text-gray-900 font-bold text-lg uppercase tracking-wider rounded-full shadow-2xl hover:shadow-sacra-accent/50 transition-all duration-500 overflow-hidden"
+              className="group relative flex justify-center items-center gap-3 px-8 py-4 bg-gradient-to-r from-sacra-accent to-amber-500 text-gray-900 font-bold text-base sm:text-lg uppercase tracking-wider rounded-full shadow-2xl hover:shadow-sacra-accent/50 transition-all duration-500 overflow-hidden w-full"
             >
               <span className="relative z-10">Scopri la data e iscriviti</span>
               <div className="absolute inset-0 bg-gradient-to-r from-amber-500 to-sacra-accent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-full" />
@@ -233,7 +235,7 @@ const Hero = () => {
             download="Locandina_Pellegrinaggio_San_Michele.jpeg"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            className="inline-flex items-center gap-2 px-8 py-4 border-2 border-white/30 text-white font-semibold rounded-full hover:bg-white/10 backdrop-blur-sm transition-all duration-300"
+            className="flex justify-center items-center gap-2 px-8 py-4 border-2 border-white/30 text-white font-semibold rounded-full hover:bg-white/10 backdrop-blur-sm transition-all duration-300 w-full sm:w-auto text-base sm:text-lg"
           >
             <FaDownload className="text-lg" />
             Scarica la locandina
