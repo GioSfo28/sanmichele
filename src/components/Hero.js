@@ -182,6 +182,18 @@ const Hero = () => {
           <strong className="font-semibold text-sacra-accent">Sacra di San Michele</strong>.
         </motion.p>
 
+        {/* 🆕 DATA IN EVIDENZA */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 1.3, duration: 0.6, type: "spring", stiffness: 200 }}
+          className="mt-4 sm:mt-6 mb-4 sm:mb-6"
+        >
+          <span className="inline-block px-6 py-3 sm:px-10 sm:py-4 bg-gradient-to-r from-sacra-accent/30 to-amber-500/30 backdrop-blur-md rounded-full border-2 border-sacra-accent/60 shadow-2xl shadow-sacra-accent/20 text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-white tracking-wider">
+            27 Settembre 2026
+          </span>
+        </motion.div>
+
         {/* Stats */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -199,7 +211,6 @@ const Hero = () => {
               whileHover={{ scale: 1.05, y: -5 }}
               className="bg-white/10 backdrop-blur-lg rounded-2xl px-5 sm:px-8 py-3 sm:py-4 border border-white/20 shadow-2xl"
             >
-              {/* Aggiunto whitespace-nowrap qui! */}
               <div className="text-2xl sm:text-4xl font-black text-white whitespace-nowrap">
                 {stat.value}
                 <span className="text-base sm:text-xl text-sacra-accent ml-1">{stat.unit}</span>
@@ -225,7 +236,7 @@ const Hero = () => {
               to="/iscrizione"
               className="group relative flex justify-center items-center gap-3 px-8 py-4 bg-gradient-to-r from-sacra-accent to-amber-500 text-gray-900 font-bold text-base sm:text-lg uppercase tracking-wider rounded-full shadow-2xl hover:shadow-sacra-accent/50 transition-all duration-500 overflow-hidden w-full"
             >
-              <span className="relative z-10">Scopri la data e iscriviti</span>
+              <span className="relative z-10">Iscriviti</span>
               <div className="absolute inset-0 bg-gradient-to-r from-amber-500 to-sacra-accent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-full" />
             </Link>
           </motion.div>

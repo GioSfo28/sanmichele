@@ -124,16 +124,23 @@ const Iscrizione = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
         >
-          {/* Badge */}
+          {/* Badge aggiornato: data + rientro in bus */}
           <motion.div
             initial={{ scale: 0, rotate: -10 }}
             animate={{ scale: 1, rotate: 0 }}
             transition={{ type: "spring", stiffness: 200, delay: 0.2 }}
-            className="inline-flex items-center gap-2 px-6 py-2 bg-gradient-to-r from-sacra-accent/10 to-amber-400/10 border border-sacra-accent/30 rounded-full mb-8"
+            className="inline-flex flex-wrap items-center justify-center gap-3 px-6 py-3 bg-gradient-to-r from-sacra-accent/10 to-amber-400/10 border border-sacra-accent/30 rounded-full mb-8"
           >
-            <FaStar className="text-sacra-accent animate-spin" style={{ animationDuration: '3s' }} />
-            <span className="text-sm font-bold text-sacra-primary uppercase tracking-widest">
-              27 Settembre 2026
+            <span className="flex items-center gap-2">
+              <FaStar className="text-sacra-accent animate-spin" style={{ animationDuration: '3s' }} />
+              <span className="text-sm font-bold text-sacra-primary uppercase tracking-widest">
+                27 Settembre 2026
+              </span>
+            </span>
+            <span className="hidden sm:block w-px h-6 bg-sacra-accent/30" />
+            <span className="flex items-center gap-2 text-sm font-bold text-sacra-primary uppercase tracking-widest">
+              <FaBus className="text-sacra-accent" />
+              Rientro in bus incluso
             </span>
           </motion.div>
 
@@ -175,6 +182,48 @@ const Iscrizione = () => {
                 <div className="text-xs sm:text-sm text-gray-500 uppercase tracking-wider mt-1">{stat.label}</div>
               </motion.div>
             ))}
+          </motion.div>
+
+          {/* 🆕 DUE CARD EVIDENTI: DATA e RIENTRO */}
+          <motion.div
+            className="flex flex-col sm:flex-row justify-center gap-6 mt-12 max-w-3xl mx-auto"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.7, duration: 0.6 }}
+          >
+            {/* Card Data */}
+            <motion.div
+              whileHover={{ scale: 1.03, y: -5 }}
+              className="flex-1 bg-gradient-to-br from-sacra-primary to-sacra-secondary text-white p-6 rounded-3xl shadow-2xl border border-white/20"
+            >
+              <div className="flex items-center gap-4">
+                <div className="w-14 h-14 bg-white/20 rounded-2xl flex items-center justify-center shrink-0">
+                  <FaCalendarAlt className="text-3xl text-sacra-accent" />
+                </div>
+                <div className="text-left">
+                  <p className="text-sm uppercase tracking-widest font-bold text-sacra-accent/80">Data</p>
+                  <p className="text-3xl font-black">27 Settembre 2026</p>
+                  <p className="text-sm opacity-80">Domenica · ritrovo ore 9:00</p>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Card Rientro in Bus */}
+            <motion.div
+              whileHover={{ scale: 1.03, y: -5 }}
+              className="flex-1 bg-gradient-to-br from-amber-500 to-yellow-400 text-gray-900 p-6 rounded-3xl shadow-2xl border border-white/20"
+            >
+              <div className="flex items-center gap-4">
+                <div className="w-14 h-14 bg-white/30 rounded-2xl flex items-center justify-center shrink-0">
+                  <FaBus className="text-3xl text-gray-900" />
+                </div>
+                <div className="text-left">
+                  <p className="text-sm uppercase tracking-widest font-bold text-gray-800/70">Rientro</p>
+                  <p className="text-2xl font-black">Bus per tutti!</p>
+                  <p className="text-sm font-medium">Dalla Sacra ad Avigliana (non a piedi)</p>
+                </div>
+              </div>
+            </motion.div>
           </motion.div>
         </motion.div>
 
@@ -230,6 +279,18 @@ const Iscrizione = () => {
                       <h3 className="font-bold text-sacra-accent text-sm uppercase tracking-wider mb-1">Luogo</h3>
                       <p className="text-white font-semibold">Santuario Madonna dei Laghi</p>
                       <p className="text-white/80">Avigliana (TO)</p>
+                    </div>
+                  </div>
+
+                  {/* 🆕 RIENTRO IN BUS nei dettagli */}
+                  <div className="flex items-start gap-4 p-4 bg-amber-400/20 rounded-2xl backdrop-blur-sm border border-amber-400/30">
+                    <div className="p-3 bg-amber-400/30 rounded-xl shrink-0">
+                      <FaBus className="text-xl text-amber-300" />
+                    </div>
+                    <div>
+                      <h3 className="font-bold text-amber-300 text-sm uppercase tracking-wider mb-1">Rientro</h3>
+                      <p className="text-white font-semibold">Bus per tutti dalla Sacra</p>
+                      <p className="text-white/80">Rientro ad Avigliana (non a piedi)</p>
                     </div>
                   </div>
                 </div>

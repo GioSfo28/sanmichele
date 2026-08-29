@@ -12,6 +12,7 @@ import {
   FaChurch,
   FaHeartbeat,
   FaFilePdf,
+  FaBus, // 👈 NUOVA ICONA PER IL RIENTRO
 } from "react-icons/fa";
 import { motion } from "framer-motion";
 import {
@@ -246,6 +247,12 @@ const Activities = () => {
                   icon: FaChurch,
                   title: "Arrivo",
                   value: "Sacra di San Michele - S. Messa ore 17:00",
+                },
+                // 👇 NUOVA VOCE: RIENTRO IN BUS
+                {
+                  icon: FaBus,
+                  title: "Rientro",
+                  value: "Bus per tutti dalla Sacra ad Avigliana (non a piedi)",
                 },
               ].map((item, i) => (
                 <motion.div
