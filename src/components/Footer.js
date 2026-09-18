@@ -5,10 +5,9 @@ import { Link } from "react-router-dom";
 
 const Footer = () => {
   const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  // Definisci le variabili di animazione
   const fadeIn = {
     hidden: { opacity: 0, y: 20 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.6, staggerChildren: 0.2 } },
@@ -90,7 +89,7 @@ const Footer = () => {
             </div>
           </motion.div>
 
-          {/* COLONNA 3: NOTE LEGALI */}
+          {/* Colonna 3: Note legali */}
           <motion.div variants={itemFadeIn} className="flex flex-col items-center md:items-start">
             <h4 className="text-lg font-semibold mb-4 text-white uppercase tracking-wider text-sm">Note Legali</h4>
             <div className="flex flex-col space-y-3">

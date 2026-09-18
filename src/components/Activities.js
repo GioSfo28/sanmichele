@@ -318,7 +318,7 @@ const Activities = () => {
                   "Snack energetici (frutta secca, barrette)",
                   "Telo leggero per la pausa pranzo sull'erba",
                   "Crema solare e cappello/bandana",
-                  "Giacca impermeabile o poncho (anche se il cielo è serbo)",
+                  "Giacca impermeabile o poncho (anche se il cielo è limpido)",
                   "Rosario o oggetti devozionali (opzionale)",
                 ].map((item, i) => (
                   <li

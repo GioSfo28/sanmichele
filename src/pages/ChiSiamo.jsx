@@ -13,6 +13,7 @@ import PadreMarco from "../assets/PadreMarco.jpeg";
 import Giovanni from "../assets/Giovanni.jpeg";
 import DonLodovico from "../assets/DonLodovico.jpeg";
 import Claudio from "../assets/Claudio.jpeg";
+import Sara from "../assets/Sara.jpeg"
 
 const founders = [
   {
@@ -50,6 +51,13 @@ const founders = [
     desc: "Coordina i pellegrini e gestisce le attività logistiche sul territorio valdostano.",
     gradient: "from-red-500 to-pink-500"
   },
+  {
+    name: "Sara Morano Gabbiani",
+    role: "Responsabile Piemonte",
+    img: Sara,
+    desc: "Coordina i pellegrini e gestisce le attività logistiche sul territorio piemontese.",
+    gradient: "from-indigo-500 to-purple-500"
+  }
 ];
 
 const spiritualFathers = [
