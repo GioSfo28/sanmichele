@@ -20,7 +20,6 @@ const Footer = () => {
   const [iscrizioni, setIscrizioni] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  const isDev = process.env.NODE_ENV === "development";
 
   const fadeIn = {
     hidden: { opacity: 0, y: 20 },
@@ -260,17 +259,6 @@ const generatePDF = () => {
                 Cookie Policy
               </Link>
               
-              {isDev && (
-                <motion.button
-                  onClick={openModal}
-                  className="mt-4 px-4 py-2 bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-bold rounded-xl shadow-md hover:shadow-lg transition-all duration-300 flex items-center justify-center gap-2"
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                >
-                  <FaDownload className="text-sm" />
-                  Privato (Admin)
-                </motion.button>
-              )}
             </div>
           </motion.div>
         </motion.div>
