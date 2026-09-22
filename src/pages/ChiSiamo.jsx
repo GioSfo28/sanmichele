@@ -13,7 +13,7 @@ import PadreMarco from "../assets/PadreMarco.jpeg";
 import Giovanni from "../assets/Giovanni.jpeg";
 import DonLodovico from "../assets/DonLodovico.jpeg";
 import Claudio from "../assets/Claudio.jpeg";
-import Sara from "../assets/Sara.jpeg"
+//import Sara from "../assets/Sara.jpeg"
 
 const founders = [
   {
@@ -51,24 +51,25 @@ const founders = [
     desc: "Coordina i pellegrini e gestisce le attività logistiche sul territorio valdostano.",
     gradient: "from-red-500 to-pink-500"
   },
-  {
+
+];
+/*{
     name: "Sara Morano Gabbiani",
     role: "Responsabile Piemonte",
     img: Sara,
     desc: "Coordina i pellegrini e gestisce le attività logistiche sul territorio piemontese.",
     gradient: "from-indigo-500 to-purple-500"
   }
-];
-
+*/
 const spiritualFathers = [
-  { 
-    name: "Padre Marco Moioli", 
-    role: "Padre Spirituale", 
+  {
+    name: "Padre Marco Moioli",
+    role: "Padre Spirituale",
     img: PadreMarco,
   },
-  { 
-    name: "Don Lodovico De Bernardi", 
-    role: "Padre Spirituale", 
+  {
+    name: "Don Lodovico De Bernardi",
+    role: "Padre Spirituale",
     img: DonLodovico,
   },
 ];
@@ -95,8 +96,8 @@ const ChiSiamo = () => {
 
   const cardVariant = {
     hidden: { opacity: 0, y: 30 },
-    visible: { 
-      opacity: 1, 
+    visible: {
+      opacity: 1,
       y: 0,
       transition: { duration: 0.5 }
     },
@@ -104,24 +105,24 @@ const ChiSiamo = () => {
 
   return (
     <div className="flex flex-col min-h-screen bg-gradient-to-b from-gray-50 via-white to-gray-50">
-      
+
       {/* HEADER MODERNO */}
-      <motion.header 
+      <motion.header
         className="bg-white/95 backdrop-blur-md shadow-md fixed top-0 w-full z-50"
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.5 }}
       >
         <div className="flex justify-between items-center py-4 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-          <Link 
-            to="/" 
+          <Link
+            to="/"
             className="text-2xl sm:text-3xl font-extrabold tracking-tight text-sacra-primary hover:text-sacra-hover transition-colors"
           >
             Pellegrinaggio <span className="text-gray-900 font-light">San Michele</span>
           </Link>
-          
-          <Link 
-            to="/" 
+
+          <Link
+            to="/"
             className="flex items-center gap-2 px-5 py-2.5 text-gray-700 hover:text-sacra-primary hover:bg-sacra-primary/5 rounded-full font-medium transition-all duration-300 group"
           >
             <FaArrowLeft className="text-sm group-hover:-translate-x-1 transition-transform" />
@@ -132,9 +133,9 @@ const ChiSiamo = () => {
 
       {/* CONTENUTO PRINCIPALE */}
       <main className="flex-grow pt-32 pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
-        
+
         {/* Hero Section Chi Siamo */}
-        <motion.div 
+        <motion.div
           className="text-center mb-20"
           initial="hidden"
           animate="visible"
@@ -154,7 +155,7 @@ const ChiSiamo = () => {
               Chi Siamo
             </span>
           </h1>
-          
+
           <div className="flex items-center justify-center gap-4 mt-4 mb-6">
             <div className="h-px w-16 bg-gradient-to-r from-transparent to-sacra-accent" />
             <FaStar className="text-sacra-accent text-xl animate-spin" style={{ animationDuration: '3s' }} />
@@ -162,7 +163,7 @@ const ChiSiamo = () => {
           </div>
 
           <p className="text-xl text-gray-600 font-light max-w-3xl mx-auto leading-relaxed">
-            Un gruppo di amici uniti dalla fede e dalla passione per la montagna. 
+            Un gruppo di amici uniti dalla fede e dalla passione per la montagna.
             Abbiamo creato questo cammino per condividere la bellezza della{" "}
             <strong className="font-semibold text-sacra-primary">Sacra di San Michele</strong>.
           </p>
@@ -184,7 +185,7 @@ const ChiSiamo = () => {
               Le persone che rendono possibile questo pellegrinaggio
             </p>
           </div>
-          
+
           {/* Griglia responsive */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
             {founders.map((person, index) => (
@@ -196,7 +197,7 @@ const ChiSiamo = () => {
               >
                 {/* Barra gradiente superiore */}
                 <div className={`absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r ${person.gradient} transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500`} />
-                
+
                 {/* Contenuto */}
                 <div className="p-8 flex flex-col items-center text-center flex-grow">
                   {/* Immagine con effetto */}
@@ -240,7 +241,7 @@ const ChiSiamo = () => {
         >
           {/* Decorazione superiore */}
           <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-sacra-primary via-sacra-accent to-sacra-primary" />
-          
+
           <div className="p-10 sm:p-14">
             {/* Icona */}
             <div className="flex justify-center mb-8">
@@ -256,7 +257,7 @@ const ChiSiamo = () => {
             <h2 className="text-4xl font-extrabold text-gray-900 text-center mb-4">
               Guida Spirituale
             </h2>
-            
+
             <div className="flex items-center justify-center gap-3 mb-10">
               <div className="h-px w-12 bg-gradient-to-r from-transparent to-sacra-accent/50" />
               <FaStar className="text-sacra-accent text-sm animate-pulse" />
