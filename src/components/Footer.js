@@ -62,14 +62,7 @@ const Footer = () => {
     }
   };
 
-  const openModal = () => {
-    setShowAdminModal(true);
-    fetchIscrizioni();
-  };
-
-  const closeModal = () => {
-    setShowAdminModal(false);
-  };
+  
   // ----- GENERA PDF STILATO CON TABELLA PIÙ LARGA -----
 const generatePDF = () => {
   if (iscrizioni.length === 0) {
