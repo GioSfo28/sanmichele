@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { FaArrowLeft, FaCalendarAlt, FaMapMarkerAlt, FaRoute, FaStopwatch, FaCheckCircle, FaInfoCircle, FaStar, FaUserFriends, FaMountain, FaShieldAlt, FaBus, FaArrowRight, FaHeart, FaEnvelope, FaTimes } from "react-icons/fa";
+import { FaArrowLeft, FaCalendarAlt, FaMapMarkerAlt, FaRoute, FaStopwatch, FaCheckCircle, FaInfoCircle, FaStar, FaUserFriends, FaMountain, FaShieldAlt, FaBus, FaArrowRight, FaHeart, FaEnvelope, } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
 import Footer from "../components/Footer";
 
