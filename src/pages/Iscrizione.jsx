@@ -1,85 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
-import { FaArrowLeft, FaCalendarAlt, FaMapMarkerAlt, FaRoute, FaStopwatch, FaCheckCircle, FaInfoCircle, FaStar, FaUserFriends, FaMountain, FaShieldAlt, FaBus, FaArrowRight, FaHeart, FaEnvelope, } from "react-icons/fa";
-import { motion, AnimatePresence } from "framer-motion";
+import { FaArrowLeft, FaCalendarAlt, FaMapMarkerAlt, FaRoute, FaStopwatch, FaCheckCircle, FaInfoCircle, FaStar, FaUserFriends, FaMountain, FaShieldAlt, FaBus, FaArrowRight, FaHeart, FaEnvelope, FaLock } from "react-icons/fa";
+import { motion } from "framer-motion";
 import Footer from "../components/Footer";
 
-// Firebase
-import { db } from "../firebase/config.js";
-import { ref, push, set, serverTimestamp } from "firebase/database";
-
 const Iscrizione = () => {
-  const [formData, setFormData] = useState({
-    nome: "",
-    cognome: "",
-    email: "",
-    telefono: "",
-    privacy: false
-  });
-
-  // 🆕 Stato per la domanda sulle condizioni di salute
-  const [condizioniSalute, setCondizioniSalute] = useState(""); // "" | "si" | "no"
-
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
-
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
-
-  const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: type === "checkbox" ? checked : value
-    }));
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    // 🆕 Blocco di sicurezza: si può inviare solo se ha risposto "No"
-    if (condizioniSalute !== "no") {
-      setErrorMessage("Per procedere con l'iscrizione devi rispondere alla domanda sulle condizioni di salute.");
-      return;
-    }
-
-    setIsSubmitting(true);
-    setErrorMessage("");
-
-    try {
-      const iscrizioniRef = ref(db, 'iscrizioni');
-      const nuovaIscrizioneRef = push(iscrizioniRef);
-
-      const dataAttuale = new Date();
-      const dataLeggibile = dataAttuale.toLocaleString('it-IT', {
-        day: '2-digit',
-        month: '2-digit',
-        year: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit'
-      }).replace(',', '');
-
-      await set(nuovaIscrizioneRef, {
-        nome: formData.nome,
-        cognome: formData.cognome,
-        email: formData.email,
-        telefono: formData.telefono,
-        privacyAccettata: formData.privacy,
-        condizioniSalute: condizioniSalute, // 🆕 salviamo anche la risposta
-        dataIscrizione: dataLeggibile,
-        timestamp: serverTimestamp()
-      });
-
-      setIsSuccess(true);
-    } catch (error) {
-      console.error("Errore di scrittura su Firebase: ", error);
-      setErrorMessage("Si è verificato un errore durante l'invio. Riprova più tardi.");
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
 
   const stats = [
     { icon: FaRoute, value: "14", unit: "KM", label: "Distanza" },
@@ -93,22 +21,10 @@ const Iscrizione = () => {
     { icon: FaHeart, title: "Comunità", desc: "Unisciti a giovani da tutta Italia" },
   ];
 
-  const steps = [
-    { label: "Dati Personali", icon: FaUserFriends },
-    { label: "Conferma", icon: FaCheckCircle },
-  ];
-
-  // 🆕 Link mailto precompilato
-  const mailtoLink = `mailto:pellegrinaggiosacrasanmichele@gmail.com?subject=${encodeURIComponent(
-    "Valutazione medica - Iscrizione Pellegrinaggio San Michele"
-  )}&body=${encodeURIComponent(
-    `Buongiorno,\n\nin allegato invio la valutazione medica che attesta la compatibilità con la partecipazione al Pellegrinaggio San Michele, con eventuali limitazioni da rispettare.\n\nNome: ${formData.nome} ${formData.cognome}\nEmail: ${formData.email}\nTelefono: ${formData.telefono}\n\nGrazie.`
-  )}`;
-
   return (
     <div className="flex flex-col min-h-screen bg-gradient-to-b from-gray-50 via-white to-gray-50">
 
-      {/* HEADER SUPER MODERNO */}
+      {/* HEADER */}
       <motion.header
         className="bg-white/95 backdrop-blur-md shadow-lg fixed top-0 w-full z-50"
         initial={{ y: -100 }}
@@ -163,21 +79,46 @@ const Iscrizione = () => {
 
           <h1 className="text-5xl sm:text-7xl lg:text-8xl font-black tracking-tighter mb-6">
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-sacra-primary via-sacra-accent to-amber-500">
-              Unisciti
+              Iscrizioni
             </span>
             <br />
             <span className="text-3xl sm:text-5xl lg:text-6xl font-light text-gray-900">
-              al Cammino
+              Chiuse
             </span>
           </h1>
 
           <p className="text-xl sm:text-2xl text-gray-600 font-light max-w-3xl mx-auto leading-relaxed">
-            Preparati a vivere un'esperienza unica di fede, natura e amicizia.
-            I posti sono limitati, non restare fuori!
+            I posti sono terminati! Controlla la tua <strong className="text-sacra-primary">email</strong> per tutte le informazioni logistiche e organizzative.
           </p>
 
+          {/* BOX AVVISO CHIUSURA */}
           <motion.div
-            className="flex justify-center gap-4 sm:gap-8 mt-10"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4, duration: 0.6 }}
+            className="max-w-2xl mx-auto mt-10 p-6 sm:p-8 bg-gradient-to-br from-sacra-primary to-sacra-secondary text-white rounded-3xl shadow-2xl border border-white/20"
+          >
+            <div className="flex items-center justify-center gap-3 mb-4">
+              <div className="w-14 h-14 bg-white/20 rounded-2xl flex items-center justify-center shrink-0">
+                <FaLock className="text-2xl text-sacra-accent" />
+              </div>
+              <h2 className="text-2xl sm:text-3xl font-black text-left">
+                Iscrizioni Chiuse
+              </h2>
+            </div>
+            <p className="text-white/90 leading-relaxed text-base sm:text-lg">
+              Le iscrizioni al Pellegrinaggio sono ufficialmente <strong className="text-sacra-accent">chiuse</strong>. Se ti sei registrato, riceverai a breve (o hai già ricevuto) una <strong>email con tutti i dettagli</strong>: orari, punto di ritrovo, cosa portare e info sul rientro in bus.
+            </p>
+            <div className="mt-6 flex items-center justify-center gap-3 p-4 bg-white/10 rounded-2xl backdrop-blur-sm">
+              <FaEnvelope className="text-xl text-sacra-accent shrink-0" />
+              <p className="text-sm text-white/90">
+                Controlla anche lo <strong>spam</strong> se non trovi la nostra mail!
+              </p>
+            </div>
+          </motion.div>
+
+          <motion.div
+            className="flex justify-center gap-4 sm:gap-8 mt-12"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5, duration: 0.8 }}
@@ -197,48 +138,9 @@ const Iscrizione = () => {
               </motion.div>
             ))}
           </motion.div>
-
-          <motion.div
-            className="flex flex-col sm:flex-row justify-center gap-6 mt-12 max-w-3xl mx-auto"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.7, duration: 0.6 }}
-          >
-            <motion.div
-              whileHover={{ scale: 1.03, y: -5 }}
-              className="flex-1 bg-gradient-to-br from-sacra-primary to-sacra-secondary text-white p-6 rounded-3xl shadow-2xl border border-white/20"
-            >
-              <div className="flex items-center gap-4">
-                <div className="w-14 h-14 bg-white/20 rounded-2xl flex items-center justify-center shrink-0">
-                  <FaCalendarAlt className="text-3xl text-sacra-accent" />
-                </div>
-                <div className="text-left">
-                  <p className="text-sm uppercase tracking-widest font-bold text-sacra-accent/80">Data</p>
-                  <p className="text-3xl font-black">27 Settembre 2026</p>
-                  <p className="text-sm opacity-80">Domenica · ritrovo ore 9:00</p>
-                </div>
-              </div>
-            </motion.div>
-
-            <motion.div
-              whileHover={{ scale: 1.03, y: -5 }}
-              className="flex-1 bg-gradient-to-br from-amber-500 to-yellow-400 text-gray-900 p-6 rounded-3xl shadow-2xl border border-white/20"
-            >
-              <div className="flex items-center gap-4">
-                <div className="w-14 h-14 bg-white/30 rounded-2xl flex items-center justify-center shrink-0">
-                  <FaBus className="text-3xl text-gray-900" />
-                </div>
-                <div className="text-left">
-                  <p className="text-sm uppercase tracking-widest font-bold text-gray-800/70">Rientro</p>
-                  <p className="text-2xl font-black">Bus per tutti!</p>
-                  <p className="text-sm font-medium">Dalla Sacra ad Avigliana (non a piedi)</p>
-                </div>
-              </div>
-            </motion.div>
-          </motion.div>
         </motion.div>
 
-        {/* GRID PRINCIPALE */}
+        {/* GRID INFO */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 max-w-6xl mx-auto">
 
           {/* COLONNA SINISTRA: INFO & FEATURES */}
@@ -347,7 +249,7 @@ const Iscrizione = () => {
             </motion.div>
           </motion.div>
 
-          {/* COLONNA DESTRA: FORM */}
+          {/* COLONNA DESTRA: INFO MAIL */}
           <motion.div
             className="lg:col-span-7"
             initial={{ opacity: 0, x: 30 }}
@@ -357,294 +259,83 @@ const Iscrizione = () => {
             <div className="bg-white rounded-3xl shadow-2xl border border-gray-100 overflow-hidden">
 
               <div className="flex border-b border-gray-100">
-                {steps.map((step, i) => (
-                  <div
-                    key={i}
-                    className="flex-1 flex items-center justify-center gap-2 py-4 text-sm font-semibold text-sacra-primary bg-sacra-primary/5"
-                  >
-                    <step.icon className="text-lg" />
-                    {step.label}
-                  </div>
-                ))}
+                <div className="flex-1 flex items-center justify-center gap-2 py-4 text-sm font-semibold text-sacra-primary bg-sacra-primary/5">
+                  <FaLock className="text-lg" />
+                  Iscrizioni Chiuse
+                </div>
+                <div className="flex-1 flex items-center justify-center gap-2 py-4 text-sm font-semibold text-gray-400 bg-gray-50">
+                  <FaCheckCircle className="text-lg" />
+                  Controlla la Mail
+                </div>
               </div>
 
               <div className="p-8 sm:p-10">
-                <AnimatePresence mode="wait">
-                  {isSuccess ? (
-                    <motion.div
-                      key="success"
-                      initial={{ opacity: 0, scale: 0.9 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      className="flex flex-col items-center justify-center text-center py-12"
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  className="flex flex-col items-center justify-center text-center py-8"
+                >
+                  <motion.div
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    transition={{ type: "spring", stiffness: 200, delay: 0.2 }}
+                    className="w-24 h-24 bg-gradient-to-br from-sacra-primary to-sacra-secondary rounded-full flex items-center justify-center mb-8 shadow-2xl"
+                  >
+                    <FaEnvelope className="text-5xl text-sacra-accent" />
+                  </motion.div>
+
+                  <h3 className="text-4xl font-black text-gray-900 mb-4">
+                    Ci vediamo domani! 🎉
+                  </h3>
+                  <p className="text-xl text-gray-600 mb-2">
+                    Le iscrizioni sono <strong className="text-sacra-primary">chiuse</strong>.
+                  </p>
+                  <p className="text-gray-500 mb-8 max-w-md">
+                    Se ti sei registrato, controlla la tua <strong>casella email</strong> (anche lo spam!) per ricevere tutte le informazioni logistiche e organizzative sul Pellegrinaggio.
+                  </p>
+
+                  {/* BOX INFO MAIL */}
+                  <div className="w-full max-w-md p-5 bg-gradient-to-br from-sacra-accent/10 to-amber-400/10 border-2 border-sacra-accent/30 rounded-2xl mb-8">
+                    <div className="flex items-center justify-center gap-3 mb-3">
+                      <FaEnvelope className="text-2xl text-sacra-accent" />
+                      <h4 className="font-black text-gray-900 text-lg uppercase tracking-wider">
+                        Controlla la Mail
+                      </h4>
+                    </div>
+                    <p className="text-sm text-gray-600 leading-relaxed">
+                      Troverai tutte le info su <strong>orari, ritrovo, cosa portare</strong> e sul <strong>rientro in bus</strong>.
+                    </p>
+                  </div>
+
+                  {/* CONTATTO */}
+                  <div className="w-full max-w-md p-5 bg-gray-50 border border-gray-200 rounded-2xl mb-8">
+                    <p className="text-sm text-gray-600 mb-3">
+                      Non hai ricevuto la mail o hai domande?
+                    </p>
+                    <a
+                      href="mailto:pellegrinaggiosacrasanmichele@gmail.com"
+                      className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-sacra-primary text-white font-bold rounded-full hover:bg-sacra-hover transition-all duration-300 text-sm"
                     >
-                      <motion.div
-                        initial={{ scale: 0 }}
-                        animate={{ scale: 1 }}
-                        transition={{ type: "spring", stiffness: 200, delay: 0.2 }}
-                        className="w-24 h-24 bg-gradient-to-br from-green-400 to-emerald-500 rounded-full flex items-center justify-center mb-8 shadow-2xl"
-                      >
-                        <FaCheckCircle className="text-5xl text-white" />
-                      </motion.div>
+                      <FaEnvelope />
+                      Scrivici una mail
+                    </a>
+                  </div>
 
-                      <h3 className="text-4xl font-black text-gray-900 mb-4">
-                        Sei dei Nostri! 🎉
-                      </h3>
-                      <p className="text-xl text-gray-600 mb-2">
-                        Grazie <strong className="text-sacra-primary">{formData.nome}</strong>!
-                      </p>
-                      <p className="text-gray-500 mb-8 max-w-md">
-                        Abbiamo registrato la tua iscrizione. Ci vediamo il <strong>27 Settembre</strong> al Santuario!
-                      </p>
-
-                      <div className="flex gap-4">
-                        <Link
-                          to="/"
-                          className="px-8 py-3 bg-gray-100 text-gray-700 font-bold rounded-full hover:bg-gray-200 transition-all"
-                        >
-                          Torna alla Home
-                        </Link>
-                        <Link
-                          to="/#Logistica"
-                          className="px-8 py-3 bg-sacra-primary text-white font-bold rounded-full hover:bg-sacra-hover transition-all flex items-center gap-2"
-                        >
-                          Preparati <FaArrowRight />
-                        </Link>
-                      </div>
-                    </motion.div>
-                  ) : (
-                    <motion.form
-                      key="form"
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      exit={{ opacity: 0 }}
-                      onSubmit={handleSubmit}
-                      className="space-y-6"
+                  <div className="flex flex-wrap justify-center gap-4">
+                    <Link
+                      to="/"
+                      className="px-8 py-3 bg-gray-100 text-gray-700 font-bold rounded-full hover:bg-gray-200 transition-all"
                     >
-                      {errorMessage && (
-                        <motion.div
-                          initial={{ opacity: 0, y: -10 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          className="p-4 bg-red-50 border border-red-200 text-red-700 rounded-xl flex items-center gap-3"
-                        >
-                          <FaInfoCircle className="shrink-0" />
-                          {errorMessage}
-                        </motion.div>
-                      )}
-
-                      <div className="space-y-5">
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                          <div>
-                            <label className="block text-sm font-bold text-gray-700 mb-2">
-                              Nome <span className="text-sacra-accent">*</span>
-                            </label>
-                            <input
-                              type="text"
-                              name="nome"
-                              required
-                              value={formData.nome}
-                              onChange={handleChange}
-                              disabled={isSubmitting}
-                              className="w-full px-5 py-3.5 rounded-2xl border-2 border-gray-200 focus:border-sacra-primary focus:ring-4 focus:ring-sacra-primary/10 outline-none transition-all bg-gray-50 focus:bg-white disabled:opacity-50 text-lg"
-                              placeholder="Il tuo nome"
-                            />
-                          </div>
-                          <div>
-                            <label className="block text-sm font-bold text-gray-700 mb-2">
-                              Cognome <span className="text-sacra-accent">*</span>
-                            </label>
-                            <input
-                              type="text"
-                              name="cognome"
-                              required
-                              value={formData.cognome}
-                              onChange={handleChange}
-                              disabled={isSubmitting}
-                              className="w-full px-5 py-3.5 rounded-2xl border-2 border-gray-200 focus:border-sacra-primary focus:ring-4 focus:ring-sacra-primary/10 outline-none transition-all bg-gray-50 focus:bg-white disabled:opacity-50 text-lg"
-                              placeholder="Il tuo cognome"
-                            />
-                          </div>
-                        </div>
-
-                        <div>
-                          <label className="block text-sm font-bold text-gray-700 mb-2">
-                            Email <span className="text-sacra-accent">*</span>
-                          </label>
-                          <input
-                            type="email"
-                            name="email"
-                            required
-                            value={formData.email}
-                            onChange={handleChange}
-                            disabled={isSubmitting}
-                            className="w-full px-5 py-3.5 rounded-2xl border-2 border-gray-200 focus:border-sacra-primary focus:ring-4 focus:ring-sacra-primary/10 outline-none transition-all bg-gray-50 focus:bg-white disabled:opacity-50 text-lg"
-                            placeholder="mario@email.com"
-                          />
-                        </div>
-
-                        <div>
-                          <label className="block text-sm font-bold text-gray-700 mb-2">
-                            Telefono <span className="text-sacra-accent">*</span>
-                          </label>
-                          <input
-                            type="tel"
-                            name="telefono"
-                            required
-                            value={formData.telefono}
-                            onChange={handleChange}
-                            disabled={isSubmitting}
-                            className="w-full px-5 py-3.5 rounded-2xl border-2 border-gray-200 focus:border-sacra-primary focus:ring-4 focus:ring-sacra-primary/10 outline-none transition-all bg-gray-50 focus:bg-white disabled:opacity-50 text-lg"
-                            placeholder="+39 333 1234567"
-                          />
-                        </div>
-                      </div>
-
-                      {/* Privacy */}
-                      <div className="pt-4 border-t-2 border-gray-100">
-                        <label className="flex items-start cursor-pointer group">
-                          <input
-                            type="checkbox"
-                            name="privacy"
-                            required
-                            checked={formData.privacy}
-                            onChange={handleChange}
-                            disabled={isSubmitting}
-                            className="w-5 h-5 mt-1 text-sacra-primary rounded-lg focus:ring-sacra-primary/20"
-                          />
-                          <span className="ml-3 text-sm text-gray-600 leading-relaxed group-hover:text-gray-900 transition-colors">
-                            Accetto il trattamento dei miei dati personali per la gestione dell'evento, in conformità con la normativa sulla privacy.{" "}
-                            <span className="text-sacra-accent">*</span>
-                          </span>
-                        </label>
-                      </div>
-
-                      {/* 🆕 CONDIZIONI DI SALUTE */}
-                      <div className="pt-4 border-t-2 border-gray-100">
-                        <label className="block text-sm font-bold text-gray-700 mb-3 leading-relaxed">
-                          Sei a conoscenza di condizioni di salute che possano compromettere la tua partecipazione in sicurezza?{" "}
-                          <span className="text-sacra-accent">*</span>
-                        </label>
-
-                        <div className="flex gap-3">
-                          <button
-                            type="button"
-                            onClick={() => {
-                              setCondizioniSalute("si");
-                              setErrorMessage("");
-                            }}
-                            disabled={isSubmitting}
-                            className={`flex-1 py-3.5 rounded-2xl font-bold text-lg border-2 transition-all duration-300 flex items-center justify-center gap-2 ${
-                              condizioniSalute === "si"
-                                ? "bg-red-500 border-red-500 text-white shadow-lg scale-[1.02]"
-                                : "bg-white border-gray-200 text-gray-700 hover:border-red-300 hover:bg-red-50"
-                            }`}
-                          >
-                            <FaCheckCircle className={condizioniSalute === "si" ? "opacity-100" : "opacity-0"} />
-                            Sì
-                          </button>
-
-                          <button
-                            type="button"
-                            onClick={() => {
-                              setCondizioniSalute("no");
-                              setErrorMessage("");
-                            }}
-                            disabled={isSubmitting}
-                            className={`flex-1 py-3.5 rounded-2xl font-bold text-lg border-2 transition-all duration-300 flex items-center justify-center gap-2 ${
-                              condizioniSalute === "no"
-                                ? "bg-green-500 border-green-500 text-white shadow-lg scale-[1.02]"
-                                : "bg-white border-gray-200 text-gray-700 hover:border-green-300 hover:bg-green-50"
-                            }`}
-                          >
-                            <FaCheckCircle className={condizioniSalute === "no" ? "opacity-100" : "opacity-0"} />
-                            No
-                          </button>
-                        </div>
-
-                        {/* Messaggio se risponde Sì */}
-                        <AnimatePresence>
-                          {condizioniSalute === "si" && (
-                            <motion.div
-                              initial={{ opacity: 0, y: -10, height: 0 }}
-                              animate={{ opacity: 1, y: 0, height: "auto" }}
-                              exit={{ opacity: 0, y: -10, height: 0 }}
-                              transition={{ duration: 0.3 }}
-                              className="mt-4 overflow-hidden"
-                            >
-                              <div className="p-5 bg-amber-50 border-2 border-amber-300 rounded-2xl">
-                                <div className="flex items-start gap-3 mb-4">
-                                  <div className="w-10 h-10 bg-amber-400 rounded-xl flex items-center justify-center shrink-0">
-                                    <FaInfoCircle className="text-xl text-white" />
-                                  </div>
-                                  <p className="text-sm text-gray-700 leading-relaxed">
-                                    Se la risposta è <strong>"Sì"</strong>, inviaci via mail a{" "}
-                                    <a
-                                      href="mailto:pellegrinaggiosacrasanmichele@gmail.com"
-                                      className="text-sacra-primary font-bold underline break-all"
-                                    >
-                                      pellegrinaggiosacrasanmichele@gmail.com
-                                    </a>{" "}
-                                    con una <strong>valutazione medica</strong> che attesti la compatibilità con la partecipazione alle attività previste dal pellegrinaggio e riporti eventuali <strong>limitazioni da rispettare</strong>.
-                                  </p>
-                                </div>
-
-                                <motion.a
-                                  href={mailtoLink}
-                                  whileHover={{ scale: 1.02 }}
-                                  whileTap={{ scale: 0.98 }}
-                                  className="w-full py-4 bg-gradient-to-r from-sacra-primary to-sacra-secondary text-white font-black text-base uppercase tracking-wider rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 flex items-center justify-center gap-3"
-                                >
-                                  <FaEnvelope className="text-xl" />
-                                  Invia Mail
-                                </motion.a>
-                              </div>
-                            </motion.div>
-                          )}
-                        </AnimatePresence>
-                      </div>
-
-                      {/* Submit Button - visibile solo se ha risposto "No" */}
-                      <AnimatePresence>
-                        {condizioniSalute === "no" && (
-                          <motion.div
-                            initial={{ opacity: 0, y: 10 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0, y: 10 }}
-                            transition={{ duration: 0.3 }}
-                          >
-                            <motion.button
-                              type="submit"
-                              disabled={isSubmitting}
-                              whileHover={{ scale: 1.02 }}
-                              whileTap={{ scale: 0.98 }}
-                              className="w-full py-5 bg-gradient-to-r from-sacra-accent to-amber-500 text-gray-900 font-black text-lg uppercase tracking-wider rounded-2xl shadow-xl hover:shadow-2xl hover:from-amber-400 hover:to-sacra-accent transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3"
-                            >
-                              {isSubmitting ? (
-                                <>
-                                  <motion.div
-                                    animate={{ rotate: 360 }}
-                                    transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-                                    className="w-5 h-5 border-2 border-gray-900 border-t-transparent rounded-full"
-                                  />
-                                  Invio in corso...
-                                </>
-                              ) : (
-                                <>
-                                  <FaCheckCircle className="text-xl" />
-                                  Iscriviti
-                                  <FaArrowRight className="ml-2" />
-                                </>
-                              )}
-                            </motion.button>
-                          </motion.div>
-                        )}
-                      </AnimatePresence>
-
-                      <p className="text-center text-xs text-gray-400 mt-4">
-                        * Campi obbligatori. I tuoi dati saranno trattati nel rispetto della privacy.
-                      </p>
-                    </motion.form>
-                  )}
-                </AnimatePresence>
+                      Torna alla Home
+                    </Link>
+                    <Link
+                      to="/#Logistica"
+                      className="px-8 py-3 bg-sacra-primary text-white font-bold rounded-full hover:bg-sacra-hover transition-all flex items-center gap-2"
+                    >
+                      Info Logistica <FaArrowRight />
+                    </Link>
+                  </div>
+                </motion.div>
               </div>
             </div>
           </motion.div>
