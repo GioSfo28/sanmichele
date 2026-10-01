@@ -3,14 +3,13 @@ import ReactDOM from "react-dom/client";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import App from "./App";
 
-// Importa la nuova pagina Galleria (dovrai creare questo file!)
-import Galleria from "./pages/Galleria"; 
 
 import "./index.css"; // Importa TailwindCSS
 import ChiSiamo from "./pages/ChiSiamo";
 import Iscrizione from "./pages/Iscrizione";
 import Privacy from "./pages/Privacy";
 import Cookie from "./pages/Cookie";
+import Edizioni from "./pages/Edizioni";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
@@ -19,8 +18,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         {/* La tua pagina principale (tutto quello che hai fatto finora) */}
         <Route path="/" element={<App />} />
         
-        {/* La nuova pagina dedicata alla Galleria */}
-        <Route path="/Galleria" element={<Galleria />} />
+        <Route path="/Edizioni" element={<Edizioni/>} />
         <Route path="/Chi-siamo" element={<ChiSiamo />} />
         <Route path="/Iscrizione" element={<Iscrizione />} />
         <Route path="/Privacy" element={<Privacy />} />

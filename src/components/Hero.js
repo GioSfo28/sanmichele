@@ -4,9 +4,13 @@ import { Link } from "react-router-dom";
 import { FaDownload } from "react-icons/fa";
 import * as THREE from "three";
 
-// Import dei video
+// ============ ASSETS SFONDO VIDEO ============
+// Il video desktop rimane in root
 import videoPC from "../assets/back.mp4";
-import videoMobile from "../assets/3.mp4";
+// Il video mobile puntava a "../assets/3.mp4" che ora è in 2025/
+import videoMobile from "../assets/2025/3.mp4";
+
+// ============ LOGO E LOCANDINA ============
 import logoSacra from "../assets/SanMichele.png";
 import locandinaImg from "../assets/Locandina.jpeg";
 
@@ -14,7 +18,7 @@ const Hero = () => {
   const containerRef = useRef(null);
   const { scrollYProgress } = useScroll({
     target: containerRef,
-    offset: ["start start", "end start"]
+    offset: ["start start", "end start"],
   });
 
   // RIMOSSO l'effetto y - il contenuto rimane fermo
@@ -23,13 +27,18 @@ const Hero = () => {
   // Configurazione Three.js per effetto particelle
   useEffect(() => {
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    const camera = new THREE.PerspectiveCamera(
+      75,
+      window.innerWidth / window.innerHeight,
+      0.1,
+      1000
+    );
     const renderer = new THREE.WebGLRenderer({ alpha: true });
 
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-    const mountNode = document.getElementById('particle-container');
+    const mountNode = document.getElementById("particle-container");
     if (mountNode) {
       mountNode.appendChild(renderer.domElement);
     }
@@ -45,14 +54,17 @@ const Hero = () => {
       posArray[i + 2] = (Math.random() - 0.5) * 5;
     }
 
-    particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+    particlesGeometry.setAttribute(
+      "position",
+      new THREE.BufferAttribute(posArray, 3)
+    );
 
     const particlesMaterial = new THREE.PointsMaterial({
       size: 0.005,
       color: 0xd4a017,
       blending: THREE.AdditiveBlending,
       transparent: true,
-      opacity: 0.6
+      opacity: 0.6,
     });
 
     const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
@@ -75,10 +87,10 @@ const Hero = () => {
       renderer.setSize(window.innerWidth, window.innerHeight);
     };
 
-    window.addEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
 
     return () => {
-      window.removeEventListener('resize', handleResize);
+      window.removeEventListener("resize", handleResize);
       if (mountNode && mountNode.contains(renderer.domElement)) {
         mountNode.removeChild(renderer.domElement);
       }
@@ -92,7 +104,10 @@ const Hero = () => {
       id="top"
     >
       {/* Container particelle 3D */}
-      <div id="particle-container" className="absolute inset-0 z-10 pointer-events-none" />
+      <div
+        id="particle-container"
+        className="absolute inset-0 z-10 pointer-events-none"
+      />
 
       {/* Sfondo Video */}
       <div className="absolute inset-0 z-0">
@@ -103,7 +118,7 @@ const Hero = () => {
           loop
           muted
           playsInline
-          style={{ filter: 'brightness(0.4) saturate(1.2)' }}
+          style={{ filter: "brightness(0.4) saturate(1.2)" }}
         />
         <video
           className="block md:hidden w-full h-full object-cover"
@@ -112,7 +127,7 @@ const Hero = () => {
           loop
           muted
           playsInline
-          style={{ filter: 'brightness(0.4) saturate(1.2)' }}
+          style={{ filter: "brightness(0.4) saturate(1.2)" }}
         />
       </div>
 
@@ -130,7 +145,7 @@ const Hero = () => {
         className="relative z-20 max-w-5xl mx-auto px-4 w-full"
         style={{ opacity }}
       >
-        {/* Logo - Margini inferiori ridotti su mobile (mb-4 invece di mb-8) */}
+        {/* Logo */}
         <motion.div
           initial={{ scale: 0, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
@@ -138,7 +153,7 @@ const Hero = () => {
             type: "spring",
             stiffness: 260,
             damping: 20,
-            duration: 1.5
+            duration: 1.5,
           }}
           className="relative mb-4 sm:mb-10"
         >
@@ -167,7 +182,8 @@ const Hero = () => {
             transition={{ delay: 1, duration: 0.8 }}
             className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light tracking-wide block sm:inline"
           >
-            {" "}di San Michele
+            {" "}
+            di San Michele
           </motion.span>
         </motion.h1>
 
@@ -179,14 +195,22 @@ const Hero = () => {
           className="mt-4 sm:mt-6 text-lg sm:text-xl md:text-2xl text-gray-200 font-light max-w-3xl mx-auto px-2 leading-relaxed"
         >
           Il pellegrinaggio dei giovani da Avigliana alla maestosa{" "}
-          <strong className="font-semibold text-sacra-accent">Sacra di San Michele</strong>.
+          <strong className="font-semibold text-sacra-accent">
+            Sacra di San Michele
+          </strong>
+          .
         </motion.p>
 
         {/* 🆕 DATA IN EVIDENZA */}
         <motion.div
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 1.3, duration: 0.6, type: "spring", stiffness: 200 }}
+          transition={{
+            delay: 1.3,
+            duration: 0.6,
+            type: "spring",
+            stiffness: 200,
+          }}
           className="mt-4 sm:mt-6 mb-4 sm:mb-6"
         >
           <span className="inline-block px-6 py-3 sm:px-10 sm:py-4 bg-gradient-to-r from-sacra-accent/30 to-amber-500/30 backdrop-blur-md rounded-full border-2 border-sacra-accent/60 shadow-2xl shadow-sacra-accent/20 text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-white tracking-wider">
@@ -204,7 +228,7 @@ const Hero = () => {
           {[
             { value: "14", unit: "KM", label: "Distanza" },
             { value: "620", unit: "M", label: "Dislivello" },
-            { value: "4-5", unit: "ORE", label: "Cammino" }
+            { value: "4-5", unit: "ORE", label: "Cammino" },
           ].map((stat, i) => (
             <motion.div
               key={i}
@@ -213,14 +237,18 @@ const Hero = () => {
             >
               <div className="text-2xl sm:text-4xl font-black text-white whitespace-nowrap">
                 {stat.value}
-                <span className="text-base sm:text-xl text-sacra-accent ml-1">{stat.unit}</span>
+                <span className="text-base sm:text-xl text-sacra-accent ml-1">
+                  {stat.unit}
+                </span>
               </div>
-              <div className="text-xs sm:text-sm text-gray-300 mt-1">{stat.label}</div>
+              <div className="text-xs sm:text-sm text-gray-300 mt-1">
+                {stat.label}
+              </div>
             </motion.div>
           ))}
         </motion.div>
 
-        {/* Bottoni CTA - AGGIUNTO mb-24 su mobile per distanziarli dal fondo e dallo scroll */}
+        {/* Bottoni CTA */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}

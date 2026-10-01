@@ -33,13 +33,16 @@ import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/effect-cards";
 
-import img1 from "../assets/1.jpg";
-import img2 from "../assets/2.jpeg";
-import vid3 from "../assets/3.mp4";
-import img4 from "../assets/4.jpeg";
-import img5 from "../assets/5.jpeg";
-import img6 from "../assets/6.jpeg";
-import img7 from "../assets/7.jpeg";
+// ============ ASSETS EDIZIONE 2025 (anteprima) ============
+import img2025_1 from "../assets/2025/1.jpg";
+import img2025_2 from "../assets/2025/2.jpeg";
+import vid2025_3 from "../assets/2025/3.mp4";
+import img2025_4 from "../assets/2025/4.jpeg";
+import img2025_5 from "../assets/2025/5.jpeg";
+import img2025_6 from "../assets/2025/6.jpeg";
+import img2025_7 from "../assets/2025/7.jpeg";
+
+// PDF autobus (se è in assets/ fuori dalle cartelle anno)
 import autobusPdf from "../assets/Autobus.pdf";
 
 // Componente per forzare il resize della mappa
@@ -80,14 +83,15 @@ const endIcon = new L.divIcon({
   popupAnchor: [0, -22],
 });
 
+// 📸 Media per l'anteprima Swiper (mix di foto 2025)
 const galleryMedia = [
-  { type: "image", src: img1 },
-  { type: "image", src: img2 },
-  { type: "video", src: vid3 },
-  { type: "image", src: img4 },
-  { type: "image", src: img5 },
-  { type: "image", src: img6 },
-  { type: "image", src: img7 },
+  { type: "image", src: img2025_1 },
+  { type: "image", src: img2025_2 },
+  { type: "video", src: vid2025_3 },
+  { type: "image", src: img2025_4 },
+  { type: "image", src: img2025_5 },
+  { type: "image", src: img2025_6 },
+  { type: "image", src: img2025_7 },
 ];
 
 const Activities = () => {
@@ -423,7 +427,7 @@ const Activities = () => {
           </motion.div>
         </motion.div>
 
-        {/* ========== GALLERIA PREVIEW ========== */}
+        {/* ========== ANTEPRIMA EDIZIONI ========== */}
         <motion.div
           initial="hidden"
           whileInView="visible"
@@ -475,10 +479,10 @@ const Activities = () => {
 
           <div className="text-center mt-8">
             <Link
-              to="/galleria"
+              to="/edizioni"
               className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-sacra-primary to-sacra-accent text-white font-bold rounded-full hover:shadow-lg transition-all"
             >
-              <FaImages /> Galleria Completa
+              <FaImages /> Scopri le Edizioni
             </Link>
           </div>
         </motion.div>

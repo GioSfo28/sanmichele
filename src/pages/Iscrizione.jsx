@@ -1,13 +1,72 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { FaArrowLeft, FaCalendarAlt, FaMapMarkerAlt, FaRoute, FaStopwatch, FaCheckCircle, FaInfoCircle, FaStar, FaMountain, FaShieldAlt, FaBus, FaArrowRight, FaHeart, FaEnvelope, FaLock } from "react-icons/fa";
-import { motion } from "framer-motion";
+import {
+  FaArrowLeft, FaCalendarAlt, FaMapMarkerAlt, FaRoute, FaStopwatch,
+  FaCheckCircle, FaInfoCircle, FaStar, FaMountain, FaShieldAlt,
+  FaBus, FaArrowRight, FaHeart, FaEnvelope, FaBell, FaUsers,
+  FaHandsHelping,
+} from "react-icons/fa";
+import { motion, AnimatePresence } from "framer-motion";
 import Footer from "../components/Footer";
 
+// Firebase
+import { db } from "../firebase/config.js";
+import { ref, push, set, serverTimestamp } from "firebase/database";
+
 const Iscrizione = () => {
+  const [email, setEmail] = useState("");
+  const [privacy, setPrivacy] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!email || !privacy) {
+      setErrorMessage("Inserisci la tua email e accetta la privacy.");
+      return;
+    }
+
+    setIsSubmitting(true);
+    setErrorMessage("");
+
+    try {
+      const iscrittiRef = ref(db, "aggiornamenti_2027");
+      const nuovoRef = push(iscrittiRef);
+
+      const dataAttuale = new Date();
+      const dataLeggibile = dataAttuale
+        .toLocaleString("it-IT", {
+          day: "2-digit",
+          month: "2-digit",
+          year: "numeric",
+          hour: "2-digit",
+          minute: "2-digit",
+        })
+        .replace(",", "");
+
+      await set(nuovoRef, {
+        email: email.trim().toLowerCase(),
+        privacyAccettata: privacy,
+        dataIscrizione: dataLeggibile,
+        timestamp: serverTimestamp(),
+      });
+
+      setIsSuccess(true);
+      setEmail("");
+      setPrivacy(false);
+    } catch (error) {
+      console.error("Errore di scrittura su Firebase: ", error);
+      setErrorMessage("Si è verificato un errore. Riprova più tardi.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   const stats = [
     { icon: FaRoute, value: "14", unit: "KM", label: "Distanza" },
@@ -65,33 +124,34 @@ const Iscrizione = () => {
             className="inline-flex flex-wrap items-center justify-center gap-3 px-6 py-3 bg-gradient-to-r from-sacra-accent/10 to-amber-400/10 border border-sacra-accent/30 rounded-full mb-8"
           >
             <span className="flex items-center gap-2">
-              <FaStar className="text-sacra-accent animate-spin" style={{ animationDuration: '3s' }} />
+              <FaStar className="text-sacra-accent animate-spin" style={{ animationDuration: "3s" }} />
               <span className="text-sm font-bold text-sacra-primary uppercase tracking-widest">
-                27 Settembre 2026
+                Edizione 2026 conclusa
               </span>
             </span>
             <span className="hidden sm:block w-px h-6 bg-sacra-accent/30" />
             <span className="flex items-center gap-2 text-sm font-bold text-sacra-primary uppercase tracking-widest">
-              <FaBus className="text-sacra-accent" />
-              Rientro in bus incluso
+              <FaCalendarAlt className="text-sacra-accent" />
+              Prossima: 25/26 Settembre 2027
             </span>
           </motion.div>
 
           <h1 className="text-5xl sm:text-7xl lg:text-8xl font-black tracking-tighter mb-6">
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-sacra-primary via-sacra-accent to-amber-500">
-              Iscrizioni
+              Grazie
             </span>
             <br />
             <span className="text-3xl sm:text-5xl lg:text-6xl font-light text-gray-900">
-              Chiuse
+              a tutti voi!
             </span>
           </h1>
 
           <p className="text-xl sm:text-2xl text-gray-600 font-light max-w-3xl mx-auto leading-relaxed">
-            I posti sono terminati! Controlla la tua <strong className="text-sacra-primary">email</strong> per tutte le informazioni logistiche e organizzative.
+            L'edizione 2026 è stata un'esperienza indimenticabile. Ora iniziamo a
+            preparare la prossima: <strong className="text-sacra-primary">25/26 settembre 2027</strong>.
           </p>
 
-          {/* BOX AVVISO CHIUSURA */}
+          {/* BOX RINGRAZIAMENTO */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -100,21 +160,17 @@ const Iscrizione = () => {
           >
             <div className="flex items-center justify-center gap-3 mb-4">
               <div className="w-14 h-14 bg-white/20 rounded-2xl flex items-center justify-center shrink-0">
-                <FaLock className="text-2xl text-sacra-accent" />
+                <FaHeart className="text-2xl text-sacra-accent" />
               </div>
               <h2 className="text-2xl sm:text-3xl font-black text-left">
-                Iscrizioni Chiuse
+                Grazie di cuore
               </h2>
             </div>
             <p className="text-white/90 leading-relaxed text-base sm:text-lg">
-              Le iscrizioni al Pellegrinaggio sono ufficialmente <strong className="text-sacra-accent">chiuse</strong>. Se ti sei registrato, riceverai a breve (o hai già ricevuto) una <strong>email con tutti i dettagli</strong>: orari, punto di ritrovo, cosa portare e info sul rientro in bus.
+              A tutti i pellegrini che hanno camminato con noi, ai volontari, agli
+              organizzatori e a chi ha pregato per noi: <strong className="text-sacra-accent">grazie</strong>.
+              È stata un'edizione speciale e non vediamo l'ora di ritrovarci nel 2027.
             </p>
-            <div className="mt-6 flex items-center justify-center gap-3 p-4 bg-white/10 rounded-2xl backdrop-blur-sm">
-              <FaEnvelope className="text-xl text-sacra-accent shrink-0" />
-              <p className="text-sm text-white/90">
-                Controlla anche lo <strong>spam</strong> se non trovi la nostra mail!
-              </p>
-            </div>
           </motion.div>
 
           <motion.div
@@ -134,7 +190,9 @@ const Iscrizione = () => {
                   {stat.value}
                   <span className="text-lg text-sacra-accent ml-1">{stat.unit}</span>
                 </div>
-                <div className="text-xs sm:text-sm text-gray-500 uppercase tracking-wider mt-1">{stat.label}</div>
+                <div className="text-xs sm:text-sm text-gray-500 uppercase tracking-wider mt-1">
+                  {stat.label}
+                </div>
               </motion.div>
             ))}
           </motion.div>
@@ -157,7 +215,7 @@ const Iscrizione = () => {
               <div className="relative z-10">
                 <h2 className="text-2xl sm:text-3xl font-bold mb-6 flex items-center gap-3">
                   <FaCalendarAlt className="text-sacra-accent" />
-                  Dettagli evento
+                  Edizione 2027
                 </h2>
 
                 <div className="space-y-6">
@@ -166,8 +224,12 @@ const Iscrizione = () => {
                       <FaCalendarAlt className="text-xl text-sacra-accent" />
                     </div>
                     <div>
-                      <h3 className="font-bold text-sacra-accent text-sm uppercase tracking-wider mb-1">Data</h3>
-                      <p className="text-white text-lg font-semibold">Domenica 27 Settembre 2026</p>
+                      <h3 className="font-bold text-sacra-accent text-sm uppercase tracking-wider mb-1">
+                        Data (da confermare)
+                      </h3>
+                      <p className="text-white text-lg font-semibold">
+                        Weekend 25/26 Settembre 2027
+                      </p>
                     </div>
                   </div>
 
@@ -176,7 +238,9 @@ const Iscrizione = () => {
                       <FaStopwatch className="text-xl text-sacra-accent" />
                     </div>
                     <div>
-                      <h3 className="font-bold text-sacra-accent text-sm uppercase tracking-wider mb-1">Orari</h3>
+                      <h3 className="font-bold text-sacra-accent text-sm uppercase tracking-wider mb-1">
+                        Orari (indicativi)
+                      </h3>
                       <p className="text-white font-semibold">Ritrovo: ore 09:00</p>
                       <p className="text-white/80">S. Messa: ore 17:00</p>
                     </div>
@@ -187,7 +251,9 @@ const Iscrizione = () => {
                       <FaMapMarkerAlt className="text-xl text-sacra-accent" />
                     </div>
                     <div>
-                      <h3 className="font-bold text-sacra-accent text-sm uppercase tracking-wider mb-1">Luogo</h3>
+                      <h3 className="font-bold text-sacra-accent text-sm uppercase tracking-wider mb-1">
+                        Luogo
+                      </h3>
                       <p className="text-white font-semibold">Santuario Madonna dei Laghi</p>
                       <p className="text-white/80">Avigliana (TO)</p>
                     </div>
@@ -195,12 +261,14 @@ const Iscrizione = () => {
 
                   <div className="flex items-start gap-4 p-4 bg-amber-400/20 rounded-2xl backdrop-blur-sm border border-amber-400/30">
                     <div className="p-3 bg-amber-400/30 rounded-xl shrink-0">
-                      <FaBus className="text-xl text-amber-300" />
+                      <FaBell className="text-xl text-amber-300" />
                     </div>
                     <div>
-                      <h3 className="font-bold text-amber-300 text-sm uppercase tracking-wider mb-1">Rientro</h3>
-                      <p className="text-white font-semibold">Bus per tutti dalla Sacra</p>
-                      <p className="text-white/80">Rientro ad Avigliana (non a piedi)</p>
+                      <h3 className="font-bold text-amber-300 text-sm uppercase tracking-wider mb-1">
+                        Iscrizioni 2027
+                      </h3>
+                      <p className="text-white font-semibold">Apriranno in primavera</p>
+                      <p className="text-white/80">Registrati per non perderti l'annuncio</p>
                     </div>
                   </div>
                 </div>
@@ -239,17 +307,18 @@ const Iscrizione = () => {
                   <FaInfoCircle className="text-2xl text-white" />
                 </div>
                 <div>
-                  <h4 className="font-bold text-gray-900 text-xl">Quota: 10€</h4>
-                  <p className="text-sm text-gray-500">Pagamento in contanti al ritrovo</p>
+                  <h4 className="font-bold text-gray-900 text-xl">Quota 2027</h4>
+                  <p className="text-sm text-gray-500">Sarà comunicata con l'apertura iscrizioni</p>
                 </div>
               </div>
               <p className="text-gray-600 text-sm leading-relaxed">
-                Include <strong>assicurazione infortuni</strong> e <strong>pulmino per il rientro</strong> dalla Sacra al Santuario.
+                Come sempre includerà <strong>assicurazione infortuni</strong> e{" "}
+                <strong>pulmino per il rientro</strong> dalla Sacra al Santuario.
               </p>
             </motion.div>
           </motion.div>
 
-          {/* COLONNA DESTRA: INFO MAIL */}
+          {/* COLONNA DESTRA: FORM AGGIORNAMENTI */}
           <motion.div
             className="lg:col-span-7"
             initial={{ opacity: 0, x: 30 }}
@@ -260,84 +329,187 @@ const Iscrizione = () => {
 
               <div className="flex border-b border-gray-100">
                 <div className="flex-1 flex items-center justify-center gap-2 py-4 text-sm font-semibold text-sacra-primary bg-sacra-primary/5">
-                  <FaLock className="text-lg" />
-                  Iscrizioni Chiuse
+                  <FaUsers className="text-lg" />
+                  Edizione 2026
                 </div>
-                <div className="flex-1 flex items-center justify-center gap-2 py-4 text-sm font-semibold text-gray-400 bg-gray-50">
-                  <FaCheckCircle className="text-lg" />
-                  Controlla la Mail
+                <div className="flex-1 flex items-center justify-center gap-2 py-4 text-sm font-semibold text-sacra-accent bg-sacra-accent/5">
+                  <FaBell className="text-lg" />
+                  Aggiornamenti 2027
                 </div>
               </div>
 
               <div className="p-8 sm:p-10">
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  className="flex flex-col items-center justify-center text-center py-8"
-                >
-                  <motion.div
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
-                    transition={{ type: "spring", stiffness: 200, delay: 0.2 }}
-                    className="w-24 h-24 bg-gradient-to-br from-sacra-primary to-sacra-secondary rounded-full flex items-center justify-center mb-8 shadow-2xl"
-                  >
-                    <FaEnvelope className="text-5xl text-sacra-accent" />
-                  </motion.div>
-
-                  <h3 className="text-4xl font-black text-gray-900 mb-4">
-                    Ci vediamo domani! 🎉
-                  </h3>
-                  <p className="text-xl text-gray-600 mb-2">
-                    Le iscrizioni sono <strong className="text-sacra-primary">chiuse</strong>.
-                  </p>
-                  <p className="text-gray-500 mb-8 max-w-md">
-                    Se ti sei registrato, controlla la tua <strong>casella email</strong> (anche lo spam!) per ricevere tutte le informazioni logistiche e organizzative sul Pellegrinaggio.
-                  </p>
-
-                  {/* BOX INFO MAIL */}
-                  <div className="w-full max-w-md p-5 bg-gradient-to-br from-sacra-accent/10 to-amber-400/10 border-2 border-sacra-accent/30 rounded-2xl mb-8">
-                    <div className="flex items-center justify-center gap-3 mb-3">
-                      <FaEnvelope className="text-2xl text-sacra-accent" />
-                      <h4 className="font-black text-gray-900 text-lg uppercase tracking-wider">
-                        Controlla la Mail
-                      </h4>
-                    </div>
-                    <p className="text-sm text-gray-600 leading-relaxed">
-                      Troverai tutte le info su <strong>orari, ritrovo, cosa portare</strong> e sul <strong>rientro in bus</strong>.
-                    </p>
-                  </div>
-
-                  {/* CONTATTO */}
-                  <div className="w-full max-w-md p-5 bg-gray-50 border border-gray-200 rounded-2xl mb-8">
-                    <p className="text-sm text-gray-600 mb-3">
-                      Non hai ricevuto la mail o hai domande?
-                    </p>
-                    <a
-                      href="mailto:pellegrinaggiosacrasanmichele@gmail.com"
-                      className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-sacra-primary text-white font-bold rounded-full hover:bg-sacra-hover transition-all duration-300 text-sm"
+                <AnimatePresence mode="wait">
+                  {isSuccess ? (
+                    <motion.div
+                      key="success"
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      className="flex flex-col items-center justify-center text-center py-12"
                     >
-                      <FaEnvelope />
-                      Scrivici una mail
-                    </a>
-                  </div>
+                      <motion.div
+                        initial={{ scale: 0 }}
+                        animate={{ scale: 1 }}
+                        transition={{ type: "spring", stiffness: 200, delay: 0.2 }}
+                        className="w-24 h-24 bg-gradient-to-br from-green-400 to-emerald-500 rounded-full flex items-center justify-center mb-8 shadow-2xl"
+                      >
+                        <FaCheckCircle className="text-5xl text-white" />
+                      </motion.div>
 
-                  <div className="flex flex-wrap justify-center gap-4">
-                    <Link
-                      to="/"
-                      className="px-8 py-3 bg-gray-100 text-gray-700 font-bold rounded-full hover:bg-gray-200 transition-all"
+                      <h3 className="text-4xl font-black text-gray-900 mb-4">
+                        Perfetto! 🎉
+                      </h3>
+                      <p className="text-xl text-gray-600 mb-2">
+                        Sei nella lista aggiornamenti 2027
+                      </p>
+                      <p className="text-gray-500 mb-8 max-w-md">
+                        Ti avviseremo appena apriranno le iscrizioni per l'edizione
+                        del <strong>25/26 settembre 2027</strong>.
+                      </p>
+
+                      <div className="flex gap-4">
+                        <Link
+                          to="/"
+                          className="px-8 py-3 bg-gray-100 text-gray-700 font-bold rounded-full hover:bg-gray-200 transition-all"
+                        >
+                          Torna alla Home
+                        </Link>
+                        <Link
+                          to="/#Logistica"
+                          className="px-8 py-3 bg-sacra-primary text-white font-bold rounded-full hover:bg-sacra-hover transition-all flex items-center gap-2"
+                        >
+                          Info Logistica <FaArrowRight />
+                        </Link>
+                      </div>
+                    </motion.div>
+                  ) : (
+                    <motion.div
+                      key="form"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
                     >
-                      Torna alla Home
-                    </Link>
-                    <Link
-                      to="/#Logistica"
-                      className="px-8 py-3 bg-sacra-primary text-white font-bold rounded-full hover:bg-sacra-hover transition-all flex items-center gap-2"
-                    >
-                      Info Logistica <FaArrowRight />
-                    </Link>
-                  </div>
-                </motion.div>
+                      <div className="text-center mb-8">
+                        <motion.div
+                          initial={{ scale: 0 }}
+                          animate={{ scale: 1 }}
+                          transition={{ type: "spring", stiffness: 200, delay: 0.2 }}
+                          className="w-20 h-20 bg-gradient-to-br from-sacra-primary to-sacra-secondary rounded-full flex items-center justify-center mx-auto mb-6 shadow-2xl"
+                        >
+                          <FaBell className="text-4xl text-sacra-accent" />
+                        </motion.div>
+                        <h3 className="text-3xl sm:text-4xl font-black text-gray-900 mb-3">
+                          Rimani aggiornato
+                        </h3>
+                        <p className="text-gray-500 max-w-md mx-auto">
+                          Lasciaci la tua email e ti avviseremo appena apriranno le
+                          iscrizioni per l'edizione <strong>2027</strong>.
+                        </p>
+                      </div>
+
+                      <form onSubmit={handleSubmit} className="space-y-6 max-w-md mx-auto">
+                        {errorMessage && (
+                          <motion.div
+                            initial={{ opacity: 0, y: -10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            className="p-4 bg-red-50 border border-red-200 text-red-700 rounded-xl flex items-center gap-3"
+                          >
+                            <FaInfoCircle className="shrink-0" />
+                            {errorMessage}
+                          </motion.div>
+                        )}
+
+                        <div>
+                          <label className="block text-sm font-bold text-gray-700 mb-2">
+                            Email <span className="text-sacra-accent">*</span>
+                          </label>
+                          <div className="relative">
+                            <FaEnvelope className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
+                            <input
+                              type="email"
+                              name="email"
+                              required
+                              value={email}
+                              onChange={(e) => setEmail(e.target.value)}
+                              disabled={isSubmitting}
+                              className="w-full pl-12 pr-5 py-4 rounded-2xl border-2 border-gray-200 focus:border-sacra-primary focus:ring-4 focus:ring-sacra-primary/10 outline-none transition-all bg-gray-50 focus:bg-white disabled:opacity-50 text-lg"
+                              placeholder="mario@email.com"
+                            />
+                          </div>
+                        </div>
+
+                        <label className="flex items-start cursor-pointer group">
+                          <input
+                            type="checkbox"
+                            checked={privacy}
+                            onChange={(e) => setPrivacy(e.target.checked)}
+                            disabled={isSubmitting}
+                            className="w-5 h-5 mt-1 text-sacra-primary rounded-lg focus:ring-sacra-primary/20"
+                          />
+                          <span className="ml-3 text-sm text-gray-600 leading-relaxed group-hover:text-gray-900 transition-colors">
+                            Accetto di ricevere aggiornamenti sull'edizione 2027 del
+                            Pellegrinaggio. I miei dati saranno trattati nel rispetto
+                            della privacy. <span className="text-sacra-accent">*</span>
+                          </span>
+                        </label>
+
+                        <motion.button
+                          type="submit"
+                          disabled={isSubmitting}
+                          whileHover={{ scale: 1.02 }}
+                          whileTap={{ scale: 0.98 }}
+                          className="w-full py-5 bg-gradient-to-r from-sacra-accent to-amber-500 text-gray-900 font-black text-lg uppercase tracking-wider rounded-2xl shadow-xl hover:shadow-2xl hover:from-amber-400 hover:to-sacra-accent transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3"
+                        >
+                          {isSubmitting ? (
+                            <>
+                              <motion.div
+                                animate={{ rotate: 360 }}
+                                transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                                className="w-5 h-5 border-2 border-gray-900 border-t-transparent rounded-full"
+                              />
+                              Invio in corso...
+                            </>
+                          ) : (
+                            <>
+                              <FaBell className="text-xl" />
+                              Avvisami per il 2027
+                              <FaArrowRight className="ml-2" />
+                            </>
+                          )}
+                        </motion.button>
+
+                        <p className="text-center text-xs text-gray-400">
+                          * Campo obbligatorio. Niente spam, promesso.
+                        </p>
+                      </form>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
             </div>
+
+            {/* BOX RINGRAZIAMENTO PARTECIPANTI */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.6 }}
+              className="mt-6 bg-gradient-to-r from-sacra-primary/5 to-sacra-accent/5 border border-sacra-primary/20 rounded-3xl p-8"
+            >
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-12 h-12 bg-sacra-primary rounded-xl flex items-center justify-center">
+                  <FaHandsHelping className="text-xl text-white" />
+                </div>
+                <h4 className="font-black text-gray-900 text-xl">
+                  Grazie a chi ha reso possibile il 2026
+                </h4>
+              </div>
+              <p className="text-gray-600 leading-relaxed">
+                Un ringraziamento speciale va a tutti i <strong>partecipanti</strong>,
+                ai <strong>volontari</strong>, agli <strong>organizzatori</strong> e a
+                chi ha contribuito con preghiera e supporto. Senza di voi tutto questo
+                non sarebbe possibile. Ci vediamo nel 2027! 🚶‍♂️⛰️
+              </p>
+            </motion.div>
           </motion.div>
         </div>
       </main>

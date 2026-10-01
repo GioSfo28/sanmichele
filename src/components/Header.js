@@ -31,7 +31,7 @@ const Header = () => {
   const handleNavClick = (e, id) => {
     e.preventDefault();
     setMenuOpen(false);
-    
+
     if (window.location.pathname !== "/") {
       // Se siamo in un'altra pagina, naviga alla home e poi scrolla
       navigate(`/#${id}`);
@@ -41,10 +41,10 @@ const Header = () => {
     } else {
       // Se siamo nella home, scrolla direttamente
       scrollToElement(id);
-      
+
       // Attiva la tab percorso se siamo su Percorso & Logistica
       if (id === "Percorso" && window.changeActivityTab) {
-        window.changeActivityTab('percorso');
+        window.changeActivityTab("percorso");
       }
     }
   };
@@ -52,8 +52,8 @@ const Header = () => {
   return (
     <motion.header
       className={`fixed top-0 w-full z-50 transition-all duration-300 ${
-        scrolled 
-          ? "bg-white/95 backdrop-blur-md shadow-lg" 
+        scrolled
+          ? "bg-white/95 backdrop-blur-md shadow-lg"
           : "bg-white shadow-md"
       }`}
       initial={{ y: -100 }}
@@ -91,11 +91,12 @@ const Header = () => {
             </a>
           ))}
 
+          {/* ✅ MODIFICATO: Galleria → Edizioni */}
           <Link
-            to="/galleria"
+            to="/edizioni"
             className="text-gray-700 hover:text-sacra-primary text-sm lg:text-base font-medium transition-colors duration-300 relative group py-2"
           >
-            Galleria
+            Edizioni
             <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-sacra-primary transition-all duration-300 group-hover:w-full"></span>
           </Link>
 
@@ -161,14 +162,14 @@ const Header = () => {
           >
             {/* Sfondo con gradient e blur */}
             <div className="absolute inset-0 bg-gradient-to-b from-white via-white/98 to-white/95 backdrop-blur-xl" />
-            
+
             {/* Elementi decorativi */}
             <div className="absolute top-20 right-10 w-64 h-64 bg-sacra-accent/5 rounded-full blur-3xl" />
             <div className="absolute bottom-20 left-10 w-48 h-48 bg-sacra-primary/5 rounded-full blur-3xl" />
 
             {/* Contenuto */}
             <div className="relative z-10 flex flex-col items-center justify-start min-h-full px-6 pt-12 pb-8">
-              
+
               {/* Menu Links */}
               <nav className="w-full max-w-sm space-y-2 mb-8">
                 {menuItems.map((item, index) => (
@@ -195,19 +196,19 @@ const Header = () => {
                   </motion.a>
                 ))}
 
-                {/* Galleria Link */}
+                {/* ✅ MODIFICATO: Galleria → Edizioni */}
                 <motion.div
                   initial={{ opacity: 0, x: -30 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 0.3 }}
                 >
                   <Link
-                    to="/galleria"
+                    to="/edizioni"
                     onClick={() => setMenuOpen(false)}
                     className="flex items-center justify-between p-4 rounded-2xl bg-gray-50 hover:bg-sacra-primary/5 border border-gray-100 hover:border-sacra-primary/20 transition-all duration-300 group"
                   >
                     <span className="text-lg font-semibold text-gray-800 group-hover:text-sacra-primary transition-colors">
-                      Galleria
+                      Edizioni
                     </span>
                     <motion.span
                       initial={{ x: 0 }}
