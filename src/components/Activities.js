@@ -12,7 +12,7 @@ import {
   FaChurch,
   FaHeartbeat,
   FaFilePdf,
-  FaBus, // 👈 NUOVA ICONA PER IL RIENTRO
+  FaBus,
 } from "react-icons/fa";
 import { motion } from "framer-motion";
 import {
@@ -36,13 +36,23 @@ import "swiper/css/effect-cards";
 // ============ ASSETS EDIZIONE 2025 (anteprima) ============
 import img2025_1 from "../assets/2025/1.jpg";
 import img2025_2 from "../assets/2025/2.jpeg";
-import vid2025_3 from "../assets/2025/3.mp4";
 import img2025_4 from "../assets/2025/4.jpeg";
 import img2025_5 from "../assets/2025/5.jpeg";
-import img2025_6 from "../assets/2025/6.jpeg";
-import img2025_7 from "../assets/2025/7.jpeg";
 
-// PDF autobus (se è in assets/ fuori dalle cartelle anno)
+// ============ ASSETS EDIZIONE 2026 (anteprima) ============
+import vid2026_2  from "../assets/2026/2.mp4";
+import img2026_4  from "../assets/2026/4.jpg";
+import img2026_5  from "../assets/2026/5.jpg";
+import img2026_8  from "../assets/2026/8.jpg";
+import vid2026_11 from "../assets/2026/11.mp4";
+import img2026_15 from "../assets/2026/15.jpg";
+import img2026_16 from "../assets/2026/16.jpg";
+import img2026_20 from "../assets/2026/20.jpg";
+import img2026_24 from "../assets/2026/24.jpeg";
+import img2026_25 from "../assets/2026/25.jpeg";
+import vid2026_40 from "../assets/2026/40.mp4";
+
+// PDF autobus
 import autobusPdf from "../assets/Autobus.pdf";
 
 // Componente per forzare il resize della mappa
@@ -83,20 +93,29 @@ const endIcon = new L.divIcon({
   popupAnchor: [0, -22],
 });
 
-// 📸 Media per l'anteprima Swiper (mix di foto 2025)
+// 📸 Anteprima mista: 4 media dal 2025 + 11 media dal 2026
 const galleryMedia = [
-  { type: "image", src: img2025_1 },
-  { type: "image", src: img2025_2 },
-  { type: "video", src: vid2025_3 },
-  { type: "image", src: img2025_4 },
-  { type: "image", src: img2025_5 },
-  { type: "image", src: img2025_6 },
-  { type: "image", src: img2025_7 },
+  // --- 2025 ---
+  { type: "image", src: img2025_1, anno: "2025" },
+  { type: "image", src: img2025_2, anno: "2025" },
+  { type: "image", src: img2025_4, anno: "2025" },
+  { type: "image", src: img2025_5, anno: "2025" },
+  // --- 2026 ---
+  { type: "video", src: vid2026_2,  anno: "2026" },
+  { type: "image", src: img2026_4,  anno: "2026" },
+  { type: "image", src: img2026_5,  anno: "2026" },
+  { type: "image", src: img2026_8,  anno: "2026" },
+  { type: "video", src: vid2026_11, anno: "2026" },
+  { type: "image", src: img2026_15, anno: "2026" },
+  { type: "image", src: img2026_16, anno: "2026" },
+  { type: "image", src: img2026_20, anno: "2026" },
+  { type: "image", src: img2026_24, anno: "2026" },
+  { type: "image", src: img2026_25, anno: "2026" },
+  { type: "video", src: vid2026_40, anno: "2026" },
 ];
 
 const Activities = () => {
   useEffect(() => {
-    // Rimuoviamo il riferimento globale se ancora presente
     if (window.changeActivityTab) {
       delete window.changeActivityTab;
     }
@@ -252,7 +271,6 @@ const Activities = () => {
                   title: "Arrivo",
                   value: "Sacra di San Michele - S. Messa ore 17:00",
                 },
-                // 👇 NUOVA VOCE: RIENTRO IN BUS
                 {
                   icon: FaBus,
                   title: "Rientro",
@@ -455,7 +473,19 @@ const Activities = () => {
           >
             {galleryMedia.map((media, index) => (
               <SwiperSlide key={index}>
-                <div className="bg-white rounded-3xl shadow-2xl overflow-hidden">
+                <div className="relative bg-white rounded-3xl shadow-2xl overflow-hidden">
+                  {/* Badge anno in alto a sinistra */}
+                  <div className="absolute top-4 left-4 z-10 px-3 py-1 bg-white/90 backdrop-blur-sm rounded-full text-xs font-black text-sacra-primary shadow-md">
+                    {media.anno}
+                  </div>
+
+                  {/* Badge video in alto a destra */}
+                  {media.type === "video" && (
+                    <div className="absolute top-4 right-4 z-10 px-3 py-1 bg-sacra-accent text-gray-900 text-xs font-bold rounded-full shadow-md">
+                      ▶ Video
+                    </div>
+                  )}
+
                   {media.type === "video" ? (
                     <video
                       src={media.src}
@@ -468,7 +498,7 @@ const Activities = () => {
                   ) : (
                     <img
                       src={media.src}
-                      alt={`Momento del pellegrinaggio ${index + 1}`}
+                      alt={`Momento del pellegrinaggio ${media.anno} - ${index + 1}`}
                       className="w-full h-96 object-cover"
                     />
                   )}
