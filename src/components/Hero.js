@@ -212,7 +212,7 @@ const Hero = () => {
         >
           {/* Badge ringraziamento 2026 */}
           <span className="inline-block px-5 py-2 bg-white/10 backdrop-blur-md rounded-full border border-white/20 text-sm sm:text-base font-semibold text-white/90 tracking-wider">
-            ✨ Grazie a tutti i 2026 pellegrini dell'edizione 2026 ✨
+            ✨ Grazie a tutti i pellegrini dell'edizione 2026 ✨
           </span>
 
           {/* Data 2027 in grande */}
