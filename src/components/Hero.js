@@ -1,13 +1,11 @@
 import React, { useEffect, useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { Link } from "react-router-dom";
-import { FaDownload } from "react-icons/fa";
+import { FaDownload, FaBell } from "react-icons/fa";
 import * as THREE from "three";
 
 // ============ ASSETS SFONDO VIDEO ============
-// Il video desktop rimane in root
 import videoPC from "../assets/back.mp4";
-// Il video mobile puntava a "../assets/3.mp4" che ora è in 2025/
 import videoMobile from "../assets/2025/3.mp4";
 
 // ============ LOGO E LOCANDINA ============
@@ -21,7 +19,6 @@ const Hero = () => {
     offset: ["start start", "end start"],
   });
 
-  // RIMOSSO l'effetto y - il contenuto rimane fermo
   const opacity = useTransform(scrollYProgress, [0, 0.5, 0.9], [1, 0.8, 0]);
 
   // Configurazione Three.js per effetto particelle
@@ -140,7 +137,7 @@ const Hero = () => {
         <div className="absolute top-3/4 left-0 w-full h-px bg-gradient-to-r from-transparent via-sacra-accent to-transparent animate-pulse animation-delay-2000" />
       </div>
 
-      {/* Contenuto principale - SENZA movimento verticale */}
+      {/* Contenuto principale */}
       <motion.div
         className="relative z-20 max-w-5xl mx-auto px-4 w-full"
         style={{ opacity }}
@@ -201,7 +198,7 @@ const Hero = () => {
           .
         </motion.p>
 
-        {/* 🆕 DATA IN EVIDENZA */}
+        {/* 🆕 BADGE "GRAZIE 2026" + DATA 2027 */}
         <motion.div
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -211,10 +208,21 @@ const Hero = () => {
             type: "spring",
             stiffness: 200,
           }}
-          className="mt-4 sm:mt-6 mb-4 sm:mb-6"
+          className="mt-4 sm:mt-6 mb-4 sm:mb-6 flex flex-col items-center gap-3"
         >
-          <span className="inline-block px-6 py-3 sm:px-10 sm:py-4 bg-gradient-to-r from-sacra-accent/30 to-amber-500/30 backdrop-blur-md rounded-full border-2 border-sacra-accent/60 shadow-2xl shadow-sacra-accent/20 text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-white tracking-wider">
-            27 Settembre 2026
+          {/* Badge ringraziamento 2026 */}
+          <span className="inline-block px-5 py-2 bg-white/10 backdrop-blur-md rounded-full border border-white/20 text-sm sm:text-base font-semibold text-white/90 tracking-wider">
+            ✨ Grazie a tutti i 2026 pellegrini dell'edizione 2026 ✨
+          </span>
+
+          {/* Data 2027 in grande */}
+          <span className="inline-block px-6 py-3 sm:px-10 sm:py-4 bg-gradient-to-r from-sacra-accent/30 to-amber-500/30 backdrop-blur-md rounded-full border-2 border-sacra-accent/60 shadow-2xl shadow-sacra-accent/20 text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white tracking-wider">
+            25/26 Settembre 2027
+          </span>
+
+          {/* Sottotitolo 2027 */}
+          <span className="text-sm sm:text-base text-sacra-accent font-semibold uppercase tracking-widest">
+            Prossima Edizione · In Preparazione
           </span>
         </motion.div>
 
@@ -255,6 +263,7 @@ const Hero = () => {
           transition={{ delay: 1.8, duration: 0.8 }}
           className="flex flex-col sm:flex-row gap-4 justify-center items-center mt-6 mb-24 sm:mb-12"
         >
+          {/* CTA principale: Rimani aggiornato per il 2027 */}
           <motion.div
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
@@ -264,11 +273,13 @@ const Hero = () => {
               to="/iscrizione"
               className="group relative flex justify-center items-center gap-3 px-8 py-4 bg-gradient-to-r from-sacra-accent to-amber-500 text-gray-900 font-bold text-base sm:text-lg uppercase tracking-wider rounded-full shadow-2xl hover:shadow-sacra-accent/50 transition-all duration-500 overflow-hidden w-full"
             >
-              <span className="relative z-10">Iscriviti</span>
+              <FaBell className="relative z-10 text-lg" />
+              <span className="relative z-10">Rimani aggiornato</span>
               <div className="absolute inset-0 bg-gradient-to-r from-amber-500 to-sacra-accent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-full" />
             </Link>
           </motion.div>
 
+          {/* CTA secondaria: Locandina */}
           <motion.a
             href={locandinaImg}
             download="Locandina_Pellegrinaggio_San_Michele.jpeg"
