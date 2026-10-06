@@ -26,72 +26,66 @@ import Sara from "../assets/Sara.jpeg";
 import Samuele from "../assets/Samuele.jpeg";
 
 // ============================================================
-// ORGANIGRAMMA STRUTTURATO
+// TEAM
 // ============================================================
-const organizationChart = {
-  direzione: [
-    {
-      name: "Simone Morano Gabbiani",
-      role: "Ideatore e Coordinatore Generale",
-      img: Simone,
-      desc: "Ha dato vita a questo progetto, coinvolgendo fin da subito i fratelli Giovanni e Ferdinando nell'organizzazione del pellegrinaggio.",
-      gradient: "from-blue-500 to-cyan-500",
-      icon: FaCrown,
-    },
-  ],
-  organizzatori: [
-    {
-      name: "Giovanni di Gropello",
-      role: "Organizzatore",
-      img: Giovanni,
-      desc: "Si occupa in prima linea della logistica e della gestione pratica del cammino, coordinando i partecipanti.",
-      gradient: "from-green-500 to-emerald-500",
-      icon: FaUserTie,
-    },
-    {
-      name: "Ferdinando di Gropello",
-      role: "Organizzatore",
-      img: Ferdinando,
-      desc: "Insieme al fratello Giovanni, cura i dettagli organizzativi e la sicurezza dell'evento.",
-      gradient: "from-purple-500 to-violet-500",
-      icon: FaUserTie,
-    },
-  ],
-  responsabili: [
-    {
-      name: "Claudio Maglione",
-      role: "Responsabile Val d'Aosta",
-      img: Claudio,
-      desc: "Coordina i pellegrini e gestisce le attività logistiche sul territorio valdostano.",
-      gradient: "from-red-500 to-pink-500",
-      icon: FaMapMarkedAlt,
-    },
-    {
-      name: "Sara Morano Gabbiani",
-      role: "Responsabile Piemonte",
-      img: Sara,
-      desc: "Coordina i pellegrini e gestisce le attività logistiche sul territorio piemontese.",
-      gradient: "from-indigo-500 to-purple-500",
-      icon: FaMapMarkedAlt,
-    },
-    {
-      name: "Samuele Rossi",
-      role: "Responsabile del Coordinamento del Percorso",
-      img: Samuele,
-      desc: "Si occupa del coordinamento operativo del percorso durante il pellegrinaggio, monitorandone lo svolgimento e assicurandosi che la marcia proceda regolarmente.",
-      gradient: "from-teal-500 to-cyan-500",
-      icon: FaRoute,
-    },
-    {
-      name: "Giorgio Sforza",
-      role: "Responsabile Web",
-      img: Gio,
-      desc: "Cura lo sviluppo della piattaforma digitale e la comunicazione online del pellegrinaggio.",
-      gradient: "from-orange-500 to-amber-500",
-      icon: FaLaptopCode,
-    },
-  ],
-};
+const team = [
+  {
+    name: "Simone Morano Gabbiani",
+    role: "Ideatore e Coordinatore Generale",
+    img: Simone,
+    desc: "Ha dato vita a questo progetto, coinvolgendo fin da subito i fratelli Giovanni e Ferdinando nell'organizzazione del pellegrinaggio.",
+    gradient: "from-blue-500 to-cyan-500",
+    icon: FaCrown,
+  },
+  {
+    name: "Giovanni di Gropello",
+    role: "Organizzatore",
+    img: Giovanni,
+    desc: "Si occupa in prima linea della logistica e della gestione pratica del cammino, coordinando i partecipanti.",
+    gradient: "from-green-500 to-emerald-500",
+    icon: FaUserTie,
+  },
+  {
+    name: "Ferdinando di Gropello",
+    role: "Organizzatore",
+    img: Ferdinando,
+    desc: "Insieme al fratello Giovanni, cura i dettagli organizzativi e la sicurezza dell'evento.",
+    gradient: "from-purple-500 to-violet-500",
+    icon: FaUserTie,
+  },
+  {
+    name: "Giorgio Sforza",
+    role: "Responsabile Web",
+    img: Gio,
+    desc: "Cura lo sviluppo della piattaforma digitale e la comunicazione online del pellegrinaggio.",
+    gradient: "from-orange-500 to-amber-500",
+    icon: FaLaptopCode,
+  },
+  {
+    name: "Claudio Maglione",
+    role: "Responsabile Val d'Aosta",
+    img: Claudio,
+    desc: "Coordina i pellegrini e gestisce le attività logistiche sul territorio valdostano.",
+    gradient: "from-red-500 to-pink-500",
+    icon: FaMapMarkedAlt,
+  },
+  {
+    name: "Sara Morano Gabbiani",
+    role: "Responsabile Piemonte",
+    img: Sara,
+    desc: "Coordina i pellegrini e gestisce le attività logistiche sul territorio piemontese.",
+    gradient: "from-indigo-500 to-purple-500",
+    icon: FaMapMarkedAlt,
+  },
+  {
+    name: "Samuele Rossi",
+    role: "Responsabile del Coordinamento del Percorso",
+    img: Samuele,
+    desc: "Si occupa del coordinamento operativo del percorso durante il pellegrinaggio, monitorandone lo svolgimento e assicurandosi che la marcia proceda regolarmente.",
+    gradient: "from-teal-500 to-cyan-500",
+    icon: FaRoute,
+  },
+];
 
 const spiritualFathers = [
   {
@@ -107,117 +101,109 @@ const spiritualFathers = [
 ];
 
 // ============================================================
-// COMPONENTI RIUTILIZZABILI
+// CARD MEMBRO DEL TEAM
 // ============================================================
-
-/**
- * Card dell'organigramma con supporto a 3 dimensioni
- */
-const OrgCard = ({ person, size = "md" }) => {
-  const isLarge = size === "lg";
-  const isSmall = size === "sm";
-
+const MemberCard = ({ person }) => {
   return (
     <motion.div
-      whileHover={{ y: -6, scale: 1.02 }}
-      transition={{ type: "spring", stiffness: 300 }}
-      className={`group relative bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden flex flex-col h-full ${
-        isLarge ? "w-full max-w-md" : isSmall ? "w-full max-w-xs" : "w-full max-w-sm"
-      }`}
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.1 }}
+      transition={{ duration: 0.5 }}
+      whileHover={{ y: -8 }}
+      className="group relative bg-white rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden flex flex-col"
     >
       {/* Barra gradiente superiore */}
       <div
-        className={`absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r ${person.gradient}`}
+        className={`absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r ${person.gradient} transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500`}
       />
 
-      <div
-        className={`flex flex-col items-center text-center flex-grow ${
-          isLarge ? "p-8" : isSmall ? "p-5" : "p-6"
-        }`}
-      >
-        {/* Immagine con badge */}
-        <div className="relative mb-4">
+      <div className="p-8 flex flex-col items-center text-center flex-grow">
+        {/* Immagine con effetto */}
+        <div className="relative mb-6">
           <div
             className={`absolute inset-0 bg-gradient-to-br ${person.gradient} rounded-full blur-xl opacity-0 group-hover:opacity-40 transition-opacity duration-500`}
           />
           <img
             src={person.img}
             alt={person.name}
-            className={`relative z-10 rounded-full object-cover border-4 border-white shadow-lg group-hover:scale-105 transition-transform duration-500 ${
-              isLarge ? "w-36 h-36" : isSmall ? "w-20 h-20" : "w-24 h-24"
-            }`}
+            className="relative z-10 w-28 h-28 rounded-full object-cover border-4 border-white shadow-lg group-hover:scale-105 transition-transform duration-500"
           />
-          {person.icon && (
-            <div
-              className={`absolute -bottom-1 -right-1 rounded-full bg-gradient-to-br ${
-                person.gradient
-              } flex items-center justify-center shadow-lg z-20 ${
-                isLarge ? "w-12 h-12" : isSmall ? "w-8 h-8" : "w-10 h-10"
-              }`}
-            >
-              <person.icon
-                className={`text-white ${isLarge ? "text-lg" : "text-sm"}`}
-              />
-            </div>
-          )}
+          {/* Badge icona */}
+          <div
+            className={`absolute -bottom-1 -right-1 w-10 h-10 rounded-full bg-gradient-to-br ${person.gradient} flex items-center justify-center shadow-lg z-20`}
+          >
+            <person.icon className="text-white text-sm" />
+          </div>
         </div>
 
         {/* Nome e ruolo */}
-        <h3
-          className={`font-bold text-gray-900 group-hover:text-sacra-primary transition-colors duration-300 mb-1 ${
-            isLarge ? "text-2xl" : isSmall ? "text-base" : "text-lg"
-          }`}
-        >
+        <h3 className="text-lg font-bold text-gray-900 group-hover:text-sacra-primary transition-colors duration-300 mb-2">
           {person.name}
         </h3>
         <p
-          className={`font-semibold uppercase tracking-wider mb-3 bg-gradient-to-r ${
-            person.gradient
-          } bg-clip-text text-transparent ${isLarge ? "text-sm" : "text-xs"}`}
+          className={`text-xs font-semibold uppercase tracking-wider mb-4 bg-gradient-to-r ${person.gradient} bg-clip-text text-transparent`}
         >
           {person.role}
         </p>
 
         {/* Descrizione */}
-        {person.desc && (
-          <p
-            className={`text-gray-600 leading-relaxed flex-grow ${
-              isLarge ? "text-sm" : "text-xs"
-            }`}
-          >
-            {person.desc}
-          </p>
-        )}
+        <p className="text-gray-600 text-sm leading-relaxed flex-grow">
+          {person.desc}
+        </p>
       </div>
+
+      {/* Bordo luminoso al hover */}
+      <div className="absolute inset-0 rounded-3xl border-2 border-transparent group-hover:border-sacra-accent/20 transition-all duration-500 pointer-events-none" />
     </motion.div>
   );
 };
 
-/**
- * Connettore verticale tra i livelli
- */
-const Connector = ({ height = "h-12" }) => (
-  <div className={`flex justify-center ${height}`}>
-    <div className="w-px bg-gradient-to-b from-sacra-accent/60 via-sacra-accent/40 to-sacra-accent/60" />
-  </div>
-);
+// ============================================================
+// CARD PADRE SPIRITUALE
+// ============================================================
+const FatherCard = ({ father }) => {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.1 }}
+      transition={{ duration: 0.5 }}
+      whileHover={{ y: -8 }}
+      className="group relative bg-white rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden flex flex-col"
+    >
+      {/* Barra gradiente superiore */}
+      <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-sacra-primary via-sacra-accent to-sacra-primary transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500" />
 
-/**
- * Linea orizzontale con diramazioni verticali
- */
-const HorizontalBranch = ({ columns = 2, maxWidth = "max-w-2xl" }) => (
-  <div className={`absolute top-0 left-1/2 -translate-x-1/2 w-full ${maxWidth}`}>
-    <div className="flex justify-between px-8">
-      {Array.from({ length: columns }).map((_, i) => (
-        <div
-          key={i}
-          className="w-px h-8 bg-gradient-to-b from-sacra-accent/60 to-transparent"
-        />
-      ))}
-    </div>
-    <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-sacra-accent/60 to-transparent" />
-  </div>
-);
+      <div className="p-8 flex flex-col items-center text-center flex-grow">
+        {/* Immagine con effetto */}
+        <div className="relative mb-6">
+          <div className="absolute inset-0 bg-gradient-to-br from-sacra-primary/40 to-sacra-accent/40 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+          <img
+            src={father.img}
+            alt={father.name}
+            className="relative z-10 w-28 h-28 rounded-full object-cover border-4 border-white shadow-lg group-hover:scale-105 transition-transform duration-500"
+          />
+          {/* Badge croce */}
+          <div className="absolute -bottom-1 -right-1 w-10 h-10 rounded-full bg-gradient-to-br from-sacra-primary to-sacra-accent flex items-center justify-center shadow-lg z-20">
+            <FaCross className="text-white text-sm" />
+          </div>
+        </div>
+
+        {/* Nome e ruolo */}
+        <h3 className="text-lg font-bold text-gray-900 group-hover:text-sacra-primary transition-colors duration-300 mb-2">
+          {father.name}
+        </h3>
+        <p className="text-xs font-semibold uppercase tracking-wider text-[#688e26]">
+          {father.role}
+        </p>
+      </div>
+
+      {/* Bordo luminoso al hover */}
+      <div className="absolute inset-0 rounded-3xl border-2 border-transparent group-hover:border-sacra-accent/20 transition-all duration-500 pointer-events-none" />
+    </motion.div>
+  );
+};
 
 // ============================================================
 // PAGINA CHI SIAMO
@@ -265,12 +251,12 @@ const ChiSiamo = () => {
       {/* ============================================================ */}
       {/* CONTENUTO PRINCIPALE */}
       {/* ============================================================ */}
-      <main className="flex-grow pt-32 pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
+      <main className="relative flex-grow pt-32 pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
         {/* ------------------------------------------------------------ */}
         {/* HERO SECTION */}
         {/* ------------------------------------------------------------ */}
         <motion.div
-          className="text-center mb-24"
+          className="text-center mb-20"
           initial="hidden"
           animate="visible"
           variants={fadeIn}
@@ -279,10 +265,10 @@ const ChiSiamo = () => {
             initial={{ scale: 0, rotate: -180 }}
             animate={{ scale: 1, rotate: 0 }}
             transition={{ type: "spring", stiffness: 200, delay: 0.2 }}
-            className="inline-flex items-center justify-center w-24 h-24 bg-gradient-to-br from-sacra-primary to-sacra-accent rounded-3xl shadow-2xl mb-8 relative"
+            className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-sacra-primary to-sacra-accent rounded-2xl shadow-2xl mb-8 relative"
           >
-            <div className="absolute inset-0 bg-gradient-to-br from-sacra-primary to-sacra-accent rounded-3xl blur-xl opacity-50" />
-            <FaStar className="text-4xl text-white relative z-10" />
+            <div className="absolute inset-0 bg-gradient-to-br from-sacra-primary to-sacra-accent rounded-2xl blur-xl opacity-50" />
+            <FaStar className="text-3xl text-white relative z-10" />
           </motion.div>
 
           <h1 className="text-5xl sm:text-6xl lg:text-7xl font-black tracking-tight mb-6">
@@ -311,7 +297,7 @@ const ChiSiamo = () => {
         </motion.div>
 
         {/* ------------------------------------------------------------ */}
-        {/* ORGANIGRAMMA */}
+        {/* IL NOSTRO TEAM */}
         {/* ------------------------------------------------------------ */}
         <motion.div
           className="mb-24"
@@ -320,67 +306,20 @@ const ChiSiamo = () => {
           viewport={{ once: true, amount: 0.05 }}
           variants={fadeIn}
         >
-          <div className="text-center mb-16">
+          <div className="text-center mb-14">
             <h2 className="text-4xl sm:text-5xl font-extrabold text-gray-900 mb-3">
-              Organigramma
+              Il Nostro Team
             </h2>
             <p className="text-gray-500 text-lg font-light">
-              La struttura organizzativa del pellegrinaggio
+              Le persone che rendono possibile questo pellegrinaggio
             </p>
           </div>
 
-          {/* -------- LIVELLO 1: DIREZIONE -------- */}
-          <div className="flex justify-center">
-            <div className="relative">
-              <div className="absolute -inset-4 bg-gradient-to-r from-blue-500/10 via-cyan-500/10 to-blue-500/10 rounded-3xl blur-2xl" />
-              <OrgCard person={organizationChart.direzione[0]} size="lg" />
-            </div>
-          </div>
-
-          {/* Connettore verticale */}
-          <Connector height="h-16" />
-
-          {/* -------- LIVELLO 2: ORGANIZZATORI -------- */}
-          <div className="relative">
-            <HorizontalBranch columns={2} maxWidth="max-w-2xl" />
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 max-w-2xl mx-auto pt-8">
-              {organizationChart.organizzatori.map((person, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.15 }}
-                  className="flex justify-center"
-                >
-                  <OrgCard person={person} size="md" />
-                </motion.div>
-              ))}
-            </div>
-          </div>
-
-          {/* Connettore verticale */}
-          <Connector height="h-16" />
-
-          {/* -------- LIVELLO 3: RESPONSABILI -------- */}
-          <div className="relative">
-            <HorizontalBranch columns={4} maxWidth="max-w-5xl" />
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto pt-8">
-              {organizationChart.responsabili.map((person, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.15 }}
-                  className="flex justify-center"
-                >
-                  <OrgCard person={person} size="sm" />
-                </motion.div>
-              ))}
-            </div>
+          {/* Griglia uniforme - tutti allo stesso livello */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+            {team.map((person, index) => (
+              <MemberCard key={index} person={person} />
+            ))}
           </div>
         </motion.div>
 
@@ -420,32 +359,10 @@ const ChiSiamo = () => {
               <div className="h-px w-12 bg-gradient-to-l from-transparent to-sacra-accent/50" />
             </div>
 
-            {/* Padri Spirituali */}
-            <div className="flex flex-col sm:flex-row justify-center items-center gap-12 sm:gap-20 mb-10">
+            {/* Padri Spirituali in griglia */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 max-w-2xl mx-auto mb-10">
               {spiritualFathers.map((father, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.2 }}
-                  className="flex flex-col items-center group"
-                >
-                  <div className="relative mb-6">
-                    <div className="absolute inset-0 bg-gradient-to-br from-sacra-primary/30 to-sacra-accent/30 rounded-full blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                    <img
-                      src={father.img}
-                      alt={father.name}
-                      className="relative z-10 w-32 h-32 rounded-full object-cover border-4 border-sacra-primary/20 shadow-xl group-hover:border-sacra-accent transition-all duration-500 group-hover:scale-105"
-                    />
-                  </div>
-                  <h3 className="text-2xl font-bold text-gray-900 group-hover:text-sacra-primary transition-colors duration-300 mb-2">
-                    {father.name}
-                  </h3>
-                  <p className="text-[#688e26] font-semibold text-sm uppercase tracking-wider">
-                    {father.role}
-                  </p>
-                </motion.div>
+                <FatherCard key={index} father={father} />
               ))}
             </div>
 
